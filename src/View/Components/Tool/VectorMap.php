@@ -18,7 +18,7 @@ class VectorMap extends Component
         ?string $id = null,
         public string $height = '400px',
     ) {
-        $this->id = $id ?? 'vectormap-' . uniqid();
+        $this->id = $id ?? 'vectormap-'.uniqid();
         app(PluginManager::class)->enable('jsvectormap');
     }
 

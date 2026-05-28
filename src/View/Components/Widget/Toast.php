@@ -19,7 +19,7 @@ class Toast extends Component
         ?string $id = null,
         public ?string $class = null,
     ) {
-        $this->id = $id ?? 'toast-' . uniqid();
+        $this->id = $id ?? 'toast-'.uniqid();
     }
 
     public function render(): View

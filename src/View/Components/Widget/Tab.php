@@ -16,7 +16,7 @@ class Tab extends Component
         public ?string $icon = null,
         public ?string $class = null,
     ) {
-        $this->id = $id ?? 'tab-' . uniqid();
+        $this->id = $id ?? 'tab-'.uniqid();
     }
 
     public function render(): View

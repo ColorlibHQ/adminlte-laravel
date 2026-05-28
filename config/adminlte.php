@@ -110,7 +110,7 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'footer_left' => '&copy; ' . date('Y') . ' <a href="https://adminlte.io">AdminLTE</a>.',
+    'footer_left' => '&copy; '.date('Y').' <a href="https://adminlte.io">AdminLTE</a>.',
     'footer_right' => 'Version <b>4.0</b>',
     'preloader' => false,
     'control_sidebar' => false,

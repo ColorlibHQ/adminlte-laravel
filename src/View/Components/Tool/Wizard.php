@@ -14,7 +14,7 @@ class Wizard extends Component
         ?string $id = null,
         public ?string $class = null,
     ) {
-        $this->id = $id ?? 'wizard-' . uniqid();
+        $this->id = $id ?? 'wizard-'.uniqid();
     }
 
     public function render(): View

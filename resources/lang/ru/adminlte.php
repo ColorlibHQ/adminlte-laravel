@@ -1,4 +1,5 @@
 <?php
+
 // Russian translations - placeholder keys
 return [
     'email' => 'Email',

@@ -15,7 +15,7 @@ class Accordion extends Component
         public bool $alwaysOpen = false,
         public ?string $class = null,
     ) {
-        $this->id = $id ?? 'accordion-' . uniqid();
+        $this->id = $id ?? 'accordion-'.uniqid();
     }
 
     public function render(): View

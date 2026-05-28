@@ -18,7 +18,7 @@ class Chart extends Component
         ?string $id = null,
         public string $height = '300px',
     ) {
-        $this->id = $id ?? 'chart-' . uniqid();
+        $this->id = $id ?? 'chart-'.uniqid();
         app(PluginManager::class)->enable('apexcharts');
     }
 

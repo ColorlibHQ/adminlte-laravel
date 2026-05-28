@@ -16,7 +16,7 @@ class Calendar extends Component
         ?string $id = null,
         public string $height = '500px',
     ) {
-        $this->id = $id ?? 'calendar-' . uniqid();
+        $this->id = $id ?? 'calendar-'.uniqid();
         app(PluginManager::class)->enable('fullcalendar');
     }
 

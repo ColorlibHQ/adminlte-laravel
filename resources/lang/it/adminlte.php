@@ -1,4 +1,5 @@
 <?php
+
 // Italian translations - placeholder keys
 return [
     'email' => 'Email',

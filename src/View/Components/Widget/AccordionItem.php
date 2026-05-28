@@ -16,7 +16,7 @@ class AccordionItem extends Component
         public bool $expanded = false,
         public ?string $class = null,
     ) {
-        $this->id = $id ?? 'item-' . uniqid();
+        $this->id = $id ?? 'item-'.uniqid();
     }
 
     public function render(): View

@@ -1,4 +1,5 @@
 <?php
+
 // Japanese translations - placeholder keys
 return [
     'email' => 'Email',
