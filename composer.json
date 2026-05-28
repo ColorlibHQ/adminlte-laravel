@@ -1,0 +1,59 @@
+{
+    "name": "colorlibhq/adminlte-laravel",
+    "description": "Official AdminLTE 4 integration for Laravel — Bootstrap 5.3, vanilla JS, Vite-ready.",
+    "keywords": [
+        "laravel",
+        "adminlte",
+        "admin",
+        "dashboard",
+        "bootstrap",
+        "bootstrap5",
+        "template",
+        "blade",
+        "vite"
+    ],
+    "homepage": "https://adminlte.io",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Colorlib",
+            "homepage": "https://colorlib.com"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/ColorlibHQ/adminlte-laravel/issues",
+        "source": "https://github.com/ColorlibHQ/adminlte-laravel"
+    },
+    "require": {
+        "php": "^8.3",
+        "illuminate/support": "^13.0",
+        "illuminate/view": "^13.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^11.0",
+        "phpunit/phpunit": "^13.0",
+        "laravel/pint": "^1.29"
+    },
+    "autoload": {
+        "psr-4": {
+            "ColorlibHQ\\AdminLte\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ColorlibHQ\\AdminLte\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "ColorlibHQ\\AdminLte\\AdminLteServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

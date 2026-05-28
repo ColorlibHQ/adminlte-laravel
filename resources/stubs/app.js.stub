@@ -1,0 +1,26 @@
+/**
+ * AdminLTE 4 + Bootstrap 5 entry point.
+ *
+ * Published by `php artisan adminlte:install`. Add this file to your
+ * vite.config.js input array, then `npm run dev` / `npm run build`.
+ */
+
+// Bootstrap (provides dropdowns, modals, tooltips, offcanvas, etc.)
+import 'bootstrap'
+
+// OverlayScrollbars — AdminLTE uses it for the sidebar scroller (optional)
+import { OverlayScrollbars } from 'overlayscrollbars'
+
+// AdminLTE plugins (PushMenu, Treeview, CardWidget, FullScreen, DirectChat,
+// Layout, accessibility). The data-lte-* API is wired on DOMContentLoaded.
+import 'admin-lte'
+
+// Wire OverlayScrollbars to the sidebar (matches the AdminLTE demo behaviour)
+document.addEventListener('DOMContentLoaded', () => {
+  const sidebar = document.querySelector('.sidebar-wrapper')
+  if (sidebar && window.innerWidth > 992) {
+    OverlayScrollbars(sidebar, {
+      scrollbars: { theme: 'os-theme-light', autoHide: 'leave', clickScroll: true },
+    })
+  }
+})

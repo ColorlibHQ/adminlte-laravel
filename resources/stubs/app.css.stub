@@ -1,0 +1,23 @@
+/*
+ * AdminLTE 4 stylesheet entry point.
+ *
+ * Published by `php artisan adminlte:install`. Add this file to your
+ * vite.config.js input array.
+ *
+ * Option A (default): import the prebuilt CSS — fastest, no SCSS toolchain.
+ */
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+@import 'overlayscrollbars/styles/overlayscrollbars.css';
+@import 'admin-lte/dist/css/adminlte.css';
+
+/*
+ * Option B: compile from source to customise SCSS variables. Comment out
+ * the admin-lte CSS import above and use this instead (requires `sass`):
+ *
+ *   // resources/css/adminlte.scss
+ *   $primary: #6610f2;            // your overrides BEFORE the import
+ *   $lte-sidebar-width: 280px;
+ *   @import 'admin-lte/src/scss/adminlte';
+ *
+ * See https://adminlte.io/themes/v4/docs/customization.html
+ */
