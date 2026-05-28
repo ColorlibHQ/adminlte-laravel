@@ -5,6 +5,7 @@ namespace ColorlibHQ\AdminLte\Plugins;
 class PluginManager
 {
     protected array $config;
+
     protected array $enabled = [];
 
     public function __construct(array $config = [])
@@ -17,12 +18,14 @@ class PluginManager
         if ($this->has($plugin)) {
             $this->enabled[$plugin] = true;
         }
+
         return $this;
     }
 
     public function disable(string $plugin): self
     {
         unset($this->enabled[$plugin]);
+
         return $this;
     }
 
@@ -31,6 +34,7 @@ class PluginManager
         if (isset($this->enabled[$plugin])) {
             return $this->enabled[$plugin];
         }
+
         return $this->config[$plugin]['enabled'] ?? false;
     }
 
@@ -44,6 +48,7 @@ class PluginManager
         if (! $this->isEnabled($plugin)) {
             return null;
         }
+
         return $this->config[$plugin]['css'] ?? null;
     }
 
@@ -52,6 +57,7 @@ class PluginManager
         if (! $this->isEnabled($plugin)) {
             return null;
         }
+
         return $this->config[$plugin]['js'] ?? null;
     }
 
@@ -63,6 +69,7 @@ class PluginManager
                 $enabled[$plugin] = $this->config[$plugin];
             }
         }
+
         return $enabled;
     }
 }

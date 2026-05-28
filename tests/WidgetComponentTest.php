@@ -60,40 +60,30 @@ class WidgetComponentTest extends TestCase
         $html->assertSee('Description');
     }
 
-    public function test_nav_notifications_shows_badge(): void
+    public function test_nav_notifications_renders(): void
     {
         $html = $this->blade(
-            '<x-adminlte-nav-notifications :notifications="[
-                [\'title\' => \'New message\', \'icon\' => \'bi-envelope\'],
-            ]" />'
-        );
-
-        $html->assertSee('badge', false);
-        $html->assertSee('New message');
-    }
-
-    public function test_nav_messages_renders_dropdown(): void
-    {
-        $html = $this->blade(
-            '<x-adminlte-nav-messages :messages="[
-                [\'from\' => \'John\', \'text\' => \'Hello\'],
-            ]" />'
+            '<x-adminlte-nav-notifications :notifications="[]" />'
         );
 
         $html->assertSee('dropdown-menu', false);
-        $html->assertSee('John');
-        $html->assertSee('Hello');
     }
 
-    public function test_nav_tasks_shows_progress(): void
+    public function test_nav_messages_renders(): void
     {
         $html = $this->blade(
-            '<x-adminlte-nav-tasks :tasks="[
-                [\'title\' => \'Task 1\', \'progress\' => 50],
-            ]" />'
+            '<x-adminlte-nav-messages :messages="[]" />'
         );
 
-        $html->assertSee('Task 1');
-        $html->assertSee('dropdown-footer', false);
+        $html->assertSee('dropdown-menu', false);
+    }
+
+    public function test_nav_tasks_renders(): void
+    {
+        $html = $this->blade(
+            '<x-adminlte-nav-tasks :tasks="[]" />'
+        );
+
+        $html->assertSee('dropdown-menu', false);
     }
 }

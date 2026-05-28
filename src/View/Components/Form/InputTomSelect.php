@@ -34,6 +34,7 @@ class InputTomSelect extends Component
         if ($old !== null) {
             return $old;
         }
+
         return $this->value;
     }
 

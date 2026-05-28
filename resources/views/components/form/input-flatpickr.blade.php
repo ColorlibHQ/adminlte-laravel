@@ -16,7 +16,7 @@
                class="form-control @error($dotName()) is-invalid @enderror"
                placeholder="{{ $placeholder ?? __('adminlte.select_date') }}"
                data-flatpickr
-               data-flatpickr-options="{{ $flatpickrConfig() }}"
+               data-flatpickr-config="{{ $flatpickrConfig() }}"
                {{ $attributes->whereDoesntStartWith('class') }}>
         <span class="input-group-text"><i class="bi bi-calendar"></i></span>
     </div>
@@ -25,15 +25,3 @@
         <div class="invalid-feedback d-block">{{ $error }}</div>
     @endif
 </div>
-
-@push('scripts')
-    <script>
-        if (document.querySelector('[data-flatpickr]')) {
-            flatpickr('[data-flatpickr]', {
-                @foreach (json_decode(document.querySelector('[data-flatpickr]')?.getAttribute('data-flatpickr-options') ?? '{}', true) as $key => $val)
-                    {{ $key }}: @json($val),
-                @endforeach
-            });
-        }
-    </script>
-@endpush

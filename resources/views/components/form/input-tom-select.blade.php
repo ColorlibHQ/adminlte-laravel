@@ -16,7 +16,7 @@
             name="{{ $name }}{{ $multiple ? '[]' : '' }}"
             class="form-select @error($dotName()) is-invalid @enderror"
             data-tom-select
-            data-tom-select-options="{{ $tomSelectConfig() }}"
+            data-tom-select-config="{{ $tomSelectConfig() }}"
             {{ $multiple ? 'multiple' : '' }}
             {{ $attributes->whereDoesntStartWith('class') }}>
         @foreach ($options as $optionValue => $optionLabel)
@@ -31,13 +31,3 @@
         <div class="invalid-feedback d-block">{{ $error }}</div>
     @endif
 </div>
-
-@push('scripts')
-    <script>
-        if (document.querySelector('[data-tom-select]')) {
-            document.querySelectorAll('[data-tom-select]').forEach(el => {
-                new TomSelect(el, JSON.parse(el.getAttribute('data-tom-select-options') || '{}'));
-            });
-        }
-    </script>
-@endpush

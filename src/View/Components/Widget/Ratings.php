@@ -24,6 +24,7 @@ class Ratings extends Component
                 'number' => $i,
             ];
         }
+
         return $stars;
     }
 

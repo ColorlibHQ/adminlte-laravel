@@ -105,9 +105,10 @@ class AdminLteServiceProvider extends ServiceProvider
             $output = '';
             foreach ($plugins->getEnabledPlugins() as $name => $config) {
                 if ($css = $plugins->getCss($name)) {
-                    $output .= "<link rel=\"stylesheet\" href=\"".asset($css)."\">".PHP_EOL;
+                    $output .= '<link rel="stylesheet" href="'.asset($css).'">'.PHP_EOL;
                 }
             }
+
             return $output;
         });
 
@@ -115,9 +116,10 @@ class AdminLteServiceProvider extends ServiceProvider
             $output = '';
             foreach ($plugins->getEnabledPlugins() as $name => $config) {
                 if ($js = $plugins->getJs($name)) {
-                    $output .= "<script src=\"".asset($js)."\"></script>".PHP_EOL;
+                    $output .= '<script src="'.asset($js).'"></script>'.PHP_EOL;
                 }
             }
+
             return $output;
         });
     }
