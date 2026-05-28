@@ -3,6 +3,7 @@
 namespace ColorlibHQ\AdminLte;
 
 use ColorlibHQ\AdminLte\Console\InstallCommand;
+use ColorlibHQ\AdminLte\Console\MakeAuthCommand;
 use ColorlibHQ\AdminLte\Console\ScaffoldCommand;
 use ColorlibHQ\AdminLte\Console\StatusCommand;
 use ColorlibHQ\AdminLte\Plugins\PluginManager;
@@ -179,6 +180,7 @@ class AdminLteServiceProvider extends ServiceProvider
             InstallCommand::class,
             StatusCommand::class,
             ScaffoldCommand::class,
+            MakeAuthCommand::class,
         ]);
     }
 }
