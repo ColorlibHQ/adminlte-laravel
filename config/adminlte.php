@@ -102,6 +102,7 @@ return [
     'layout_fixed_navbar' => true,    // .fixed-header
     'layout_fixed_footer' => null,    // .fixed-footer
     'layout_dark_mode' => null,       // null = respect system / user toggle
+    'layout_rtl' => false,            // Enable right-to-left layout
 
     'sidebar_breakpoint' => 'lg',     // sidebar-expand-{breakpoint}
     'sidebar_mini' => true,           // .sidebar-mini

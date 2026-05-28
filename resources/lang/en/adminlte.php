@@ -33,4 +33,18 @@ return [
     'select_date' => 'Select date',
     'select_option' => 'Select an option',
     'enter_text' => 'Enter text...',
+
+    // General
+    'no_items' => 'No items',
+
+    // Navbar dropdowns
+    'notifications' => 'Notifications',
+    'no_notifications' => 'No notifications',
+    'see_all_notifications' => 'See all notifications',
+    'messages' => 'Messages',
+    'no_messages' => 'No messages',
+    'see_all_messages' => 'See all messages',
+    'tasks' => 'Tasks',
+    'no_tasks' => 'No tasks',
+    'see_all_tasks' => 'See all tasks',
 ];

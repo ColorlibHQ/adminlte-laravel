@@ -29,4 +29,16 @@ return [
     'select_date' => 'Seleccionar fecha',
     'select_option' => 'Seleccionar opción',
     'enter_text' => 'Ingrese el texto...',
+
+    'no_items' => 'Sin elementos',
+
+    'notifications' => 'Notificaciones',
+    'no_notifications' => 'Sin notificaciones',
+    'see_all_notifications' => 'Ver todas las notificaciones',
+    'messages' => 'Mensajes',
+    'no_messages' => 'Sin mensajes',
+    'see_all_messages' => 'Ver todos los mensajes',
+    'tasks' => 'Tareas',
+    'no_tasks' => 'Sin tareas',
+    'see_all_tasks' => 'Ver todas las tareas',
 ];

@@ -2,6 +2,7 @@
     $layoutFixed = config('adminlte.layout_fixed_sidebar');
     $fixedHeader = config('adminlte.layout_fixed_navbar');
     $fixedFooter = config('adminlte.layout_fixed_footer');
+    $rtl = config('adminlte.layout_rtl', false);
     $sidebarBreakpoint = config('adminlte.sidebar_breakpoint', 'lg');
     $sidebarMini = config('adminlte.sidebar_mini');
     $sidebarCollapse = config('adminlte.sidebar_collapse');
@@ -22,7 +23,9 @@
     $title = trim($titlePrefix.' '.($title ?? config('adminlte.title', 'AdminLTE 4')).' '.$titlePostfix);
 @endphp
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" @isset($darkMode) data-bs-theme="dark" @endisset>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}"
+      dir="{{ $rtl ? 'rtl' : 'ltr' }}"
+      @isset($darkMode) data-bs-theme="dark" @endisset>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
