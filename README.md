@@ -9,12 +9,20 @@ This package gives you a config-driven sidebar menu, ready-to-extend Blade layou
 
 **What's included:**
 
-- 21 Blade components (cards, widgets, forms, modals, navbar dropdowns)
-- Multi-language support (i18n) with English, German, Spanish translations
-- Plugin system for lazy-loading JS libraries (Flatpickr, Tom Select, Tabulator, Quill)
+- **40 Blade components** (cards, widgets, forms, charts, calendars, kanban boards, modals)
+  - Widget components: Card, Small Box, Info Box, Alert, Callout, Progress, Timeline, Ratings, Direct Chat, Toast, Tabs, Accordion, Breadcrumb, and more
+  - Form components: Input, Select, Textarea, Switches, Color pickers, Flatpickr, Tom Select
+  - Tool components: Modals, Datatables, Rich editor, **Charts (ApexCharts)**, **Vector Map**, **Calendar**, **Kanban**, **Wizard**
+- **Multi-language support** (i18n) with 9 locales: English, German, Spanish, French, Italian, Portuguese, Russian, Chinese, Japanese
+- **Plugin system** for lazy-loading JS libraries (Flatpickr, Tom Select, Tabulator, Quill, **ApexCharts**, **jsVectorMap**, **FullCalendar**, **SortableJS**)
+- **Scaffolding system** (`adminlte:scaffold`) with full DB backing for 11 sections: mailbox, chat, kanban, calendar, projects, file-manager, profile, settings, invoice, pricing, faq
+- **Auth scaffolding** (`adminlte:make-auth`) for plain/Breeze/Fortify integration
+- **Theme generator** demo page for color customization
+- **Dashboard variants** with live ApexCharts visualizations
 - RTL layout support
 - Config-driven sidebar menu with permissions, active states, badges
-- Auth views (login, register, forgot password, reset password)
+- Auth views (login, register, login-v2, register-v2, lockscreen, forgot password, reset password)
+- Error pages (404, 500, maintenance)
 - Vite-first asset pipeline
 
 > The legacy [`jeroennoten/laravel-adminlte`](https://github.com/jeroennoten/Laravel-AdminLTE) targets AdminLTE 3 (Bootstrap 4 + jQuery). This package is the AdminLTE 4 successor: Bootstrap 5.3, vanilla JS, Laravel 13, PHP 8.3+, Vite instead of precompiled assets.
@@ -115,24 +123,63 @@ Supported keys: `header`, `text`, `route`, `url`, `icon`, `icon_color`, `label`,
 
 ## Components
 
+### Widget Components
+| Component | Tag | Notes |
+|---|---|---|
+| Card | `<x-adminlte-card>` | Collapsible, removable, with icon & theme |
+| Small Box | `<x-adminlte-small-box>` | Stat box with icon & URL |
+| Info Box | `<x-adminlte-info-box>` | Info box with progress bar |
+| Alert | `<x-adminlte-alert>` | Dismissible alerts (info, success, warning, danger) |
+| Callout | `<x-adminlte-callout>` | Highlight box with icon & theme |
+| Progress | `<x-adminlte-progress>` | Progress bar with label & percentage |
+| Timeline | `<x-adminlte-timeline>` | Event timeline |
+| Progress Group | `<x-adminlte-progress-group>` | Group of progress bars |
+| Description Block | `<x-adminlte-description-block>` | Description with title & icon |
+| Profile Card | `<x-adminlte-profile-card>` | User profile card with stats |
+| Ratings | `<x-adminlte-ratings>` | Star rating display |
+| Direct Chat | `<x-adminlte-direct-chat>` | Chat widget with flip-pane |
+| Toast | `<x-adminlte-toast>` | Bootstrap 5 toast notification |
+| Tabs | `<x-adminlte-tabs>` | Tab navigation wrapper |
+| Tab | `<x-adminlte-tab>` | Individual tab pane |
+| Accordion | `<x-adminlte-accordion>` | Accordion wrapper |
+| Accordion Item | `<x-adminlte-accordion-item>` | Accordion panel |
+| Breadcrumb | `<x-adminlte-breadcrumb>` | Bootstrap breadcrumb navigation |
+
+### Form Components
+| Component | Tag | Notes |
+|---|---|---|
+| Input | `<x-adminlte-input>` | Text input with validation |
+| Input (Flatpickr) | `<x-adminlte-input-flatpickr>` | Date/time picker |
+| Input (Tom Select) | `<x-adminlte-input-tom-select>` | Searchable select dropdown |
+| Input (Switch) | `<x-adminlte-input-switch>` | Toggle switch |
+| Input (Color) | `<x-adminlte-input-color>` | Color picker |
+| Input (File) | `<x-adminlte-input-file>` | File upload |
+| Textarea | `<x-adminlte-textarea>` | Multi-line text input |
+| Select | `<x-adminlte-select>` | Native select dropdown |
+| Button | `<x-adminlte-button>` | Themed button (primary, success, danger, etc.) |
+
+### Tool Components
+| Component | Tag | Notes |
+|---|---|---|
+| Chart | `<x-adminlte-chart>` | ApexCharts (area, line, bar, donut, pie, sparkline) |
+| Vector Map | `<x-adminlte-vector-map>` | jsVectorMap world/region maps |
+| Calendar | `<x-adminlte-calendar>` | FullCalendar 6 event calendar |
+| Kanban | `<x-adminlte-kanban>` | SortableJS drag-to-reorder board |
+| Sortable | `<x-adminlte-sortable>` | Generic SortableJS wrapper |
+| Wizard | `<x-adminlte-wizard>` | Multi-step form wizard |
+| Wizard Step | `<x-adminlte-wizard-step>` | Individual wizard step |
+| Modal | `<x-adminlte-modal>` | Bootstrap 5 modal dialog |
+| Datatable | `<x-adminlte-datatable>` | Tabulator data table |
+| Editor | `<x-adminlte-editor>` | Quill rich text editor |
+
+### Navbar Components
 | Component | Tag |
 |---|---|
-| Card | `<x-adminlte-card>` |
-| Small box (stat) | `<x-adminlte-small-box>` |
-| Info box | `<x-adminlte-info-box>` |
-| Alert | `<x-adminlte-alert>` |
-| Callout | `<x-adminlte-callout>` |
-| Progress bar | `<x-adminlte-progress>` |
-| Input | `<x-adminlte-input>` |
-| Input (switch) | `<x-adminlte-input-switch>` |
-| Input (color) | `<x-adminlte-input-color>` |
-| Input (file) | `<x-adminlte-input-file>` |
-| Textarea | `<x-adminlte-textarea>` |
-| Select | `<x-adminlte-select>` |
-| Button | `<x-adminlte-button>` |
-| Modal | `<x-adminlte-modal>` |
+| Notifications Dropdown | `<x-adminlte-nav-notifications>` |
+| Messages Dropdown | `<x-adminlte-nav-messages>` |
+| Tasks Dropdown | `<x-adminlte-nav-tasks>` |
 
-Form components auto-display validation errors from the session and repopulate with `old()` input.
+Form components auto-display validation errors from the session and repopulate with `old()` input. Chart, map, and calendar components auto-enable their plugins.
 
 ## Customization
 

@@ -7,6 +7,54 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-05-28
+
+### Added (Milestone 4: RTL, Locales, Preloader & Polish)
+
+- 6 new locale files: French, Italian, Portuguese (Brazil), Russian, Chinese, Japanese
+- Core translation keys for all new components and features across 9 languages
+- Preloader partial with AdminLTE animation
+- Full RTL (right-to-left) layout support via config
+- Theme generator demo page with live color picker
+
+## [0.6.0] - 2026-05-28
+
+### Added (Milestone 3: Auth Scaffolding & Advanced Integration)
+
+- `adminlte:make-auth` command for plain/Breeze/Fortify integration
+- Theme generator page for visual customization and config output
+- Enhanced install command with more control
+
+## [0.5.0] - 2026-05-28
+
+### Added (Milestone 2: Scaffolding System)
+
+- `adminlte:scaffold` command with interactive menu and `--all` / `--force` / `--seed` flags
+- Scaffolding for 11 sections: mailbox, chat, kanban, calendar, projects, file-manager, profile, settings, invoice, pricing, faq
+- Page view stubs for each section ready for customization
+- Dashboard v2 (sales chart, top products) and v3 (traffic donut, server stats)
+- Both dashboards showcase ApexCharts visualization capabilities
+
+## [0.4.0] - 2026-05-28
+
+### Added (Milestone 1: Component Parity)
+
+- 7 new Widget components: DirectChat, Toast, Tabs, Tab, Accordion, AccordionItem, Breadcrumb
+- 7 new Tool components: Chart (ApexCharts), VectorMap (jsVectorMap), Calendar (FullCalendar), Kanban (SortableJS), Sortable, Wizard, WizardStep
+- 4 new plugin configurations: ApexCharts, jsVectorMap, FullCalendar, SortableJS
+- 3 new auth views: lockscreen, login-v2 (floating labels), register-v2 (floating labels)
+- 3 new error pages: 404, 500, maintenance on dedicated errors-master layout
+- Config keys: `footer_left`, `footer_right`, `preloader`, `control_sidebar`, `control_sidebar_theme`
+- Preloader and control sidebar partials
+- Master view: `@pluginStyles` and `@pluginScripts` directives for auto-asset injection
+- Footer: config-driven left/right text rendering
+- 30+ new translation keys across English, German, Spanish
+
+### Changed
+
+- All 14 new components registered with auto-plugin enablement
+- Component registration now includes 40 total Blade components (up from 26)
+
 ## [0.3.0] - 2026-05-28
 
 ### Added
