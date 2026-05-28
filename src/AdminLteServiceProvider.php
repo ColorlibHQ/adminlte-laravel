@@ -3,6 +3,7 @@
 namespace ColorlibHQ\AdminLte;
 
 use ColorlibHQ\AdminLte\Console\InstallCommand;
+use ColorlibHQ\AdminLte\Console\ScaffoldCommand;
 use ColorlibHQ\AdminLte\Console\StatusCommand;
 use ColorlibHQ\AdminLte\Plugins\PluginManager;
 use ColorlibHQ\AdminLte\View\Components;
@@ -177,6 +178,7 @@ class AdminLteServiceProvider extends ServiceProvider
         $this->commands([
             InstallCommand::class,
             StatusCommand::class,
+            ScaffoldCommand::class,
         ]);
     }
 }
