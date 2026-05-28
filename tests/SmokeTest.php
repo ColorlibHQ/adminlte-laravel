@@ -91,4 +91,41 @@ class SmokeTest extends TestCase
         $html->assertSee('Are you sure?');
         $html->assertSee('Body');
     }
+
+    public function test_input_switch_renders_checked(): void
+    {
+        $html = $this->blade(
+            '<x-adminlte-input-switch name="active" label="Active" :checked="true" />'
+        );
+
+        $html->assertSee('form-check form-switch', false);
+        $html->assertSee('type="checkbox"', false);
+        $html->assertSee('name="active"', false);
+        $html->assertSee('checked', false);
+        $html->assertSee('Active');
+    }
+
+    public function test_input_color_uses_default(): void
+    {
+        $html = $this->blade(
+            '<x-adminlte-input-color name="brand" label="Brand" default="#6610f2" />'
+        );
+
+        $html->assertSee('form-control-color', false);
+        $html->assertSee('type="color"', false);
+        $html->assertSee('#6610f2', false);
+        $html->assertSee('Brand');
+    }
+
+    public function test_input_file_multiple_uses_array_name(): void
+    {
+        $html = $this->blade(
+            '<x-adminlte-input-file name="docs" label="Documents" multiple />'
+        );
+
+        $html->assertSee('type="file"', false);
+        $html->assertSee('name="docs[]"', false);
+        $html->assertSee('multiple', false);
+        $html->assertSee('Documents');
+    }
 }

@@ -114,9 +114,13 @@ Supported keys: `header`, `text`, `route`, `url`, `icon`, `icon_color`, `label`,
 | Callout | `<x-adminlte-callout>` |
 | Progress bar | `<x-adminlte-progress>` |
 | Input | `<x-adminlte-input>` |
+| Input (switch) | `<x-adminlte-input-switch>` |
+| Input (color) | `<x-adminlte-input-color>` |
+| Input (file) | `<x-adminlte-input-file>` |
 | Textarea | `<x-adminlte-textarea>` |
 | Select | `<x-adminlte-select>` |
 | Button | `<x-adminlte-button>` |
+| Modal | `<x-adminlte-modal>` |
 
 Form components auto-display validation errors from the session and repopulate with `old()` input.
 
