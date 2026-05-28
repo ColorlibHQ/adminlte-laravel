@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-05-28
+
+### Added
+
+- Multi-language support with lang files for English, German, Spanish (+ 7 stubs)
+- Publish tag `adminlte-lang` for user customization
+- All auth views and components use `__('adminlte.key')` pattern for translations
+- Config-driven lazy-loading of optional JavaScript libraries via PluginManager
+- Blade directives `@pluginStyles` / `@pluginScripts` for head/body injection
+- 5 new widget components: timeline, progress-group, description-block, profile-card, ratings
+- 4 plugin-enabled form components: input-flatpickr, input-tom-select, datatable, editor
+- 3 navbar dropdown components: nav-notifications, nav-messages, nav-tasks
+- RTL (right-to-left) layout support via `layout_rtl` config
+- Expanded test coverage for plugin system, widget components, menu filters
+- PHPStan static analysis (level 8) via Larastan in CI
+- Demo dashboard view showcasing all components
+
+### Changed
+
+- Auth views migrated to use `__('adminlte.key')` pattern (from generic `__()`)
+
+## [0.2.0] - 2026-05-28
+
 ### Added
 
 - Three more Bootstrap-native form components (no external JS required):

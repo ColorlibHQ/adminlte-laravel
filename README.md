@@ -5,9 +5,19 @@
 
 Official [AdminLTE 4](https://adminlte.io) integration for Laravel — Bootstrap 5.3, vanilla JS (no jQuery), Vite-ready.
 
-This package gives you a config-driven sidebar menu, ready-to-extend Blade layouts, and a set of AdminLTE Blade components (`<x-adminlte-card>`, `<x-adminlte-small-box>`, …) on top of the [`admin-lte`](https://www.npmjs.com/package/admin-lte) npm package.
+This package gives you a config-driven sidebar menu, ready-to-extend Blade layouts, and a set of AdminLTE Blade components on top of the [`admin-lte`](https://www.npmjs.com/package/admin-lte) npm package.
 
-> The legacy [`jeroennoten/laravel-adminlte`](https://github.com/jeroennoten/Laravel-AdminLTE) targets AdminLTE 3 (Bootstrap 4 + jQuery). This package is the AdminLTE 4 successor: Bootstrap 5.3, vanilla TS plugins, Laravel 13, PHP 8.3+, Vite instead of precompiled assets.
+**What's included:**
+
+- 21 Blade components (cards, widgets, forms, modals, navbar dropdowns)
+- Multi-language support (i18n) with English, German, Spanish translations
+- Plugin system for lazy-loading JS libraries (Flatpickr, Tom Select, Tabulator, Quill)
+- RTL layout support
+- Config-driven sidebar menu with permissions, active states, badges
+- Auth views (login, register, forgot password, reset password)
+- Vite-first asset pipeline
+
+> The legacy [`jeroennoten/laravel-adminlte`](https://github.com/jeroennoten/Laravel-AdminLTE) targets AdminLTE 3 (Bootstrap 4 + jQuery). This package is the AdminLTE 4 successor: Bootstrap 5.3, vanilla JS, Laravel 13, PHP 8.3+, Vite instead of precompiled assets.
 
 ## Requirements
 
