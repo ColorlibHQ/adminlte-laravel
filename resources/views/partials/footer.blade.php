@@ -1,11 +1,8 @@
 <footer class="app-footer">
     <div class="float-end d-none d-sm-inline">
-        @yield('footer_right', 'Version 4.0.0')
+        {!! config('adminlte.footer_right', 'Version <b>4.0</b>') !!}
     </div>
     <strong>
-        @yield('footer_left')
-        &copy; {{ now()->year }}
-        <a href="https://adminlte.io" target="_blank" rel="noopener">AdminLTE.io</a>.
+        {!! config('adminlte.footer_left') !!}
     </strong>
-    All rights reserved.
 </footer>

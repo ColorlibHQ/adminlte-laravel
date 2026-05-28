@@ -104,6 +104,18 @@ return [
     'layout_dark_mode' => null,       // null = respect system / user toggle
     'layout_rtl' => false,            // Enable right-to-left layout
 
+    /*
+    |--------------------------------------------------------------------------
+    | Footer & Preloader
+    |--------------------------------------------------------------------------
+    */
+
+    'footer_left' => '&copy; ' . date('Y') . ' <a href="https://adminlte.io">AdminLTE</a>.',
+    'footer_right' => 'Version <b>4.0</b>',
+    'preloader' => false,
+    'control_sidebar' => false,
+    'control_sidebar_theme' => 'dark',
+
     'sidebar_breakpoint' => 'lg',     // sidebar-expand-{breakpoint}
     'sidebar_mini' => true,           // .sidebar-mini
     'sidebar_collapse' => false,      // start collapsed
@@ -265,6 +277,23 @@ return [
             'enabled' => false,
             'css' => 'vendor/quill/quill.snow.css',
             'js' => 'vendor/quill/quill.min.js',
+        ],
+        'apexcharts' => [
+            'enabled' => false,
+            'js' => 'vendor/apexcharts/apexcharts.min.js',
+        ],
+        'jsvectormap' => [
+            'enabled' => false,
+            'css' => 'vendor/jsvectormap/jsvectormap.min.css',
+            'js' => 'vendor/jsvectormap/jsvectormap.min.js',
+        ],
+        'fullcalendar' => [
+            'enabled' => false,
+            'js' => 'vendor/fullcalendar/index.global.min.js',
+        ],
+        'sortablejs' => [
+            'enabled' => false,
+            'js' => 'vendor/sortablejs/sortablejs.min.js',
         ],
     ],
 

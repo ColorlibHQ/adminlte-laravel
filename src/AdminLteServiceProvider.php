@@ -32,6 +32,13 @@ class AdminLteServiceProvider extends ServiceProvider
         'nav-notifications' => Components\Widget\NavNotifications::class,
         'nav-messages' => Components\Widget\NavMessages::class,
         'nav-tasks' => Components\Widget\NavTasks::class,
+        'direct-chat' => Components\Widget\DirectChat::class,
+        'toast' => Components\Widget\Toast::class,
+        'tabs' => Components\Widget\Tabs::class,
+        'tab' => Components\Widget\Tab::class,
+        'accordion' => Components\Widget\Accordion::class,
+        'accordion-item' => Components\Widget\AccordionItem::class,
+        'breadcrumb' => Components\Widget\Breadcrumb::class,
         'input' => Components\Form\Input::class,
         'input-switch' => Components\Form\InputSwitch::class,
         'input-color' => Components\Form\InputColor::class,
@@ -44,6 +51,13 @@ class AdminLteServiceProvider extends ServiceProvider
         'modal' => Components\Tool\Modal::class,
         'datatable' => Components\Tool\Datatable::class,
         'editor' => Components\Tool\Editor::class,
+        'chart' => Components\Tool\Chart::class,
+        'vector-map' => Components\Tool\VectorMap::class,
+        'calendar' => Components\Tool\Calendar::class,
+        'kanban' => Components\Tool\Kanban::class,
+        'sortable' => Components\Tool\Sortable::class,
+        'wizard' => Components\Tool\Wizard::class,
+        'wizard-step' => Components\Tool\WizardStep::class,
     ];
 
     /**

@@ -45,8 +45,11 @@
 
     @stack('css')
     @yield('css')
+    @pluginStyles
 </head>
 <body class="{{ $bodyClasses }}">
+    @include('adminlte::partials.preloader')
+
     <div class="app-wrapper">
         @include('adminlte::partials.navbar')
         @include('adminlte::partials.sidebar')
@@ -68,8 +71,10 @@
         </main>
 
         @include('adminlte::partials.footer')
+        @include('adminlte::partials.control-sidebar')
     </div>
 
+    @pluginScripts
     @stack('js')
     @yield('js')
 </body>
