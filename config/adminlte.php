@@ -234,4 +234,37 @@ return [
         SearchFilter::class,
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Plugins
+    |--------------------------------------------------------------------------
+    |
+    | Optional JavaScript libraries integrated with AdminLTE 4. Disable plugins
+    | you don't use to avoid loading unnecessary assets.
+    |
+    */
+
+    'plugins' => [
+        'flatpickr' => [
+            'enabled' => false,
+            'css' => 'vendor/flatpickr/flatpickr.min.css',
+            'js' => 'vendor/flatpickr/flatpickr.min.js',
+        ],
+        'tom_select' => [
+            'enabled' => false,
+            'css' => 'vendor/tom-select/tom-select.bootstrap5.min.css',
+            'js' => 'vendor/tom-select/tom-select.complete.min.js',
+        ],
+        'tabulator' => [
+            'enabled' => false,
+            'css' => 'vendor/tabulator-tables/tabulator.min.css',
+            'js' => 'vendor/tabulator-tables/tabulator.min.js',
+        ],
+        'quill' => [
+            'enabled' => false,
+            'css' => 'vendor/quill/quill.snow.css',
+            'js' => 'vendor/quill/quill.min.js',
+        ],
+    ],
+
 ];

@@ -4,6 +4,7 @@ namespace ColorlibHQ\AdminLte;
 
 use ColorlibHQ\AdminLte\Console\InstallCommand;
 use ColorlibHQ\AdminLte\Console\StatusCommand;
+use ColorlibHQ\AdminLte\Plugins\PluginManager;
 use ColorlibHQ\AdminLte\View\Components;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
@@ -27,10 +28,14 @@ class AdminLteServiceProvider extends ServiceProvider
         'input-switch' => Components\Form\InputSwitch::class,
         'input-color' => Components\Form\InputColor::class,
         'input-file' => Components\Form\InputFile::class,
+        'input-flatpickr' => Components\Form\InputFlatpickr::class,
+        'input-tom-select' => Components\Form\InputTomSelect::class,
         'textarea' => Components\Form\Textarea::class,
         'select' => Components\Form\Select::class,
         'button' => Components\Form\Button::class,
         'modal' => Components\Tool\Modal::class,
+        'datatable' => Components\Tool\Datatable::class,
+        'editor' => Components\Tool\Editor::class,
     ];
 
     /**
@@ -51,6 +56,11 @@ class AdminLteServiceProvider extends ServiceProvider
         });
 
         $this->app->alias(AdminLte::class, 'adminlte');
+
+        // Plugin manager singleton for managing optional library assets.
+        $this->app->singleton(PluginManager::class, function ($app) {
+            return new PluginManager($app['config']['adminlte.plugins'] ?? []);
+        });
     }
 
     /**
@@ -59,7 +69,9 @@ class AdminLteServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'adminlte');
+        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'adminlte');
         $this->registerComponents();
+        $this->registerBladeDirectives();
         $this->registerPublishing();
         $this->registerCommands();
     }
@@ -72,6 +84,34 @@ class AdminLteServiceProvider extends ServiceProvider
         foreach ($this->components as $alias => $class) {
             Blade::component($class, 'adminlte-'.$alias);
         }
+    }
+
+    /**
+     * Register Blade directives for plugin management.
+     */
+    private function registerBladeDirectives(): void
+    {
+        $plugins = $this->app->make(PluginManager::class);
+
+        Blade::directive('pluginStyles', function () use ($plugins) {
+            $output = '';
+            foreach ($plugins->getEnabledPlugins() as $name => $config) {
+                if ($css = $plugins->getCss($name)) {
+                    $output .= "<link rel=\"stylesheet\" href=\"".asset($css)."\">".PHP_EOL;
+                }
+            }
+            return $output;
+        });
+
+        Blade::directive('pluginScripts', function () use ($plugins) {
+            $output = '';
+            foreach ($plugins->getEnabledPlugins() as $name => $config) {
+                if ($js = $plugins->getJs($name)) {
+                    $output .= "<script src=\"".asset($js)."\"></script>".PHP_EOL;
+                }
+            }
+            return $output;
+        });
     }
 
     /**
@@ -95,6 +135,10 @@ class AdminLteServiceProvider extends ServiceProvider
             __DIR__.'/../resources/stubs/app.js.stub' => resource_path('js/adminlte.js'),
             __DIR__.'/../resources/stubs/app.css.stub' => resource_path('css/adminlte.css'),
         ], 'adminlte-assets');
+
+        $this->publishes([
+            __DIR__.'/../resources/lang' => lang_path('vendor/adminlte'),
+        ], 'adminlte-lang');
     }
 
     /**
