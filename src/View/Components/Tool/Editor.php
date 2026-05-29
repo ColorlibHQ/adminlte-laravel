@@ -10,6 +10,9 @@ class Editor extends Component
 {
     public string $id;
 
+    /**
+     * @param  array<string, mixed>  $quillOptions
+     */
     public function __construct(
         public string $name,
         public ?string $label = null,
@@ -55,7 +58,7 @@ class Editor extends Component
             'placeholder' => $this->placeholder ?? __('adminlte.enter_text'),
         ], $this->quillOptions);
 
-        return json_encode($config);
+        return json_encode($config) ?: '{}';
     }
 
     public function render(): View

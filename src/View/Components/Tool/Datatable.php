@@ -10,6 +10,11 @@ class Datatable extends Component
 {
     public string $id;
 
+    /**
+     * @param  array<int, mixed>  $columns
+     * @param  array<int, mixed>  $data
+     * @param  array<string, mixed>  $tabulatorOptions
+     */
     public function __construct(
         ?string $id = null,
         public array $columns = [],
@@ -34,7 +39,7 @@ class Datatable extends Component
             $config['data'] = $this->data;
         }
 
-        return json_encode(array_merge($config, $this->tabulatorOptions));
+        return json_encode(array_merge($config, $this->tabulatorOptions)) ?: '{}';
     }
 
     public function render(): View

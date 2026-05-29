@@ -10,6 +10,10 @@ class Calendar extends Component
 {
     public string $id;
 
+    /**
+     * @param  array<int, mixed>|string  $events
+     * @param  array<string, mixed>  $options
+     */
     public function __construct(
         public array|string $events = [],
         public array $options = [],
@@ -28,7 +32,7 @@ class Calendar extends Component
             'events' => is_array($this->events) ? $this->events : $this->events,
         ], $this->options);
 
-        return json_encode($config);
+        return json_encode($config) ?: '{}';
     }
 
     public function render(): View

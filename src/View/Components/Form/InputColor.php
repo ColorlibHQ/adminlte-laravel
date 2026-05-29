@@ -27,7 +27,9 @@ class InputColor extends Component
 
     public function resolvedValue(): string
     {
-        return old($this->dotName(), $this->default);
+        $value = old($this->dotName(), $this->default);
+
+        return is_string($value) ? $value : $this->default;
     }
 
     public function hasError(): bool

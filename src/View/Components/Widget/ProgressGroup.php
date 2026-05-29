@@ -17,7 +17,7 @@ class ProgressGroup extends Component
 
     public function percentage(): int
     {
-        return round(($this->value / ($this->max ?? 100)) * 100);
+        return (int) round(($this->value / ($this->max ?? 100)) * 100);
     }
 
     public function render(): View

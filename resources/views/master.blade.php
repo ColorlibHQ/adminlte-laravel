@@ -40,6 +40,11 @@
     {{-- Compiled AdminLTE + Bootstrap from your Vite pipeline --}}
     @vite(['resources/css/adminlte.css', 'resources/js/adminlte.js'])
 
+    @if ($rtl)
+        {{-- AdminLTE ships a prebuilt RTL stylesheet; published by adminlte:install. --}}
+        <link rel="stylesheet" href="{{ asset('vendor/adminlte/css/adminlte.rtl.min.css') }}">
+    @endif
+
     @stack('css')
     @yield('css')
     @pluginStyles

@@ -28,7 +28,7 @@ class InputSwitch extends Component
 
     public function isChecked(): bool
     {
-        return (bool) old($this->dotName(), $this->checked);
+        return (bool) old($this->dotName(), $this->checked ? '1' : '');
     }
 
     public function hasError(): bool

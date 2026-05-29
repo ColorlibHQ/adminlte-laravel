@@ -4,10 +4,19 @@ namespace ColorlibHQ\AdminLte\Plugins;
 
 class PluginManager
 {
+    /**
+     * @var array<string, array<string, mixed>>
+     */
     protected array $config;
 
+    /**
+     * @var array<string, bool>
+     */
     protected array $enabled = [];
 
+    /**
+     * @param  array<string, array<string, mixed>>  $config
+     */
     public function __construct(array $config = [])
     {
         $this->config = $config;
@@ -61,6 +70,9 @@ class PluginManager
         return $this->config[$plugin]['js'] ?? null;
     }
 
+    /**
+     * @return array<string, array<string, mixed>>
+     */
     public function getEnabledPlugins(): array
     {
         $enabled = [];

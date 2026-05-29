@@ -8,6 +8,9 @@ use Illuminate\View\View;
 
 class Sortable extends Component
 {
+    /**
+     * @param  array<string, mixed>  $options
+     */
     public function __construct(
         public string $group = 'shared',
         public array $options = [],

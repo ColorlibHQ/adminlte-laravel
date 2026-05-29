@@ -8,6 +8,10 @@ use Illuminate\View\View;
 
 class Kanban extends Component
 {
+    /**
+     * @param  array<int, mixed>  $lanes
+     * @param  array<string, mixed>  $options
+     */
     public function __construct(
         public array $lanes = [],
         public array $options = [],

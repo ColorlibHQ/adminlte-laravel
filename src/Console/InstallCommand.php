@@ -128,6 +128,8 @@ class InstallCommand extends Command
             'jsvectormap/dist/jsvectormap.min.js' => 'jsvectormap/jsvectormap.min.js',
             'fullcalendar/index.global.min.js' => 'fullcalendar/index.global.min.js',
             'sortablejs/Sortable.min.js' => 'sortablejs/sortablejs.min.js',
+            // RTL stylesheet (loaded by master.blade when layout_rtl is enabled).
+            'admin-lte/dist/css/adminlte.rtl.min.css' => 'adminlte/css/adminlte.rtl.min.css',
         ];
 
         $this->components->task('Copying vendor plugin files', function () use ($vendorFiles) {

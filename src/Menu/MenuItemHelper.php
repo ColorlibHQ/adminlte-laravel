@@ -9,6 +9,8 @@ class MenuItemHelper
 {
     /**
      * Determine whether the item is a section header.
+     *
+     * @param  array<string, mixed>  $item
      */
     public static function isHeader(array $item): bool
     {
@@ -17,6 +19,8 @@ class MenuItemHelper
 
     /**
      * Determine whether the item is a link (has text + a destination).
+     *
+     * @param  array<string, mixed>  $item
      */
     public static function isLink(array $item): bool
     {
@@ -25,6 +29,8 @@ class MenuItemHelper
 
     /**
      * Determine whether the item is a search box.
+     *
+     * @param  array<string, mixed>  $item
      */
     public static function isSearch(array $item): bool
     {
@@ -33,6 +39,8 @@ class MenuItemHelper
 
     /**
      * Determine whether the item has a submenu (treeview).
+     *
+     * @param  array<string, mixed>  $item
      */
     public static function isSubmenu(array $item): bool
     {
@@ -41,6 +49,8 @@ class MenuItemHelper
 
     /**
      * Should the item appear in the sidebar? (Everything not flagged topnav-only.)
+     *
+     * @param  array<string, mixed>  $item
      */
     public static function isSidebarItem(array $item): bool
     {
@@ -49,6 +59,8 @@ class MenuItemHelper
 
     /**
      * Should the item appear in the top navigation bar?
+     *
+     * @param  array<string, mixed>  $item
      */
     public static function isTopnavItem(array $item): bool
     {
@@ -57,6 +69,8 @@ class MenuItemHelper
 
     /**
      * Is this item, or any of its descendants, currently active?
+     *
+     * @param  array<string, mixed>  $item
      */
     public static function isActive(array $item): bool
     {

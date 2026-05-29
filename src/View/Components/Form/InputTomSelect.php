@@ -13,6 +13,7 @@ class InputTomSelect extends Component
     public function __construct(
         public string $name,
         public ?string $label = null,
+        /** @var array<int|string, mixed> */
         public array $options = [],
         public mixed $value = null,
         ?string $id = null,
@@ -22,6 +23,7 @@ class InputTomSelect extends Component
         public ?string $igroupSize = null,
         public ?string $fgroupClass = null,
         public bool $disableFeedback = false,
+        /** @var array<string, mixed> */
         public array $tomSelectOptions = [],
     ) {
         $this->id = $id ?? $name;
@@ -64,7 +66,7 @@ class InputTomSelect extends Component
             'placeholder' => $this->placeholder ?? __('adminlte.select_option'),
         ], $this->tomSelectOptions);
 
-        return json_encode($config);
+        return json_encode($config) ?: '{}';
     }
 
     public function render(): View

@@ -20,6 +20,7 @@ class InputFlatpickr extends Component
         public ?string $fgroupClass = null,
         public bool $disableFeedback = false,
         public ?string $placeholder = null,
+        /** @var array<string, mixed> */
         public array $options = [],
     ) {
         $this->id = $id ?? $name;
@@ -65,7 +66,7 @@ class InputFlatpickr extends Component
             $config['mode'] = 'single';
         }
 
-        return json_encode(array_merge($config, $this->options));
+        return json_encode(array_merge($config, $this->options)) ?: '{}';
     }
 
     public function render(): View

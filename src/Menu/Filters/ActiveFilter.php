@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\Request;
  */
 class ActiveFilter implements FilterInterface
 {
+    /**
+     * @param  array<string, mixed>  $item
+     * @return array<string, mixed>|null
+     */
     public function transform(array $item): ?array
     {
         if (isset($item['submenu'])) {
@@ -46,6 +50,9 @@ class ActiveFilter implements FilterInterface
         return $item;
     }
 
+    /**
+     * @param  array<int, mixed>  $patterns
+     */
     private function matchesAny(array $patterns): bool
     {
         foreach ($patterns as $pattern) {

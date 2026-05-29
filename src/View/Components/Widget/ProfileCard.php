@@ -7,6 +7,9 @@ use Illuminate\View\View;
 
 class ProfileCard extends Component
 {
+    /**
+     * @param  array<int, array<string, mixed>>  $socials
+     */
     public function __construct(
         public string $name,
         public ?string $title = null,

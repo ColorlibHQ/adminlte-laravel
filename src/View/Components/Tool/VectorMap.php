@@ -10,6 +10,11 @@ class VectorMap extends Component
 {
     public string $id;
 
+    /**
+     * @param  array<int, mixed>  $markers
+     * @param  array<int, mixed>  $regions
+     * @param  array<string, mixed>  $options
+     */
     public function __construct(
         public string $map = 'world_merc',
         public array $markers = [],
@@ -30,7 +35,7 @@ class VectorMap extends Component
             'regions' => $this->regions,
         ], $this->options);
 
-        return json_encode($config);
+        return json_encode($config) ?: '{}';
     }
 
     public function render(): View

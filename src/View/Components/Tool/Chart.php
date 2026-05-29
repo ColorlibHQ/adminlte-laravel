@@ -10,6 +10,11 @@ class Chart extends Component
 {
     public string $id;
 
+    /**
+     * @param  array<int, mixed>  $series
+     * @param  array<int, mixed>  $categories
+     * @param  array<string, mixed>  $options
+     */
     public function __construct(
         public string $type = 'area',
         public array $series = [],
@@ -35,7 +40,7 @@ class Chart extends Component
             ],
         ], $this->options);
 
-        return json_encode($config);
+        return json_encode($config) ?: '{}';
     }
 
     public function render(): View

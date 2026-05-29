@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\Gate;
  */
 class GateFilter implements FilterInterface
 {
+    /**
+     * @param  array<string, mixed>  $item
+     * @return array<string, mixed>|null
+     */
     public function transform(array $item): ?array
     {
         if (! isset($item['can'])) {

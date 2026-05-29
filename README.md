@@ -181,6 +181,43 @@ Supported keys: `header`, `text`, `route`, `url`, `icon`, `icon_color`, `label`,
 
 Form components auto-display validation errors from the session and repopulate with `old()` input. Chart, map, and calendar components auto-enable their plugins.
 
+## Scaffolding
+
+Generate complete, working application sections — migrations, models,
+controllers, seeders, routes, and data-driven views — with one command:
+
+```bash
+php artisan adminlte:scaffold              # interactive multi-select
+php artisan adminlte:scaffold mailbox      # a single section
+php artisan adminlte:scaffold --all --seed # everything, with demo data
+```
+
+| Section | What you get |
+|---|---|
+| `mailbox` | `adminlte_messages` table, `Message` model, inbox/read/compose, seeder |
+| `chat` | conversations + pivot + messages, `ChatController`, threaded UI |
+| `kanban` | boards/lanes/cards (+ assignees), SortableJS board, reorder endpoint |
+| `calendar` | `adminlte_events` table, FullCalendar UI + JSON feed (CRUD) |
+| `projects` | `adminlte_projects` table, status/progress, CRUD index |
+| `file-manager` | Laravel Storage browser (upload/delete) — no migration |
+| `profile` / `settings` | auth-user pages wired to the User model |
+| `invoice` / `pricing` / `faq` | ready-to-edit static pages |
+
+Routes are added to an idempotent, auth-protected `/admin` group named
+`adminlte.*`. Run `php artisan migrate` and visit `/admin/{section}`.
+
+### Authentication
+
+```bash
+php artisan adminlte:make-auth                 # plain (default)
+php artisan adminlte:make-auth --type=breeze   # Breeze integration guidance
+php artisan adminlte:make-auth --type=fortify  # Fortify integration guidance
+```
+
+`plain` publishes Login / Register / ForgotPassword / ResetPassword
+controllers and registers the matching routes, all wired to the package's
+`adminlte::auth.*` views.
+
 ## Customization
 
 Everything in `config/adminlte.php` is documented inline — title, logo, layout switches (`layout_fixed_sidebar`, `fixed_navbar`, `sidebar_mini`, …), the color-mode toggle, sidebar theme, and custom element classes.

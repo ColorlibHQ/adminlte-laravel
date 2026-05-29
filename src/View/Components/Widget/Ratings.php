@@ -15,6 +15,9 @@ class Ratings extends Component
         public ?string $class = null,
     ) {}
 
+    /**
+     * @return array<int, array{full: bool, number: int}>
+     */
     public function stars(): array
     {
         $stars = [];

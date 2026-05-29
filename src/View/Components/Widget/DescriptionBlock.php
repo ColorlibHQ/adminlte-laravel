@@ -7,6 +7,9 @@ use Illuminate\View\View;
 
 class DescriptionBlock extends Component
 {
+    /**
+     * @param  array<int, array<string, mixed>>  $items
+     */
     public function __construct(
         public string $title,
         public ?string $text = null,

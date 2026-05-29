@@ -6,3 +6,12 @@ parameters:
         - src
     level: 8
     tmpDir: build/phpstan
+    ignoreErrors:
+        # The package's Blade views are registered under the "adminlte::" namespace
+        # at runtime by AdminLteServiceProvider::boot(). PHPStan does not boot the
+        # provider during analysis, so it cannot resolve the namespace and reports
+        # every view('adminlte::...') call as a non-view-string. These are valid.
+        -
+            identifier: argument.type
+            message: '#Parameter \#1 \$view of function view expects view-string\|null, string given#'
+            path: src/View/Components

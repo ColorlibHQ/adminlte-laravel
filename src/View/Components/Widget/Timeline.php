@@ -7,6 +7,9 @@ use Illuminate\View\View;
 
 class Timeline extends Component
 {
+    /**
+     * @param  array<int, array<string, mixed>>  $items
+     */
     public function __construct(
         public array $items = [],
         public ?string $class = null,

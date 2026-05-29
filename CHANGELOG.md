@@ -7,33 +7,69 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.7.0] - 2026-05-28
+### Fixed (Asset pipeline infrastructure)
+
+- `@pluginStyles` / `@pluginScripts` now resolve enabled plugins at **request
+  time** instead of compile time, so plugins auto-enabled by components (e.g.
+  `<x-adminlte-chart>` enabling ApexCharts) are reliably injected.
+- Removed the duplicate CDN Bootstrap Icons `<link>` from `master.blade.php`
+  (icons now come solely from the Vite bundle, eliminating font conflicts).
+- `adminlte:install` now installs the plugin npm packages (apexcharts,
+  jsvectormap, fullcalendar, sortablejs) and copies their dist files into
+  `public/vendor/*`, resolving the 404s that left charts/maps/calendar/kanban
+  blank.
+- `app.js` stub now instantiates ApexCharts, jsVectorMap, FullCalendar, and
+  SortableJS from the `data-*` attributes the components emit — the missing
+  link that made those components actually render.
+- Tabs/Tab components: panes now push to a Blade stack so they render inside
+  `.tab-content` instead of (invalidly) inside the nav `<ul>`.
+
+### Changed (Quality)
+
+- PHPStan level 8 is now fully clean (0 errors) across `src/`, via accurate
+  generic array typehints, `json_encode(...) ?: '{}'` config fallbacks, and a
+  scoped ignore for the package-namespaced `view()` false-positive.
+
+## [0.7.0] - 2026-05-29
 
 ### Added (Milestone 4: RTL, Locales, Preloader & Polish)
 
-- 6 new locale files: French, Italian, Portuguese (Brazil), Russian, Chinese, Japanese
-- Core translation keys for all new components and features across 9 languages
-- Preloader partial with AdminLTE animation
-- Full RTL (right-to-left) layout support via config
-- Theme generator demo page with live color picker
+- 6 new fully-translated locales: French, Italian, Portuguese (Brazil),
+  Russian, Chinese, Japanese — all 9 locales now cover every key (German and
+  Spanish brought to parity).
+- Prebuilt RTL stylesheet (`adminlte.rtl.min.css`) published by the installer
+  and loaded by `master.blade.php` when `layout_rtl` is enabled.
+- Preloader partial with AdminLTE animation, gated by the `preloader` config.
+- Theme generator demo page with live `data-bs-theme` preview and
+  copy-to-clipboard config output.
 
-## [0.6.0] - 2026-05-28
+## [0.6.0] - 2026-05-29
 
 ### Added (Milestone 3: Auth Scaffolding & Advanced Integration)
 
-- `adminlte:make-auth` command for plain/Breeze/Fortify integration
-- Theme generator page for visual customization and config output
-- Enhanced install command with more control
+- `adminlte:make-auth` command: `--type=plain` publishes working
+  Login/Register/ForgotPassword/ResetPassword controllers (modern Auth facade)
+  and an idempotent auth route group wired to the package's auth views;
+  `--type=breeze` / `--type=fortify` print integration guidance.
+- `adminlte:status` gains checks for the RTL stylesheet, the four plugin
+  vendor files, and scaffolded sections.
+- `adminlte:install --only=lang` publishes language files.
+- Theme generator page for visual customization and config output.
 
-## [0.5.0] - 2026-05-28
+## [0.5.0] - 2026-05-29
 
 ### Added (Milestone 2: Scaffolding System)
 
-- `adminlte:scaffold` command with interactive menu and `--all` / `--force` / `--seed` flags
-- Scaffolding for 11 sections: mailbox, chat, kanban, calendar, projects, file-manager, profile, settings, invoice, pricing, faq
-- Page view stubs for each section ready for customization
-- Dashboard v2 (sales chart, top products) and v3 (traffic donut, server stats)
-- Both dashboards showcase ApexCharts visualization capabilities
+- `adminlte:scaffold` command with interactive multi-select and
+  `--all` / `--force` / `--seed` flags, driven by a declarative section manifest.
+- **Full DB-backed scaffolding** for 5 sections — mailbox, chat, kanban,
+  calendar, projects — each generating real migrations, Eloquent models,
+  controllers, seeders (fake demo data), page views, and routes.
+- Controller-only / static sections: file-manager (Laravel Storage), profile,
+  settings, invoice, pricing, faq.
+- Route registration injects an idempotent, auth-protected `/admin` route group
+  (named `adminlte.*`) into `routes/web.php`.
+- `ScaffoldCommandTest` asserts every manifest-referenced stub exists.
 
 ## [0.4.0] - 2026-05-28
 

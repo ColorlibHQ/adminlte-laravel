@@ -18,17 +18,20 @@ class AdminLte
     /**
      * The raw menu definition from config (plus any runtime additions).
      *
-     * @var array<int, array>
+     * @var array<int, array<string, mixed>>
      */
     protected array $menu = [];
 
     /**
      * The filtered menu, cached per scope after first build.
      *
-     * @var array<string, array>
+     * @var array<int, array<string, mixed>>
      */
     protected array $filteredMenu = [];
 
+    /**
+     * @param  array<int, array<string, mixed>>  $menu
+     */
     public function __construct(
         array $menu,
         protected Dispatcher $events,
@@ -39,6 +42,8 @@ class AdminLte
 
     /**
      * Append items to the menu at runtime (e.g. from a service provider).
+     *
+     * @param  array<string, mixed>  ...$items
      */
     public function addAfter(string $itemKey, array ...$items): void
     {
@@ -52,7 +57,7 @@ class AdminLte
      * Get the processed menu for a scope: 'sidebar', 'navbar-left',
      * 'navbar-right', or null for the full filtered list.
      *
-     * @return array<int, array>
+     * @return array<int, array<string, mixed>>
      */
     public function menu(?string $scope = null): array
     {
@@ -80,13 +85,13 @@ class AdminLte
     /**
      * Run every configured filter across every menu item, dropping nulls.
      *
-     * @return array<int, array>
+     * @return array<int, array<string, mixed>>
      */
     protected function buildFiltered(): array
     {
         $filters = array_map(
             fn (string $class) => $this->container->make($class),
-            $this->container['config']['adminlte.filters'] ?? []
+            config('adminlte.filters', [])
         );
 
         $result = [];

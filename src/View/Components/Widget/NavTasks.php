@@ -7,6 +7,9 @@ use Illuminate\View\View;
 
 class NavTasks extends Component
 {
+    /**
+     * @param  array<int, array<string, mixed>>  $tasks
+     */
     public function __construct(
         public array $tasks = [],
         public ?string $badgeColor = 'warning',
