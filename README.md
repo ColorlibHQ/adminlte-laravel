@@ -27,7 +27,9 @@ This package gives you a config-driven sidebar menu, ready-to-extend Blade layou
 
 ## Documentation
 
-Full docs live in the [`docs/`](docs/) directory:
+Full docs live in the [`docs/`](docs/) directory — and are also served **inside
+your app at `/docs`** (rendered with the AdminLTE layout; disable with
+`'docs' => false`):
 
 | Guide | What it covers |
 |---|---|

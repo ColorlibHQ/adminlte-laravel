@@ -29,6 +29,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Comprehensive documentation under [`docs/`](docs/): installation,
   configuration, layout, menu, components, plugins, scaffolding,
   authentication, commands, translations, and demo pages.
+- **In-app documentation viewer** — the `docs/*.md` files are rendered (via
+  CommonMark) inside the AdminLTE layout at `/docs` and `/docs/{page}`, with a
+  navigation sidebar and intra-doc links rewritten to `/docs/…`. Toggle with
+  `config('adminlte.docs')` / `docs_middleware`. The navbar "Documentation"
+  link and sidebar CTA point here by default (`sidebar_docs_url`).
 
 ### Changed
 

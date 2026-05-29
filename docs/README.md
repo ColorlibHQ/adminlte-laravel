@@ -3,6 +3,9 @@
 Official [AdminLTE 4](https://adminlte.io) integration for Laravel — Bootstrap
 5.3, vanilla JS (no jQuery), Vite-ready.
 
+> 📖 These docs are also served **inside your app** at **`/docs`**, rendered with
+> the AdminLTE layout. Disable with `'docs' => false` in `config/adminlte.php`.
+
 ## Getting started
 
 - [**Installation**](installation.md) — requirements, install, Vite wiring, first page

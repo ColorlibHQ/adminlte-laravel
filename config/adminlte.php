@@ -117,15 +117,20 @@ return [
     'control_sidebar_theme' => 'dark',
 
     // Documentation URL used by the navbar "Documentation" link and the sidebar
-    // "View documentation" CTA (false to hide the CTA). Points at this package's
-    // own docs; override with your app's docs as needed.
-    'sidebar_docs_url' => 'https://github.com/ColorlibHQ/adminlte-laravel/tree/master/docs',
+    // "View documentation" CTA (false to hide the CTA). Defaults to the in-app
+    // docs viewer served at /docs (see the `docs` keys below).
+    'sidebar_docs_url' => '/docs',
 
     // Bundled demo/showcase pages (Dashboard v2/v3, Widgets, UI, Forms, Tables,
     // Layout Options, Theme Generate, auth variants, error pages). Set false to
     // skip registering their routes in production.
     'demo' => true,
     'demo_middleware' => ['web', 'auth'],
+
+    // In-app documentation viewer: renders this package's docs/*.md files at
+    // /docs and /docs/{page}. Set 'docs' => false to disable the route.
+    'docs' => true,
+    'docs_middleware' => ['web'],
 
     'sidebar_breakpoint' => 'lg',     // sidebar-expand-{breakpoint}
     'sidebar_mini' => true,           // .sidebar-mini

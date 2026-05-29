@@ -11,6 +11,7 @@ use ColorlibHQ\AdminLte\View\Components;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 use Illuminate\Translation\FileLoader;
 
 class AdminLteServiceProvider extends ServiceProvider
@@ -101,6 +102,70 @@ class AdminLteServiceProvider extends ServiceProvider
         $this->registerPublishing();
         $this->registerCommands();
         $this->registerDemoRoutes();
+        $this->registerDocsRoutes();
+    }
+
+    /**
+     * Serve the package documentation (the markdown files under /docs) inside
+     * the app at /docs and /docs/{page}, rendered with the AdminLTE layout.
+     * Enabled by default; disable with `'docs' => false` in config.
+     */
+    private function registerDocsRoutes(): void
+    {
+        if (! config('adminlte.docs', true)) {
+            return;
+        }
+
+        /** @var array<int, string> $middleware */
+        $middleware = config('adminlte.docs_middleware', ['web']);
+        $docsPath = dirname(__DIR__).'/docs';
+
+        // Ordered navigation: file slug => sidebar label.
+        $nav = [
+            'README' => 'Overview',
+            'installation' => 'Installation',
+            'configuration' => 'Configuration',
+            'layout' => 'Layout',
+            'menu' => 'Menu',
+            'components' => 'Components',
+            'plugins' => 'Plugins',
+            'scaffolding' => 'Scaffolding',
+            'authentication' => 'Authentication',
+            'commands' => 'Commands',
+            'translations' => 'Translations',
+            'demo-pages' => 'Demo pages',
+            'contributing' => 'Contributing',
+        ];
+
+        Route::middleware($middleware)->group(function () use ($docsPath, $nav) {
+            Route::get('docs/{page?}', function (string $page = 'README') use ($docsPath, $nav) {
+                $slug = preg_replace('/[^A-Za-z0-9_-]/', '', $page) ?: 'README';
+                $file = $docsPath.'/'.$slug.'.md';
+
+                abort_unless(is_file($file), 404);
+
+                $markdown = (string) file_get_contents($file);
+                // Str::markdown() already uses the GitHub-flavored converter
+                // (tables, fenced code, strikethrough, autolinks).
+                $html = Str::markdown($markdown);
+
+                // Rewrite intra-doc links (foo.md / foo.md#frag) to /docs/foo,
+                // leaving external (http) links untouched.
+                $base = url('docs');
+                $html = preg_replace_callback(
+                    '/href="(?!https?:\/\/)([A-Za-z0-9_-]+)\.md(#[^"]*)?"/',
+                    fn ($m) => 'href="'.$base.'/'.$m[1].($m[2] ?? '').'"',
+                    $html
+                );
+
+                return view('adminlte::docs', [
+                    'nav' => $nav,
+                    'current' => $slug,
+                    'title' => $nav[$slug] ?? Str::headline($slug),
+                    'html' => $html,
+                ]);
+            })->name('adminlte.docs');
+        });
     }
 
     /**
