@@ -31,13 +31,14 @@
 
         {{-- Right side --}}
         <ul class="navbar-nav ms-auto">
-            {{-- Search (opens the ⌘K command palette) --}}
-            <li class="nav-item">
-                <a class="nav-link d-flex align-items-center gap-2" href="#" role="button"
-                   data-adminlte-search aria-label="{{ __('adminlte.search') }}">
+            {{-- Search (opens the ⌘K command palette) — single unified pill --}}
+            <li class="nav-item d-flex align-items-center me-lg-2">
+                <button type="button" data-adminlte-search aria-label="{{ __('adminlte.search') }}"
+                        class="adminlte-search-trigger btn btn-sm border rounded-pill d-flex align-items-center gap-2 px-2 px-lg-3 text-body-secondary">
                     <i class="bi bi-search"></i>
-                    <kbd class="d-none d-lg-inline small bg-body-secondary text-body-secondary border rounded px-1">⌘K</kbd>
-                </a>
+                    <span class="d-none d-lg-inline">{{ __('adminlte.search') }}…</span>
+                    <kbd class="d-none d-lg-inline small border rounded px-1 ms-lg-3">⌘K</kbd>
+                </button>
             </li>
 
             {{-- Messages dropdown --}}

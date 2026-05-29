@@ -62,6 +62,12 @@
     .adminlte-cmdk__results { overflow-y: auto; }
     .adminlte-cmdk__results .list-group-item { cursor: pointer; display: flex; align-items: center; gap: .5rem; }
     .adminlte-cmdk__results .list-group-item small { margin-left: auto; opacity: .65; }
+
+    /* Unified search pill in the navbar */
+    .adminlte-search-trigger { --bs-btn-border-color: var(--bs-border-color); line-height: 1.6; }
+    .adminlte-search-trigger:hover { background: var(--bs-tertiary-bg); }
+    .adminlte-search-trigger kbd { background: var(--bs-tertiary-bg); color: var(--bs-secondary-color);
+        font-family: inherit; font-size: .75rem; }
 </style>
 
 @push('js')
