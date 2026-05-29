@@ -56,9 +56,13 @@ php artisan tinker --execute="\App\Models\User::firstOrCreate(
 ```dotenv
 APP_ENV=production
 APP_DEBUG=false
-APP_URL=https://adminlte.io/themes/laravel
-ASSET_URL=https://adminlte.io/themes/laravel   # only if served from a sub-path
+APP_URL=https://laravel.adminlte.io
 ```
+
+> The preview is hosted on a dedicated **subdomain** (`laravel.adminlte.io`),
+> alongside the other Laravel template previews — the clean, recommended setup
+> (no `ASSET_URL` or base-path rewriting needed). A sub-path mount is possible
+> but fiddlier; see the note at the end of §7.
 
 ```bash
 php artisan key:generate
@@ -101,15 +105,18 @@ vendor/adminlte/auth/login.blade.php` after `php artisan adminlte:install
 > Both options are for the **public preview** only. Never enable `APP_DEMO`
 > or ship auto-login in a production application.
 
-## 7. Nginx + PHP-FPM
+## 7. Nginx + PHP-FPM (subdomain — recommended)
 
-### Served at the domain root (`https://laravel.adminlte.io`)
+Host on the dedicated subdomain `laravel.adminlte.io`, alongside the other
+Laravel template previews. Point its document root at the app's `public/`:
 
 ```nginx
 server {
-    listen 80;
+    listen 443 ssl http2;
     server_name laravel.adminlte.io;
-    root /var/www/adminlte-preview/public;
+    root /var/www/laravel.adminlte.io/public;
+
+    # ssl_certificate ... (Let's Encrypt / your CA)
 
     index index.php;
     charset utf-8;
@@ -128,30 +135,14 @@ server {
 }
 ```
 
-### Served from a sub-path (`https://adminlte.io/themes/laravel/`)
+Add the DNS record (`laravel` A/CNAME → the preview server) and issue a TLS
+cert (`certbot --nginx -d laravel.adminlte.io`). That's the whole setup — no
+`ASSET_URL` or path rewriting required.
 
-Set `APP_URL`/`ASSET_URL` (step 5) to the full sub-path, then alias it to the
-app's `public/`:
-
-```nginx
-location /themes/laravel/ {
-    alias /var/www/adminlte-preview/public/;
-    try_files $uri $uri/ @adminlte;
-
-    location ~ \.php$ {
-        fastcgi_pass unix:/run/php/php8.3-fpm.sock;
-        fastcgi_param SCRIPT_FILENAME $request_filename;
-        include fastcgi_params;
-    }
-}
-
-location @adminlte {
-    rewrite /themes/laravel/(.*)$ /themes/laravel/index.php?/$1 last;
-}
-```
-
-Sub-path hosting is fiddlier than a dedicated subdomain — if you control DNS,
-a subdomain (e.g. `laravel.adminlte.io`) is the simpler, more robust option.
+> **Sub-path instead?** Mounting under `adminlte.io/themes/laravel/` is
+> possible (Nginx `alias` + `ASSET_URL` set to the full sub-path + a rewrite to
+> `index.php`), but it's noticeably more fragile for a Laravel app. Prefer the
+> subdomain unless you can't add DNS records.
 
 ## 8. Quick alternative — `php artisan serve` behind a proxy
 

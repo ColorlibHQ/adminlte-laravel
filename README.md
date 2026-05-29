@@ -5,18 +5,18 @@
 
 Official [AdminLTE 4](https://adminlte.io) integration for Laravel — Bootstrap 5.3, vanilla JS (no jQuery), Vite-ready.
 
-<!-- TODO: confirm the final preview URL once the Laravel app is live on the SSH preview server (adminlte.io/themes/laravel). See docs/deployment.md. -->
+<!-- Live preview: laravel.adminlte.io (hosted on the SSH preview server). See docs/deployment.md. -->
 <p align="center">
-  <a href="https://adminlte.io/themes/laravel/">
+  <a href="https://laravel.adminlte.io/">
     <img alt="AdminLTE 4 for Laravel — dashboard, light theme" src="docs/screenshots/light/dashboard.png" width="49%">
   </a>
-  <a href="https://adminlte.io/themes/laravel/">
+  <a href="https://laravel.adminlte.io/">
     <img alt="AdminLTE 4 for Laravel — dashboard, dark theme" src="docs/screenshots/dark/dashboard.png" width="49%">
   </a>
 </p>
 
 <p align="center">
-  <a href="https://adminlte.io/themes/laravel/"><strong>🔗 Live demo →</strong></a>
+  <a href="https://laravel.adminlte.io/"><strong>🔗 Live demo →</strong></a>
   &nbsp;·&nbsp;
   <a href="docs/installation.md"><strong>Get started →</strong></a>
 </p>
@@ -43,27 +43,27 @@ This package gives you a config-driven sidebar menu, ready-to-extend Blade layou
 
 ## Screenshots
 
-Every screenshot is a real page from the running Laravel app — [browse the live demo →](https://adminlte.io/themes/laravel/)
+Every screenshot is a real page from the running Laravel app — [browse the live demo →](https://laravel.adminlte.io/)
 
 <p align="center">
-  <a href="https://adminlte.io/themes/laravel/"><img alt="Dashboard v2" src="docs/screenshots/light/dashboard2.png" width="32%"></a>
-  <a href="https://adminlte.io/themes/laravel/"><img alt="Dashboard v3" src="docs/screenshots/light/dashboard3.png" width="32%"></a>
-  <a href="https://adminlte.io/themes/laravel/"><img alt="Widgets — small boxes, info boxes, cards" src="docs/screenshots/light/widgets.png" width="32%"></a>
+  <a href="https://laravel.adminlte.io/"><img alt="Dashboard v2" src="docs/screenshots/light/dashboard2.png" width="32%"></a>
+  <a href="https://laravel.adminlte.io/"><img alt="Dashboard v3" src="docs/screenshots/light/dashboard3.png" width="32%"></a>
+  <a href="https://laravel.adminlte.io/"><img alt="Widgets — small boxes, info boxes, cards" src="docs/screenshots/light/widgets.png" width="32%"></a>
 </p>
 <p align="center">
-  <a href="https://adminlte.io/themes/laravel/"><img alt="Form elements" src="docs/screenshots/light/forms.png" width="32%"></a>
-  <a href="https://adminlte.io/themes/laravel/"><img alt="Data tables" src="docs/screenshots/light/tables.png" width="32%"></a>
-  <a href="https://adminlte.io/themes/laravel/"><img alt="Kanban board (drag-and-drop)" src="docs/screenshots/light/kanban.png" width="32%"></a>
+  <a href="https://laravel.adminlte.io/"><img alt="Form elements" src="docs/screenshots/light/forms.png" width="32%"></a>
+  <a href="https://laravel.adminlte.io/"><img alt="Data tables" src="docs/screenshots/light/tables.png" width="32%"></a>
+  <a href="https://laravel.adminlte.io/"><img alt="Kanban board (drag-and-drop)" src="docs/screenshots/light/kanban.png" width="32%"></a>
 </p>
 <p align="center">
-  <a href="https://adminlte.io/themes/laravel/"><img alt="Event calendar (FullCalendar)" src="docs/screenshots/light/calendar.png" width="32%"></a>
-  <a href="https://adminlte.io/themes/laravel/"><img alt="Chat" src="docs/screenshots/light/chat.png" width="32%"></a>
-  <a href="https://adminlte.io/themes/laravel/"><img alt="Mailbox" src="docs/screenshots/light/mailbox.png" width="32%"></a>
+  <a href="https://laravel.adminlte.io/"><img alt="Event calendar (FullCalendar)" src="docs/screenshots/light/calendar.png" width="32%"></a>
+  <a href="https://laravel.adminlte.io/"><img alt="Chat" src="docs/screenshots/light/chat.png" width="32%"></a>
+  <a href="https://laravel.adminlte.io/"><img alt="Mailbox" src="docs/screenshots/light/mailbox.png" width="32%"></a>
 </p>
 <p align="center">
-  <a href="https://adminlte.io/themes/laravel/"><img alt="User profile" src="docs/screenshots/light/profile.png" width="32%"></a>
-  <a href="https://adminlte.io/themes/laravel/"><img alt="Invoice" src="docs/screenshots/light/invoice.png" width="32%"></a>
-  <a href="https://adminlte.io/themes/laravel/"><img alt="Theme generator" src="docs/screenshots/light/theme.png" width="32%"></a>
+  <a href="https://laravel.adminlte.io/"><img alt="User profile" src="docs/screenshots/light/profile.png" width="32%"></a>
+  <a href="https://laravel.adminlte.io/"><img alt="Invoice" src="docs/screenshots/light/invoice.png" width="32%"></a>
+  <a href="https://laravel.adminlte.io/"><img alt="Theme generator" src="docs/screenshots/light/theme.png" width="32%"></a>
 </p>
 
 ## Documentation
