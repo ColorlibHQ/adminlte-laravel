@@ -77,6 +77,13 @@ return [
     'tasks' => 'Tasks',
     'no_tasks' => 'No tasks',
     'see_all_tasks' => 'See all tasks',
+    'view_documentation' => 'View documentation',
+    'home' => 'Home',
+    'documentation' => 'Documentation',
+    'followers' => 'Followers',
+    'sales' => 'Sales',
+    'friends' => 'Friends',
+    'search' => 'Search',
 
     // Scaffolded sections (mailbox, chat, kanban, calendar, projects, etc.)
     'actions' => 'Actions',

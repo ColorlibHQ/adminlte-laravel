@@ -126,6 +126,7 @@ class InstallCommand extends Command
             'apexcharts/dist/apexcharts.min.js' => 'apexcharts/apexcharts.min.js',
             'jsvectormap/dist/jsvectormap.min.css' => 'jsvectormap/jsvectormap.min.css',
             'jsvectormap/dist/jsvectormap.min.js' => 'jsvectormap/jsvectormap.min.js',
+            'jsvectormap/dist/maps/world.js' => 'jsvectormap/maps/world.js',
             'fullcalendar/index.global.min.js' => 'fullcalendar/index.global.min.js',
             'sortablejs/Sortable.min.js' => 'sortablejs/sortablejs.min.js',
             // RTL stylesheet (loaded by master.blade when layout_rtl is enabled).

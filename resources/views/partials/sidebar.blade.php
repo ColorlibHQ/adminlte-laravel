@@ -30,6 +30,17 @@
                     @include('adminlte::partials.menu-item', ['item' => $item])
                 @endforeach
             </ul>
+
+            @if (config('adminlte.sidebar_docs_url'))
+                <div class="p-3 mt-3 border-top border-secondary border-opacity-25">
+                    <a href="{{ config('adminlte.sidebar_docs_url') }}"
+                       class="btn btn-sm btn-outline-light w-100 d-flex align-items-center justify-content-center gap-2"
+                       target="_blank" rel="noopener">
+                        <i class="bi bi-book" aria-hidden="true"></i>
+                        {{ __('adminlte.view_documentation') }}
+                    </a>
+                </div>
+            @endif
         </nav>
     </div>
 </aside>

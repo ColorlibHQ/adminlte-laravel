@@ -84,4 +84,34 @@ class PluginManager
 
         return $enabled;
     }
+
+    /**
+     * Render <link> tags for every enabled plugin's CSS (string or array).
+     */
+    public function renderStyles(): string
+    {
+        $out = '';
+        foreach (array_keys($this->getEnabledPlugins()) as $plugin) {
+            foreach ((array) ($this->config[$plugin]['css'] ?? []) as $css) {
+                $out .= '<link rel="stylesheet" href="'.asset($css).'">'.PHP_EOL;
+            }
+        }
+
+        return $out;
+    }
+
+    /**
+     * Render <script> tags for every enabled plugin's JS (string or array).
+     */
+    public function renderScripts(): string
+    {
+        $out = '';
+        foreach (array_keys($this->getEnabledPlugins()) as $plugin) {
+            foreach ((array) ($this->config[$plugin]['js'] ?? []) as $js) {
+                $out .= '<script src="'.asset($js).'"></script>'.PHP_EOL;
+            }
+        }
+
+        return $out;
+    }
 }

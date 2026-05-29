@@ -110,11 +110,14 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'footer_left' => '&copy; '.date('Y').' <a href="https://adminlte.io">AdminLTE</a>.',
-    'footer_right' => 'Version <b>4.0</b>',
+    'footer_left' => '<strong>Copyright &copy; 2014-'.date('Y').' <a href="https://adminlte.io" class="text-decoration-none">AdminLTE.io</a>.</strong> All rights reserved.',
+    'footer_right' => 'Anything you want',
     'preloader' => false,
     'control_sidebar' => false,
     'control_sidebar_theme' => 'dark',
+
+    // "View documentation" CTA button at the bottom of the sidebar (false to hide).
+    'sidebar_docs_url' => 'https://adminlte.io/themes/v4/docs/introduction.html',
 
     'sidebar_breakpoint' => 'lg',     // sidebar-expand-{breakpoint}
     'sidebar_mini' => true,           // .sidebar-mini
@@ -189,44 +192,156 @@ return [
     */
 
     'menu' => [
-        [
-            'type' => 'navbar-search',
-            'text' => 'search',
-            'topnav' => true,
-        ],
-        [
-            'header' => 'MAIN',
-        ],
+        // ---- Sidebar: mirrors the AdminLTE 4 demo sidebar ----
         [
             'text' => 'Dashboard',
-            'url' => '/',
             'icon' => 'bi bi-speedometer',
+            'submenu' => [
+                ['text' => 'Dashboard v1', 'url' => '/', 'icon' => 'bi bi-circle'],
+                ['text' => 'Dashboard v2', 'url' => '#', 'icon' => 'bi bi-circle'],
+                ['text' => 'Dashboard v3', 'url' => '#', 'icon' => 'bi bi-circle'],
+            ],
         ],
         [
-            'header' => 'EXAMPLES',
+            'text' => 'Theme Generate',
+            'url' => '#',
+            'icon' => 'bi bi-palette',
         ],
+        [
+            'text' => 'Widgets',
+            'icon' => 'bi bi-box-seam-fill',
+            'submenu' => [
+                ['text' => 'Small Box', 'url' => '#', 'icon' => 'bi bi-circle'],
+                ['text' => 'Info Box', 'url' => '#', 'icon' => 'bi bi-circle'],
+                ['text' => 'Cards', 'url' => '#', 'icon' => 'bi bi-circle'],
+            ],
+        ],
+        [
+            'text' => 'Layout Options',
+            'icon' => 'bi bi-clipboard-fill',
+            'label' => '7',
+            'label_color' => 'secondary',
+            'submenu' => [
+                ['text' => 'Default Sidebar', 'url' => '#', 'icon' => 'bi bi-circle'],
+                ['text' => 'Fixed Sidebar', 'url' => '#', 'icon' => 'bi bi-circle'],
+                ['text' => 'Fixed Header', 'url' => '#', 'icon' => 'bi bi-circle'],
+                ['text' => 'Fixed Footer', 'url' => '#', 'icon' => 'bi bi-circle'],
+                ['text' => 'Sidebar Mini', 'url' => '#', 'icon' => 'bi bi-circle'],
+                ['text' => 'Layout RTL', 'url' => '#', 'icon' => 'bi bi-circle'],
+            ],
+        ],
+        [
+            'text' => 'UI Elements',
+            'icon' => 'bi bi-tree-fill',
+            'submenu' => [
+                ['text' => 'General', 'url' => '#', 'icon' => 'bi bi-circle'],
+                ['text' => 'Icons', 'url' => '#', 'icon' => 'bi bi-circle'],
+                ['text' => 'Timeline', 'url' => '#', 'icon' => 'bi bi-circle'],
+            ],
+        ],
+        [
+            'text' => 'Mailbox',
+            'icon' => 'bi bi-envelope',
+            'submenu' => [
+                ['text' => 'Inbox', 'url' => 'admin/mailbox', 'icon' => 'bi bi-circle'],
+                ['text' => 'Compose', 'url' => 'admin/mailbox/compose', 'icon' => 'bi bi-circle'],
+            ],
+        ],
+        [
+            'text' => 'Forms',
+            'icon' => 'bi bi-pencil-square',
+            'submenu' => [
+                ['text' => 'Elements', 'url' => '#', 'icon' => 'bi bi-circle'],
+                ['text' => 'Layout', 'url' => '#', 'icon' => 'bi bi-circle'],
+                ['text' => 'Validation', 'url' => '#', 'icon' => 'bi bi-circle'],
+            ],
+        ],
+        [
+            'text' => 'Tables',
+            'icon' => 'bi bi-table',
+            'submenu' => [
+                ['text' => 'Simple Tables', 'url' => '#', 'icon' => 'bi bi-circle'],
+                ['text' => 'Data Tables', 'url' => '#', 'icon' => 'bi bi-circle'],
+            ],
+        ],
+
+        ['header' => 'PAGES'],
         [
             'text' => 'Pages',
             'icon' => 'bi bi-file-earmark-text',
             'submenu' => [
+                ['text' => 'Profile', 'url' => 'admin/profile', 'icon' => 'bi bi-circle'],
+                ['text' => 'Settings', 'url' => 'admin/settings', 'icon' => 'bi bi-circle'],
+                ['text' => 'Invoice', 'url' => 'admin/invoice', 'icon' => 'bi bi-circle'],
+                ['text' => 'Calendar', 'url' => 'admin/calendar', 'icon' => 'bi bi-circle'],
+                ['text' => 'Kanban', 'url' => 'admin/kanban', 'icon' => 'bi bi-circle'],
+                ['text' => 'Chat', 'url' => 'admin/chat', 'icon' => 'bi bi-circle'],
+                ['text' => 'File Manager', 'url' => 'admin/file-manager', 'icon' => 'bi bi-circle'],
+                ['text' => 'Projects', 'url' => 'admin/projects', 'icon' => 'bi bi-circle'],
+                ['text' => 'Pricing', 'url' => 'admin/pricing', 'icon' => 'bi bi-circle'],
+                ['text' => 'FAQ', 'url' => 'admin/faq', 'icon' => 'bi bi-circle'],
                 [
-                    'text' => 'Profile',
-                    'url' => 'pages/profile',
+                    'text' => 'Error',
                     'icon' => 'bi bi-circle',
-                ],
-                [
-                    'text' => 'Settings',
-                    'url' => 'pages/settings',
-                    'icon' => 'bi bi-circle',
+                    'submenu' => [
+                        ['text' => '404', 'url' => '#', 'icon' => 'bi bi-circle'],
+                        ['text' => '500', 'url' => '#', 'icon' => 'bi bi-circle'],
+                        ['text' => 'Maintenance', 'url' => '#', 'icon' => 'bi bi-circle'],
+                    ],
                 ],
             ],
         ],
+
+        ['header' => 'EXAMPLES'],
         [
-            'text' => 'Documentation',
-            'url' => 'https://adminlte.io/themes/v4/docs/introduction.html',
-            'icon' => 'bi bi-book',
-            'target' => '_blank',
+            'text' => 'Auth',
+            'icon' => 'bi bi-box-arrow-in-right',
+            'submenu' => [
+                [
+                    'text' => 'Version 1',
+                    'icon' => 'bi bi-box-arrow-in-right',
+                    'submenu' => [
+                        ['text' => 'Login', 'url' => 'login', 'icon' => 'bi bi-circle'],
+                        ['text' => 'Register', 'url' => 'register', 'icon' => 'bi bi-circle'],
+                    ],
+                ],
+                [
+                    'text' => 'Version 2',
+                    'icon' => 'bi bi-box-arrow-in-right',
+                    'submenu' => [
+                        ['text' => 'Login', 'url' => '#', 'icon' => 'bi bi-circle'],
+                        ['text' => 'Register', 'url' => '#', 'icon' => 'bi bi-circle'],
+                        ['text' => 'Lockscreen', 'url' => '#', 'icon' => 'bi bi-circle'],
+                    ],
+                ],
+            ],
         ],
+
+        ['header' => 'MULTI LEVEL EXAMPLE'],
+        ['text' => 'Level 1', 'url' => '#', 'icon' => 'bi bi-circle-fill'],
+        [
+            'text' => 'Level 1',
+            'icon' => 'bi bi-circle-fill',
+            'submenu' => [
+                ['text' => 'Level 2', 'url' => '#', 'icon' => 'bi bi-circle'],
+                [
+                    'text' => 'Level 2',
+                    'icon' => 'bi bi-circle',
+                    'submenu' => [
+                        ['text' => 'Level 3', 'url' => '#', 'icon' => 'bi bi-record-circle-fill'],
+                        ['text' => 'Level 3', 'url' => '#', 'icon' => 'bi bi-record-circle-fill'],
+                        ['text' => 'Level 3', 'url' => '#', 'icon' => 'bi bi-record-circle-fill'],
+                    ],
+                ],
+                ['text' => 'Level 2', 'url' => '#', 'icon' => 'bi bi-circle'],
+            ],
+        ],
+        ['text' => 'Level 1', 'url' => '#', 'icon' => 'bi bi-circle-fill'],
+
+        ['header' => 'LABELS'],
+        ['text' => 'Important', 'url' => '#', 'icon' => 'bi bi-circle', 'icon_color' => 'danger'],
+        ['text' => 'Warning', 'url' => '#', 'icon' => 'bi bi-circle', 'icon_color' => 'warning'],
+        ['text' => 'Informational', 'url' => '#', 'icon' => 'bi bi-circle', 'icon_color' => 'info'],
     ],
 
     /*
@@ -285,7 +400,11 @@ return [
         'jsvectormap' => [
             'enabled' => false,
             'css' => 'vendor/jsvectormap/jsvectormap.min.css',
-            'js' => 'vendor/jsvectormap/jsvectormap.min.js',
+            // The library first, then the world map data (registers the 'world' map).
+            'js' => [
+                'vendor/jsvectormap/jsvectormap.min.js',
+                'vendor/jsvectormap/maps/world.js',
+            ],
         ],
         'fullcalendar' => [
             'enabled' => false,

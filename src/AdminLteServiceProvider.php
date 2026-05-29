@@ -118,11 +118,11 @@ class AdminLteServiceProvider extends ServiceProvider
     private function registerBladeDirectives(): void
     {
         Blade::directive('pluginStyles', function () {
-            return "<?php \$plugins = app('".PluginManager::class."'); foreach (\$plugins->getEnabledPlugins() as \$name => \$config) { if (\$css = \$plugins->getCss(\$name)) { echo '<link rel=\"stylesheet\" href=\"'.asset(\$css).'\">'.PHP_EOL; } } ?>";
+            return "<?php echo app('".PluginManager::class."')->renderStyles(); ?>";
         });
 
         Blade::directive('pluginScripts', function () {
-            return "<?php \$plugins = app('".PluginManager::class."'); foreach (\$plugins->getEnabledPlugins() as \$name => \$config) { if (\$js = \$plugins->getJs(\$name)) { echo '<script src=\"'.asset(\$js).'\"><\\/script>'.PHP_EOL; } } ?>";
+            return "<?php echo app('".PluginManager::class."')->renderScripts(); ?>";
         });
     }
 
