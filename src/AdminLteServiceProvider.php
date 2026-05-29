@@ -112,31 +112,17 @@ class AdminLteServiceProvider extends ServiceProvider
 
     /**
      * Register Blade directives for plugin management.
+     * These directives execute at REQUEST TIME, not compile time,
+     * so plugins enabled by components are properly reflected.
      */
     private function registerBladeDirectives(): void
     {
-        $plugins = $this->app->make(PluginManager::class);
-
-        Blade::directive('pluginStyles', function () use ($plugins) {
-            $output = '';
-            foreach ($plugins->getEnabledPlugins() as $name => $config) {
-                if ($css = $plugins->getCss($name)) {
-                    $output .= '<link rel="stylesheet" href="'.asset($css).'">'.PHP_EOL;
-                }
-            }
-
-            return $output;
+        Blade::directive('pluginStyles', function () {
+            return "<?php \$plugins = app('".PluginManager::class."'); foreach (\$plugins->getEnabledPlugins() as \$name => \$config) { if (\$css = \$plugins->getCss(\$name)) { echo '<link rel=\"stylesheet\" href=\"'.asset(\$css).'\">'.PHP_EOL; } } ?>";
         });
 
-        Blade::directive('pluginScripts', function () use ($plugins) {
-            $output = '';
-            foreach ($plugins->getEnabledPlugins() as $name => $config) {
-                if ($js = $plugins->getJs($name)) {
-                    $output .= '<script src="'.asset($js).'"></script>'.PHP_EOL;
-                }
-            }
-
-            return $output;
+        Blade::directive('pluginScripts', function () {
+            return "<?php \$plugins = app('".PluginManager::class."'); foreach (\$plugins->getEnabledPlugins() as \$name => \$config) { if (\$js = \$plugins->getJs(\$name)) { echo '<script src=\"'.asset(\$js).'\"><\\/script>'.PHP_EOL; } } ?>";
         });
     }
 

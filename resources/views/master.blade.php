@@ -33,9 +33,6 @@
 
     <title>{{ $title }}</title>
 
-    {{-- Bootstrap Icons (CDN; swap for an npm import if you prefer) --}}
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" crossorigin="anonymous">
-
     @hasSection('adminlte_css')
         @yield('adminlte_css')
     @endif

@@ -93,19 +93,71 @@ class InstallCommand extends Command
             return;
         }
 
-        if (! $this->confirm('Install frontend dependencies (admin-lte, bootstrap, @popperjs/core, overlayscrollbars, bootstrap-icons) via npm now?', true)) {
+        if (! $this->confirm('Install frontend dependencies (admin-lte, bootstrap, plugin libraries, etc.) via npm now?', true)) {
             $this->line('Skipped. Install manually with:');
-            $this->line('  <fg=yellow>npm install -D admin-lte@^4.0 bootstrap@^5.3 @popperjs/core overlayscrollbars bootstrap-icons sass</>');
+            $this->line('  <fg=yellow>npm install -D admin-lte@^4.0 bootstrap@^5.3 @popperjs/core overlayscrollbars bootstrap-icons apexcharts jsvectormap fullcalendar sortablejs sass</>');
 
             return;
         }
 
         $this->components->task('Running npm install', function () {
             $result = Process::path(base_path())->run(
-                'npm install -D admin-lte@^4.0 bootstrap@^5.3 @popperjs/core overlayscrollbars bootstrap-icons sass'
+                'npm install -D admin-lte@^4.0 bootstrap@^5.3 @popperjs/core overlayscrollbars bootstrap-icons apexcharts jsvectormap fullcalendar sortablejs sass'
             );
 
             return $result->successful();
+        });
+
+        $this->copyVendorFiles();
+    }
+
+    /**
+     * Copy vendor plugin files from node_modules to public/vendor.
+     */
+    private function copyVendorFiles(): void
+    {
+        $baseVendorPath = public_path('vendor');
+        File::ensureDirectoryExists($baseVendorPath);
+
+        $vendorMaps = [
+            'apexcharts' => 'apexcharts/dist/apexcharts.min.js',
+            'jsvectormap' => [
+                'css' => 'jsvectormap/dist/jsvectormap.min.css',
+                'js' => 'jsvectormap/dist/jsvectormap.min.js',
+            ],
+            'fullcalendar' => 'fullcalendar/index.global.min.js',
+            'sortablejs' => ['Sortable.min.js' => 'sortablejs.min.js'],  // Rename on copy
+        ];
+
+        foreach ($vendorMaps as $vendorName => $files) {
+            $vendorDir = "$baseVendorPath/$vendorName";
+            File::ensureDirectoryExists($vendorDir);
+
+            if (is_array($files)) {
+                foreach ($files as $key => $file) {
+                    // Check if key is a source filename (for renames like Sortable.min.js => sortablejs.min.js)
+                    if (is_string($key) && ! str_contains($key, '/')) {
+                        $src = base_path("node_modules/$vendorName/$key");
+                        $dest = "$vendorDir/$file";
+                    } else {
+                        $src = base_path("node_modules/$file");
+                        $dest = "$vendorDir/".basename($file);
+                    }
+
+                    if (File::exists($src)) {
+                        File::copy($src, $dest);
+                    }
+                }
+            } else {
+                $src = base_path("node_modules/$files");
+                if (File::exists($src)) {
+                    File::copy($src, "$vendorDir/".basename($files));
+                }
+            }
+        }
+
+        $this->components->task('Copying vendor plugin files', function () {
+            return true;
         });
     }
 }
