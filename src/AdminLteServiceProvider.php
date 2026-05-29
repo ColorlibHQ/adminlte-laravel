@@ -10,6 +10,7 @@ use ColorlibHQ\AdminLte\Plugins\PluginManager;
 use ColorlibHQ\AdminLte\View\Components;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Translation\FileLoader;
 
 class AdminLteServiceProvider extends ServiceProvider
 {
@@ -93,11 +94,33 @@ class AdminLteServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'adminlte');
-        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'adminlte');
+        $this->registerTranslations();
         $this->registerComponents();
         $this->registerBladeDirectives();
         $this->registerPublishing();
         $this->registerCommands();
+    }
+
+    /**
+     * Register the package's translations.
+     *
+     * The views reference keys as `__('adminlte.key')` — i.e. the `adminlte`
+     * group in the default namespace. We register the package lang directory
+     * as an additional default-namespace path so those keys resolve out of the
+     * box (no publishing required), while also keeping the `adminlte::` hint
+     * available for anyone who prefers the namespaced accessor.
+     */
+    private function registerTranslations(): void
+    {
+        $langPath = __DIR__.'/../resources/lang';
+
+        $this->loadTranslationsFrom($langPath, 'adminlte');
+
+        $loader = $this->app->make('translator')->getLoader();
+
+        if ($loader instanceof FileLoader) {
+            $loader->addPath($langPath);
+        }
     }
 
     /**
