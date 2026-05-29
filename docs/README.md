@@ -28,6 +28,7 @@ Official [AdminLTE 4](https://adminlte.io) integration for Laravel — Bootstrap
 ## Reference
 
 - [**Demo pages**](demo-pages.md) — the bundled showcase routes (Dashboard v2/v3, Widgets, UI Elements, Forms, Tables, …)
+- [**Deployment**](deployment.md) — host the full live preview on a server (Nginx + PHP-FPM, public-demo recipe)
 - [**Contributing & development**](contributing.md) — local setup, tests, Pint, PHPStan, CI
 
 ---

@@ -134,6 +134,7 @@ class AdminLteServiceProvider extends ServiceProvider
             'commands' => 'Commands',
             'translations' => 'Translations',
             'demo-pages' => 'Demo pages',
+            'deployment' => 'Deployment',
             'contributing' => 'Contributing',
         ];
 
