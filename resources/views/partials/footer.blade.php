@@ -1,8 +1,6 @@
-<footer class="app-footer">
+<footer class="app-footer small">
     <div class="float-end d-none d-sm-inline">
         {!! config('adminlte.footer_right', 'Version <b>4.0</b>') !!}
     </div>
-    <strong>
-        {!! config('adminlte.footer_left') !!}
-    </strong>
+    {!! config('adminlte.footer_left') !!}
 </footer>

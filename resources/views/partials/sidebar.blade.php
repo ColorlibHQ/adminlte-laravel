@@ -32,15 +32,29 @@
             </ul>
 
             @if (config('adminlte.sidebar_docs_url'))
-                <div class="p-3 mt-3 border-top border-secondary border-opacity-25">
+                <div class="sidebar-docs-cta mt-3 border-top border-secondary border-opacity-25">
                     <a href="{{ config('adminlte.sidebar_docs_url') }}"
                        class="btn btn-sm btn-outline-light w-100 d-flex align-items-center justify-content-center gap-2"
-                       target="_blank" rel="noopener">
+                       target="_blank" rel="noopener"
+                       title="{{ __('adminlte.view_documentation') }}">
                         <i class="bi bi-book" aria-hidden="true"></i>
-                        {{ __('adminlte.view_documentation') }}
+                        <span class="sidebar-docs-cta__text">{{ __('adminlte.view_documentation') }}</span>
                     </a>
                 </div>
             @endif
         </nav>
     </div>
 </aside>
+
+@once
+    {{-- Inline (not @push('css'): this partial renders in the body, after the head's @stack('css')). --}}
+    <style>
+        .sidebar-docs-cta { padding: 1rem; }
+        /* When the sidebar is collapsed to icons (and not hovered open), shrink the
+           docs button to icon-only so it doesn't overflow the narrow rail. */
+        .sidebar-mini.sidebar-collapse .app-sidebar:not(:hover) .sidebar-docs-cta { padding: .5rem; }
+        .sidebar-mini.sidebar-collapse .app-sidebar:not(:hover) .sidebar-docs-cta__text { display: none; }
+        /* Fully-collapsed (non-mini) sidebars hide off-canvas, so hide the CTA outright. */
+        .sidebar-collapse:not(.sidebar-mini) .sidebar-docs-cta { display: none; }
+    </style>
+@endonce
