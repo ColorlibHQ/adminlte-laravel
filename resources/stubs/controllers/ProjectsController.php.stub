@@ -1,0 +1,59 @@
+<?php
+
+namespace App\Http\Controllers\AdminLte;
+
+use App\Http\Controllers\Controller;
+use App\Models\Project;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+
+class ProjectsController extends Controller
+{
+    public function index(): View
+    {
+        $projects = Project::latest()->paginate(12);
+
+        return view('adminlte.projects.index', compact('projects'));
+    }
+
+    public function store(Request $request): RedirectResponse
+    {
+        $data = $this->validateProject($request);
+
+        Project::create($data);
+
+        return redirect()->route('adminlte.projects.index')
+            ->with('status', __('adminlte.project_created'));
+    }
+
+    public function update(Request $request, Project $project): RedirectResponse
+    {
+        $project->update($this->validateProject($request));
+
+        return redirect()->route('adminlte.projects.index')
+            ->with('status', __('adminlte.project_updated'));
+    }
+
+    public function destroy(Project $project): RedirectResponse
+    {
+        $project->delete();
+
+        return redirect()->route('adminlte.projects.index')
+            ->with('status', __('adminlte.project_deleted'));
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function validateProject(Request $request): array
+    {
+        return $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string'],
+            'status' => ['required', 'in:planning,active,on_hold,completed'],
+            'progress' => ['required', 'integer', 'min:0', 'max:100'],
+            'due_date' => ['nullable', 'date'],
+        ]);
+    }
+}

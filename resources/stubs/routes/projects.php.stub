@@ -1,0 +1,4 @@
+    Route::get('projects', [\App\Http\Controllers\AdminLte\ProjectsController::class, 'index'])->name('projects.index');
+    Route::post('projects', [\App\Http\Controllers\AdminLte\ProjectsController::class, 'store'])->name('projects.store');
+    Route::put('projects/{project}', [\App\Http\Controllers\AdminLte\ProjectsController::class, 'update'])->name('projects.update');
+    Route::delete('projects/{project}', [\App\Http\Controllers\AdminLte\ProjectsController::class, 'destroy'])->name('projects.destroy');

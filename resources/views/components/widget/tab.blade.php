@@ -13,6 +13,8 @@
         {{ $title }}
     </button>
 </li>
-<div class="tab-pane @if ($active) active @endif" id="{{ $id }}" role="tabpanel" aria-labelledby="{{ $id }}-tab">
-    {{ $slot }}
-</div>
+@push(\ColorlibHQ\AdminLte\View\Components\Widget\Tabs::PANE_STACK)
+    <div class="tab-pane fade @if ($active) show active @endif" id="{{ $id }}" role="tabpanel" aria-labelledby="{{ $id }}-tab">
+        {{ $slot }}
+    </div>
+@endpush

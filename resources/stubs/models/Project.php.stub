@@ -1,0 +1,36 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Project extends Model
+{
+    protected $table = 'adminlte_projects';
+
+    protected $fillable = [
+        'name',
+        'description',
+        'status',
+        'progress',
+        'due_date',
+    ];
+
+    protected $casts = [
+        'progress' => 'integer',
+        'due_date' => 'date',
+    ];
+
+    /**
+     * Bootstrap theme color for the current status.
+     */
+    public function statusColor(): string
+    {
+        return match ($this->status) {
+            'active' => 'success',
+            'on_hold' => 'warning',
+            'completed' => 'primary',
+            default => 'secondary',
+        };
+    }
+}

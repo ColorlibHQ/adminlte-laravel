@@ -1,0 +1,1 @@
+    Route::view('pricing', 'adminlte.pricing.index')->name('pricing.index');

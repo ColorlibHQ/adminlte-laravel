@@ -1,0 +1,5 @@
+    Route::get('calendar', [\App\Http\Controllers\AdminLte\CalendarController::class, 'index'])->name('calendar.index');
+    Route::get('calendar/feed', [\App\Http\Controllers\AdminLte\CalendarController::class, 'feed'])->name('calendar.feed');
+    Route::post('calendar', [\App\Http\Controllers\AdminLte\CalendarController::class, 'store'])->name('calendar.store');
+    Route::put('calendar/{event}', [\App\Http\Controllers\AdminLte\CalendarController::class, 'update'])->name('calendar.update');
+    Route::delete('calendar/{event}', [\App\Http\Controllers\AdminLte\CalendarController::class, 'destroy'])->name('calendar.destroy');

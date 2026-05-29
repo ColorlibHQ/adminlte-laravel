@@ -1,0 +1,24 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+
+class KanbanCard extends Model
+{
+    protected $table = 'adminlte_kanban_cards';
+
+    protected $fillable = ['lane_id', 'title', 'description', 'color', 'position'];
+
+    public function lane(): BelongsTo
+    {
+        return $this->belongsTo(KanbanLane::class, 'lane_id');
+    }
+
+    public function assignees(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'adminlte_kanban_card_user', 'card_id', 'user_id');
+    }
+}

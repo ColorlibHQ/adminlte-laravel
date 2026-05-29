@@ -113,50 +113,30 @@ class InstallCommand extends Command
 
     /**
      * Copy vendor plugin files from node_modules to public/vendor.
+     * Keys are source paths relative to node_modules; values are destination
+     * paths relative to public/vendor (so a file can be renamed on copy).
      */
     private function copyVendorFiles(): void
     {
-        $baseVendorPath = public_path('vendor');
-        File::ensureDirectoryExists($baseVendorPath);
-
-        $vendorMaps = [
-            'apexcharts' => 'apexcharts/dist/apexcharts.min.js',
-            'jsvectormap' => [
-                'css' => 'jsvectormap/dist/jsvectormap.min.css',
-                'js' => 'jsvectormap/dist/jsvectormap.min.js',
-            ],
-            'fullcalendar' => 'fullcalendar/index.global.min.js',
-            'sortablejs' => ['Sortable.min.js' => 'sortablejs.min.js'],  // Rename on copy
+        $vendorFiles = [
+            'apexcharts/dist/apexcharts.min.js' => 'apexcharts/apexcharts.min.js',
+            'jsvectormap/dist/jsvectormap.min.css' => 'jsvectormap/jsvectormap.min.css',
+            'jsvectormap/dist/jsvectormap.min.js' => 'jsvectormap/jsvectormap.min.js',
+            'fullcalendar/index.global.min.js' => 'fullcalendar/index.global.min.js',
+            'sortablejs/Sortable.min.js' => 'sortablejs/sortablejs.min.js',
         ];
 
-        foreach ($vendorMaps as $vendorName => $files) {
-            $vendorDir = "$baseVendorPath/$vendorName";
-            File::ensureDirectoryExists($vendorDir);
-
-            if (is_array($files)) {
-                foreach ($files as $key => $file) {
-                    // Check if key is a source filename (for renames like Sortable.min.js => sortablejs.min.js)
-                    if (is_string($key) && ! str_contains($key, '/')) {
-                        $src = base_path("node_modules/$vendorName/$key");
-                        $dest = "$vendorDir/$file";
-                    } else {
-                        $src = base_path("node_modules/$file");
-                        $dest = "$vendorDir/".basename($file);
-                    }
-
-                    if (File::exists($src)) {
-                        File::copy($src, $dest);
-                    }
+        $this->components->task('Copying vendor plugin files', function () use ($vendorFiles) {
+            foreach ($vendorFiles as $source => $destination) {
+                $src = base_path("node_modules/$source");
+                if (! File::exists($src)) {
+                    continue;
                 }
-            } else {
-                $src = base_path("node_modules/$files");
-                if (File::exists($src)) {
-                    File::copy($src, "$vendorDir/".basename($files));
-                }
+                $dest = public_path("vendor/$destination");
+                File::ensureDirectoryExists(dirname($dest));
+                File::copy($src, $dest);
             }
-        }
 
-        $this->components->task('Copying vendor plugin files', function () {
             return true;
         });
     }

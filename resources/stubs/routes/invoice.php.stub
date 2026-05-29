@@ -1,0 +1,1 @@
+    Route::get('invoice', [\App\Http\Controllers\AdminLte\InvoiceController::class, 'show'])->name('invoice.show');

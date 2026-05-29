@@ -1,0 +1,5 @@
+    Route::get('mailbox', [\App\Http\Controllers\AdminLte\MailboxController::class, 'index'])->name('mailbox.index');
+    Route::get('mailbox/compose', [\App\Http\Controllers\AdminLte\MailboxController::class, 'create'])->name('mailbox.create');
+    Route::post('mailbox', [\App\Http\Controllers\AdminLte\MailboxController::class, 'store'])->name('mailbox.store');
+    Route::get('mailbox/{message}', [\App\Http\Controllers\AdminLte\MailboxController::class, 'show'])->name('mailbox.show');
+    Route::delete('mailbox/{message}', [\App\Http\Controllers\AdminLte\MailboxController::class, 'destroy'])->name('mailbox.destroy');

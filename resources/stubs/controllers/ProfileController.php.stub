@@ -1,0 +1,33 @@
+<?php
+
+namespace App\Http\Controllers\AdminLte;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
+
+class ProfileController extends Controller
+{
+    public function show(): View
+    {
+        return view('adminlte.profile.index', ['user' => Auth::user()]);
+    }
+
+    public function update(Request $request): RedirectResponse
+    {
+        $user = Auth::user();
+
+        $data = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', Rule::unique('users', 'email')->ignore($user->id)],
+        ]);
+
+        $user->update($data);
+
+        return redirect()->route('adminlte.profile.show')
+            ->with('status', __('adminlte.profile_updated'));
+    }
+}

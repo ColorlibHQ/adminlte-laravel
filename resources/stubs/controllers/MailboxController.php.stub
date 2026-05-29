@@ -1,0 +1,70 @@
+<?php
+
+namespace App\Http\Controllers\AdminLte;
+
+use App\Http\Controllers\Controller;
+use App\Models\Message;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+class MailboxController extends Controller
+{
+    public function index(): View
+    {
+        $messages = Message::with('sender')
+            ->where('to_user_id', Auth::id())
+            ->latest()
+            ->paginate(15);
+
+        return view('adminlte.mailbox.inbox', compact('messages'));
+    }
+
+    public function show(Message $message): View
+    {
+        abort_unless($message->to_user_id === Auth::id(), 403);
+
+        if (! $message->is_read) {
+            $message->update(['is_read' => true]);
+        }
+
+        $message->load('sender');
+
+        return view('adminlte.mailbox.read', compact('message'));
+    }
+
+    public function create(): View
+    {
+        return view('adminlte.mailbox.compose');
+    }
+
+    public function store(Request $request): RedirectResponse
+    {
+        $data = $request->validate([
+            'to_user_id' => ['required', 'exists:users,id'],
+            'subject' => ['required', 'string', 'max:255'],
+            'body' => ['required', 'string'],
+        ]);
+
+        Message::create([
+            'from_user_id' => Auth::id(),
+            'to_user_id' => $data['to_user_id'],
+            'subject' => $data['subject'],
+            'body' => $data['body'],
+        ]);
+
+        return redirect()->route('adminlte.mailbox.index')
+            ->with('status', __('adminlte.message_sent'));
+    }
+
+    public function destroy(Message $message): RedirectResponse
+    {
+        abort_unless($message->to_user_id === Auth::id(), 403);
+
+        $message->delete();
+
+        return redirect()->route('adminlte.mailbox.index')
+            ->with('status', __('adminlte.delete_message'));
+    }
+}

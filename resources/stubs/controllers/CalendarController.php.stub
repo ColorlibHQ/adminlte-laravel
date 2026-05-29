@@ -1,0 +1,69 @@
+<?php
+
+namespace App\Http\Controllers\AdminLte;
+
+use App\Http\Controllers\Controller;
+use App\Models\Event;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+class CalendarController extends Controller
+{
+    public function index(): View
+    {
+        return view('adminlte.calendar.index');
+    }
+
+    /**
+     * JSON feed consumed by FullCalendar.
+     */
+    public function feed(Request $request): JsonResponse
+    {
+        $events = Event::where('user_id', Auth::id())
+            ->when($request->filled('start'), fn ($q) => $q->where('start_at', '>=', $request->date('start')))
+            ->when($request->filled('end'), fn ($q) => $q->where('start_at', '<=', $request->date('end')))
+            ->get()
+            ->map->toCalendarArray();
+
+        return response()->json($events);
+    }
+
+    public function store(Request $request): JsonResponse
+    {
+        $data = $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'start_at' => ['required', 'date'],
+            'end_at' => ['nullable', 'date', 'after_or_equal:start_at'],
+            'all_day' => ['boolean'],
+            'color' => ['nullable', 'string'],
+        ]);
+
+        $event = Event::create([
+            ...$data,
+            'user_id' => Auth::id(),
+            'color' => $data['color'] ?? '#0d6efd',
+        ]);
+
+        return response()->json($event->toCalendarArray());
+    }
+
+    public function update(Request $request, Event $event): JsonResponse
+    {
+        abort_unless($event->user_id === Auth::id(), 403);
+
+        $event->update($request->only(['title', 'start_at', 'end_at', 'all_day', 'color']));
+
+        return response()->json($event->toCalendarArray());
+    }
+
+    public function destroy(Event $event): JsonResponse
+    {
+        abort_unless($event->user_id === Auth::id(), 403);
+
+        $event->delete();
+
+        return response()->json(['status' => 'ok']);
+    }
+}

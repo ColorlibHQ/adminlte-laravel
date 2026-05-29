@@ -14,8 +14,9 @@ class MakeAuthCommand extends Command
 
     public function handle(): int
     {
-        $type = $this->option('type');
-        $force = $this->option('force');
+        $typeOption = $this->option('type');
+        $type = is_string($typeOption) ? $typeOption : 'plain';
+        $force = (bool) $this->option('force');
 
         match ($type) {
             'plain' => $this->scaffoldPlainAuth($force),

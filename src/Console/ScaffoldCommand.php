@@ -14,6 +14,9 @@ class ScaffoldCommand extends Command
 
     protected $description = 'Scaffold AdminLTE sections (mailbox, chat, kanban, etc.) with full DB backing';
 
+    /**
+     * @var array<string, string>
+     */
     protected array $sections = [
         'mailbox' => 'Messages mailbox with inbox/read/compose',
         'chat' => 'Conversations and chat messaging',
@@ -28,200 +31,293 @@ class ScaffoldCommand extends Command
         'faq' => 'FAQ accordion',
     ];
 
+    /**
+     * Declarative manifest of what each section publishes.
+     * Each entry may define: migrations[], models[], controllers[],
+     * seeders[] (class => stub file), views (dir), routes (stub), seeder (class to run).
+     *
+     * @var array<string, array<string, mixed>>
+     */
+    protected array $manifest = [
+        'mailbox' => [
+            'migrations' => ['create_adminlte_messages_table'],
+            'models' => ['Message'],
+            'controllers' => ['MailboxController'],
+            'seeders' => ['AdminLteMailboxSeeder'],
+            'views' => 'mailbox',
+            'routes' => 'mailbox',
+            'seeder' => 'AdminLteMailboxSeeder',
+        ],
+        'chat' => [
+            'migrations' => ['create_adminlte_conversations_table'],
+            'models' => ['Conversation', 'ChatMessage'],
+            'controllers' => ['ChatController'],
+            'seeders' => ['AdminLteChatSeeder'],
+            'views' => 'chat',
+            'routes' => 'chat',
+            'seeder' => 'AdminLteChatSeeder',
+        ],
+        'kanban' => [
+            'migrations' => ['create_adminlte_kanban_tables'],
+            'models' => ['KanbanBoard', 'KanbanLane', 'KanbanCard'],
+            'controllers' => ['KanbanController'],
+            'seeders' => ['AdminLteKanbanSeeder'],
+            'views' => 'kanban',
+            'routes' => 'kanban',
+            'seeder' => 'AdminLteKanbanSeeder',
+        ],
+        'calendar' => [
+            'migrations' => ['create_adminlte_events_table'],
+            'models' => ['Event'],
+            'controllers' => ['CalendarController'],
+            'seeders' => ['AdminLteCalendarSeeder'],
+            'views' => 'calendar',
+            'routes' => 'calendar',
+            'seeder' => 'AdminLteCalendarSeeder',
+        ],
+        'projects' => [
+            'migrations' => ['create_adminlte_projects_table'],
+            'models' => ['Project'],
+            'controllers' => ['ProjectsController'],
+            'seeders' => ['AdminLteProjectsSeeder'],
+            'views' => 'projects',
+            'routes' => 'projects',
+            'seeder' => 'AdminLteProjectsSeeder',
+        ],
+        'file-manager' => [
+            'controllers' => ['FileManagerController'],
+            'views' => 'file-manager',
+            'routes' => 'file-manager',
+        ],
+        'profile' => [
+            'controllers' => ['ProfileController'],
+            'views' => 'profile',
+            'routes' => 'profile',
+        ],
+        'settings' => [
+            'controllers' => ['SettingsController'],
+            'views' => 'settings',
+            'routes' => 'settings',
+        ],
+        'invoice' => [
+            'controllers' => ['InvoiceController'],
+            'views' => 'invoice',
+            'routes' => 'invoice',
+        ],
+        'pricing' => [
+            'views' => 'pricing',
+            'routes' => 'pricing',
+        ],
+        'faq' => [
+            'views' => 'faq',
+            'routes' => 'faq',
+        ],
+    ];
+
     public function handle(): int
     {
-        $section = $this->argument('section');
-        $all = $this->option('all');
-        $force = $this->option('force');
-        $seed = $this->option('seed');
+        $force = (bool) $this->option('force');
+        $seed = (bool) $this->option('seed');
 
-        if ($all) {
-            $this->scaffoldAll($force, $seed);
-
-            return 0;
-        }
-
-        if ($section) {
-            if (! isset($this->sections[$section])) {
-                $this->error("Section '{$section}' not found.");
-
-                return 1;
+        if ($this->option('all')) {
+            foreach (array_keys($this->sections) as $section) {
+                $this->scaffoldSection($section, $force);
             }
-            $this->scaffoldSection($section, $force, $seed);
+            $this->info('✓ All sections scaffolded.');
+            $this->printNextSteps();
 
-            return 0;
+            if ($seed) {
+                $this->runSeeders(array_keys($this->sections));
+            }
+
+            return self::SUCCESS;
         }
 
-        $this->info('Select sections to scaffold:');
-        $selected = $this->choice(
-            'Which sections?',
+        $section = $this->argument('section');
+
+        if (is_string($section) && $section !== '') {
+            if (! isset($this->sections[$section])) {
+                $this->error("Section '{$section}' not found. Available: ".implode(', ', array_keys($this->sections)));
+
+                return self::FAILURE;
+            }
+
+            $this->scaffoldSection($section, $force);
+            $this->printNextSteps();
+
+            if ($seed) {
+                $this->runSeeders([$section]);
+            }
+
+            return self::SUCCESS;
+        }
+
+        /** @var array<int, string> $selected */
+        $selected = (array) $this->choice(
+            'Which sections would you like to scaffold?',
             array_keys($this->sections),
-            multiple: true
+            null,
+            null,
+            true
         );
 
         foreach ($selected as $sect) {
-            $this->scaffoldSection($sect, $force, $seed);
+            $this->scaffoldSection($sect, $force);
         }
-
-        return 0;
-    }
-
-    protected function scaffoldAll(bool $force, bool $seed): void
-    {
-        foreach (array_keys($this->sections) as $section) {
-            $this->scaffoldSection($section, $force, seed: false);
-        }
+        $this->printNextSteps();
 
         if ($seed) {
-            $this->call('db:seed');
+            $this->runSeeders($selected);
         }
 
-        $this->info('✓ All sections scaffolded.');
+        return self::SUCCESS;
     }
 
-    protected function scaffoldSection(string $section, bool $force, bool $seed = false): void
+    protected function scaffoldSection(string $section, bool $force): void
     {
-        $this->info("Scaffolding '{$section}'...");
+        $this->components->info("Scaffolding '{$section}'");
 
-        // Publish stubs based on section
-        match ($section) {
-            'mailbox' => $this->scaffoldMailbox($force, $seed),
-            'chat' => $this->scaffoldChat($force, $seed),
-            'kanban' => $this->scaffoldKanban($force, $seed),
-            'calendar' => $this->scaffoldCalendar($force, $seed),
-            'projects' => $this->scaffoldProjects($force, $seed),
-            'file-manager' => $this->scaffoldFileManager($force, $seed),
-            'profile' => $this->scaffoldProfile($force, $seed),
-            'settings' => $this->scaffoldSettings($force, $seed),
-            'invoice' => $this->scaffoldInvoice($force, $seed),
-            'pricing' => $this->scaffoldPricing($force, $seed),
-            'faq' => $this->scaffoldFaq($force, $seed),
-        };
+        $spec = $this->manifest[$section] ?? [];
 
-        $this->info("✓ '{$section}' scaffolded.");
-    }
+        $migrations = (array) ($spec['migrations'] ?? []);
+        foreach (array_values($migrations) as $i => $migration) {
+            // Stagger timestamps so migrations run in a deterministic order.
+            $timestamp = date('Y_m_d_His', time() + $i);
+            $this->publishFile(
+                "stubs/migrations/{$migration}.php.stub",
+                database_path("migrations/{$timestamp}_{$migration}.php"),
+                $force
+            );
+        }
 
-    protected function scaffoldMailbox(bool $force, bool $seed): void
-    {
-        // Publish migration
-        $this->publishFile(
-            'stubs/migrations/create_adminlte_messages_table.php.stub',
-            database_path('migrations/'.date('Y_m_d_His').'_create_adminlte_messages_table.php'),
-            $force
-        );
+        foreach ((array) ($spec['models'] ?? []) as $model) {
+            $this->publishFile(
+                "stubs/models/{$model}.php.stub",
+                app_path("Models/{$model}.php"),
+                $force
+            );
+        }
 
-        // Publish model
-        $this->publishFile(
-            'stubs/models/Message.php.stub',
-            app_path('Models/Message.php'),
-            $force
-        );
+        foreach ((array) ($spec['controllers'] ?? []) as $controller) {
+            $this->publishFile(
+                "stubs/controllers/{$controller}.php.stub",
+                app_path("Http/Controllers/AdminLte/{$controller}.php"),
+                $force
+            );
+        }
 
-        // Publish controller
-        $this->publishFile(
-            'stubs/controllers/MailboxController.php.stub',
-            app_path('Http/Controllers/AdminLte/MailboxController.php'),
-            $force
-        );
+        foreach ((array) ($spec['seeders'] ?? []) as $seeder) {
+            $this->publishFile(
+                "stubs/seeders/{$seeder}.php.stub",
+                database_path("seeders/{$seeder}.php"),
+                $force
+            );
+        }
 
-        // Publish views
-        $this->publishDirectory(
-            'stubs/views/mailbox',
-            resource_path('views/adminlte/mailbox'),
-            $force
-        );
+        if (! empty($spec['views'])) {
+            $this->publishDirectory(
+                "stubs/views/{$spec['views']}",
+                resource_path("views/adminlte/{$spec['views']}"),
+                $force
+            );
+        }
 
-        // Publish seeder
-        $this->publishFile(
-            'stubs/seeders/AdminLteMailboxSeeder.php.stub',
-            database_path('seeders/AdminLteMailboxSeeder.php'),
-            $force
-        );
-
-        if ($seed) {
-            $this->call('db:seed', ['--class' => 'AdminLteMailboxSeeder']);
+        if (! empty($spec['routes'])) {
+            $this->appendRoutes($section, (string) $spec['routes']);
         }
     }
 
-    protected function scaffoldChat(bool $force, bool $seed): void
+    /**
+     * Append a section's route definitions into a managed block in routes/web.php.
+     */
+    protected function appendRoutes(string $section, string $routeStub): void
     {
-        $this->comment('Chat scaffolding stub — implement similar to mailbox');
+        $webRoutes = base_path('routes/web.php');
+
+        if (! file_exists($webRoutes)) {
+            $this->warn('  routes/web.php not found — skipping route registration.');
+
+            return;
+        }
+
+        $contents = (string) file_get_contents($webRoutes);
+        $marker = '// AdminLTE scaffold routes';
+        $sectionMarker = "// [adminlte:{$section}]";
+
+        // Already registered — don't duplicate.
+        if (str_contains($contents, $sectionMarker)) {
+            $this->line("  <comment>routes already present for '{$section}'</comment>");
+
+            return;
+        }
+
+        $snippet = rtrim((string) file_get_contents(__DIR__."/../../resources/stubs/routes/{$routeStub}.php.stub"));
+        $block = "    {$sectionMarker}\n{$snippet}\n";
+
+        if (str_contains($contents, $marker)) {
+            // Insert into the existing managed group, right after the opening marker.
+            $contents = (string) preg_replace(
+                '/('.preg_quote($marker, '/').'.*?\{)/s',
+                "$1\n{$block}",
+                $contents,
+                1
+            );
+        } else {
+            // Create the managed group at the end of the file.
+            $group = "\n{$marker}\n";
+            $group .= "Route::middleware(['web', 'auth'])->prefix('admin')->name('adminlte.')->group(function () {\n";
+            $group .= "{$block}";
+            $group .= "});\n";
+            $contents .= $group;
+        }
+
+        file_put_contents($webRoutes, $contents);
+        $this->line("  <info>✓</info> routes registered for '{$section}'");
     }
 
-    protected function scaffoldKanban(bool $force, bool $seed): void
+    /**
+     * @param  array<int, string>  $sections
+     */
+    protected function runSeeders(array $sections): void
     {
-        $this->comment('Kanban scaffolding stub — implement similar to mailbox');
+        foreach ($sections as $section) {
+            $seeder = $this->manifest[$section]['seeder'] ?? null;
+            if (! is_string($seeder) || $seeder === '') {
+                continue;
+            }
+
+            $this->call('migrate', ['--force' => true]);
+            $this->call('db:seed', ['--class' => $seeder, '--force' => true]);
+        }
     }
 
-    protected function scaffoldCalendar(bool $force, bool $seed): void
+    protected function printNextSteps(): void
     {
-        $this->comment('Calendar scaffolding stub — implement similar to mailbox');
-    }
-
-    protected function scaffoldProjects(bool $force, bool $seed): void
-    {
-        $this->comment('Projects scaffolding stub — implement similar to mailbox');
-    }
-
-    protected function scaffoldFileManager(bool $force, bool $seed): void
-    {
-        $this->comment('File manager scaffolding stub — no migration needed');
-    }
-
-    protected function scaffoldProfile(bool $force, bool $seed): void
-    {
-        $this->publishDirectory(
-            'stubs/views/profile',
-            resource_path('views/adminlte/profile'),
-            $force
-        );
-    }
-
-    protected function scaffoldSettings(bool $force, bool $seed): void
-    {
-        $this->publishDirectory(
-            'stubs/views/settings',
-            resource_path('views/adminlte/settings'),
-            $force
-        );
-    }
-
-    protected function scaffoldInvoice(bool $force, bool $seed): void
-    {
-        $this->publishDirectory(
-            'stubs/views/invoice',
-            resource_path('views/adminlte/invoice'),
-            $force
-        );
-    }
-
-    protected function scaffoldPricing(bool $force, bool $seed): void
-    {
-        $this->publishDirectory(
-            'stubs/views/pricing',
-            resource_path('views/adminlte/pricing'),
-            $force
-        );
-    }
-
-    protected function scaffoldFaq(bool $force, bool $seed): void
-    {
-        $this->publishDirectory(
-            'stubs/views/faq',
-            resource_path('views/adminlte/faq'),
-            $force
-        );
+        $this->newLine();
+        $this->components->info('Scaffolding complete. Next steps:');
+        $this->line('  1. Run <fg=yellow>php artisan migrate</> to create the tables.');
+        $this->line('  2. Run <fg=yellow>php artisan db:seed --class=AdminLte{Section}Seeder</> for demo data.');
+        $this->line('  3. Add menu items in <fg=yellow>config/adminlte.php</> pointing to the new routes (prefixed <fg=yellow>adminlte.</>).');
+        $this->line('  4. Visit <fg=yellow>/admin/{section}</> (requires authentication).');
     }
 
     protected function publishFile(string $stub, string $path, bool $force): void
     {
         if (file_exists($path) && ! $force) {
-            $this->warn("  File exists: {$path}");
+            $this->line("  <comment>exists</comment> {$path}");
 
             return;
         }
 
-        $content = file_get_contents(__DIR__.'/../../resources/'.$stub);
+        $stubPath = __DIR__.'/../../resources/'.$stub;
+
+        if (! file_exists($stubPath)) {
+            $this->warn("  missing stub: {$stub}");
+
+            return;
+        }
+
+        $content = file_get_contents($stubPath);
         $dir = dirname($path);
         if (! is_dir($dir)) {
             mkdir($dir, 0755, recursive: true);
@@ -241,7 +337,7 @@ class ScaffoldCommand extends Command
             mkdir($path, 0755, recursive: true);
         }
 
-        foreach (glob($stubPath.'/*') as $file) {
+        foreach (glob($stubPath.'/*') ?: [] as $file) {
             $dest = $path.'/'.basename($file);
             if (file_exists($dest) && ! $force) {
                 continue;
