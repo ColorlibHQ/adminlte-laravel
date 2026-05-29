@@ -119,6 +119,12 @@ return [
     // "View documentation" CTA button at the bottom of the sidebar (false to hide).
     'sidebar_docs_url' => 'https://adminlte.io/themes/v4/docs/introduction.html',
 
+    // Bundled demo/showcase pages (Dashboard v2/v3, Widgets, UI, Forms, Tables,
+    // Layout Options, Theme Generate, auth variants, error pages). Set false to
+    // skip registering their routes in production.
+    'demo' => true,
+    'demo_middleware' => ['web', 'auth'],
+
     'sidebar_breakpoint' => 'lg',     // sidebar-expand-{breakpoint}
     'sidebar_mini' => true,           // .sidebar-mini
     'sidebar_collapse' => false,      // start collapsed
@@ -198,45 +204,36 @@ return [
             'icon' => 'bi bi-speedometer',
             'submenu' => [
                 ['text' => 'Dashboard v1', 'url' => '/', 'icon' => 'bi bi-circle'],
-                ['text' => 'Dashboard v2', 'url' => '#', 'icon' => 'bi bi-circle'],
-                ['text' => 'Dashboard v3', 'url' => '#', 'icon' => 'bi bi-circle'],
+                ['text' => 'Dashboard v2', 'url' => 'demo/dashboard-v2', 'icon' => 'bi bi-circle'],
+                ['text' => 'Dashboard v3', 'url' => 'demo/dashboard-v3', 'icon' => 'bi bi-circle'],
             ],
         ],
         [
             'text' => 'Theme Generate',
-            'url' => '#',
+            'url' => 'demo/theme-generator',
             'icon' => 'bi bi-palette',
         ],
         [
             'text' => 'Widgets',
             'icon' => 'bi bi-box-seam-fill',
             'submenu' => [
-                ['text' => 'Small Box', 'url' => '#', 'icon' => 'bi bi-circle'],
-                ['text' => 'Info Box', 'url' => '#', 'icon' => 'bi bi-circle'],
-                ['text' => 'Cards', 'url' => '#', 'icon' => 'bi bi-circle'],
+                ['text' => 'Small Box', 'url' => 'demo/widgets/small-box', 'icon' => 'bi bi-circle'],
+                ['text' => 'Info Box', 'url' => 'demo/widgets/info-box', 'icon' => 'bi bi-circle'],
+                ['text' => 'Cards', 'url' => 'demo/widgets/cards', 'icon' => 'bi bi-circle'],
             ],
         ],
         [
             'text' => 'Layout Options',
+            'url' => 'demo/layout-options',
             'icon' => 'bi bi-clipboard-fill',
-            'label' => '7',
-            'label_color' => 'secondary',
-            'submenu' => [
-                ['text' => 'Default Sidebar', 'url' => '#', 'icon' => 'bi bi-circle'],
-                ['text' => 'Fixed Sidebar', 'url' => '#', 'icon' => 'bi bi-circle'],
-                ['text' => 'Fixed Header', 'url' => '#', 'icon' => 'bi bi-circle'],
-                ['text' => 'Fixed Footer', 'url' => '#', 'icon' => 'bi bi-circle'],
-                ['text' => 'Sidebar Mini', 'url' => '#', 'icon' => 'bi bi-circle'],
-                ['text' => 'Layout RTL', 'url' => '#', 'icon' => 'bi bi-circle'],
-            ],
         ],
         [
             'text' => 'UI Elements',
             'icon' => 'bi bi-tree-fill',
             'submenu' => [
-                ['text' => 'General', 'url' => '#', 'icon' => 'bi bi-circle'],
-                ['text' => 'Icons', 'url' => '#', 'icon' => 'bi bi-circle'],
-                ['text' => 'Timeline', 'url' => '#', 'icon' => 'bi bi-circle'],
+                ['text' => 'General', 'url' => 'demo/ui/general', 'icon' => 'bi bi-circle'],
+                ['text' => 'Icons', 'url' => 'demo/ui/icons', 'icon' => 'bi bi-circle'],
+                ['text' => 'Timeline', 'url' => 'demo/ui/timeline', 'icon' => 'bi bi-circle'],
             ],
         ],
         [
@@ -251,17 +248,18 @@ return [
             'text' => 'Forms',
             'icon' => 'bi bi-pencil-square',
             'submenu' => [
-                ['text' => 'Elements', 'url' => '#', 'icon' => 'bi bi-circle'],
-                ['text' => 'Layout', 'url' => '#', 'icon' => 'bi bi-circle'],
-                ['text' => 'Validation', 'url' => '#', 'icon' => 'bi bi-circle'],
+                ['text' => 'Elements', 'url' => 'demo/forms/elements', 'icon' => 'bi bi-circle'],
+                ['text' => 'Layout', 'url' => 'demo/forms/layout', 'icon' => 'bi bi-circle'],
+                ['text' => 'Validation', 'url' => 'demo/forms/validation', 'icon' => 'bi bi-circle'],
+                ['text' => 'Wizard', 'url' => 'demo/forms/wizard', 'icon' => 'bi bi-circle'],
             ],
         ],
         [
             'text' => 'Tables',
             'icon' => 'bi bi-table',
             'submenu' => [
-                ['text' => 'Simple Tables', 'url' => '#', 'icon' => 'bi bi-circle'],
-                ['text' => 'Data Tables', 'url' => '#', 'icon' => 'bi bi-circle'],
+                ['text' => 'Simple Tables', 'url' => 'demo/tables/simple', 'icon' => 'bi bi-circle'],
+                ['text' => 'Data Tables', 'url' => 'demo/tables/data', 'icon' => 'bi bi-circle'],
             ],
         ],
 
@@ -284,9 +282,9 @@ return [
                     'text' => 'Error',
                     'icon' => 'bi bi-circle',
                     'submenu' => [
-                        ['text' => '404', 'url' => '#', 'icon' => 'bi bi-circle'],
-                        ['text' => '500', 'url' => '#', 'icon' => 'bi bi-circle'],
-                        ['text' => 'Maintenance', 'url' => '#', 'icon' => 'bi bi-circle'],
+                        ['text' => '404', 'url' => 'demo/errors/404', 'icon' => 'bi bi-circle'],
+                        ['text' => '500', 'url' => 'demo/errors/500', 'icon' => 'bi bi-circle'],
+                        ['text' => 'Maintenance', 'url' => 'demo/errors/maintenance', 'icon' => 'bi bi-circle'],
                     ],
                 ],
             ],
@@ -309,9 +307,9 @@ return [
                     'text' => 'Version 2',
                     'icon' => 'bi bi-box-arrow-in-right',
                     'submenu' => [
-                        ['text' => 'Login', 'url' => '#', 'icon' => 'bi bi-circle'],
-                        ['text' => 'Register', 'url' => '#', 'icon' => 'bi bi-circle'],
-                        ['text' => 'Lockscreen', 'url' => '#', 'icon' => 'bi bi-circle'],
+                        ['text' => 'Login', 'url' => 'demo/auth/login-v2', 'icon' => 'bi bi-circle'],
+                        ['text' => 'Register', 'url' => 'demo/auth/register-v2', 'icon' => 'bi bi-circle'],
+                        ['text' => 'Lockscreen', 'url' => 'demo/auth/lockscreen', 'icon' => 'bi bi-circle'],
                     ],
                 ],
             ],

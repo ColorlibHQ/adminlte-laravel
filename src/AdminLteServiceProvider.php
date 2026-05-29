@@ -9,6 +9,7 @@ use ColorlibHQ\AdminLte\Console\StatusCommand;
 use ColorlibHQ\AdminLte\Plugins\PluginManager;
 use ColorlibHQ\AdminLte\View\Components;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Translation\FileLoader;
 
@@ -99,6 +100,55 @@ class AdminLteServiceProvider extends ServiceProvider
         $this->registerBladeDirectives();
         $this->registerPublishing();
         $this->registerCommands();
+        $this->registerDemoRoutes();
+    }
+
+    /**
+     * Register routes for the bundled demo/showcase pages (Dashboard v2/v3,
+     * Widgets, UI Elements, Forms, Tables, Layout Options, Theme Generate,
+     * auth variants, error pages). Enabled by default so a fresh install
+     * mirrors the AdminLTE demo; disable with `'demo' => false` in config.
+     */
+    private function registerDemoRoutes(): void
+    {
+        if (! config('adminlte.demo', true)) {
+            return;
+        }
+
+        /** @var array<int, string> $middleware */
+        $middleware = config('adminlte.demo_middleware', ['web', 'auth']);
+
+        // uri => blade view (route name is "adminlte.demo." + dotted uri tail)
+        $pages = [
+            'demo/dashboard-v2' => 'demo.dashboard2',
+            'demo/dashboard-v3' => 'demo.dashboard3',
+            'demo/theme-generator' => 'demo.theme-generator',
+            'demo/layout-options' => 'demo.layout-options',
+            'demo/widgets/small-box' => 'demo.widgets.small-box',
+            'demo/widgets/info-box' => 'demo.widgets.info-box',
+            'demo/widgets/cards' => 'demo.widgets.cards',
+            'demo/ui/general' => 'demo.ui.general',
+            'demo/ui/icons' => 'demo.ui.icons',
+            'demo/ui/timeline' => 'demo.ui.timeline',
+            'demo/forms/elements' => 'demo.forms.elements',
+            'demo/forms/layout' => 'demo.forms.layout',
+            'demo/forms/validation' => 'demo.forms.validation',
+            'demo/forms/wizard' => 'demo.forms.wizard',
+            'demo/tables/simple' => 'demo.tables.simple',
+            'demo/tables/data' => 'demo.tables.data',
+            'demo/auth/login-v2' => 'auth.login-v2',
+            'demo/auth/register-v2' => 'auth.register-v2',
+            'demo/auth/lockscreen' => 'auth.lockscreen',
+            'demo/errors/404' => 'errors.404',
+            'demo/errors/500' => 'errors.500',
+            'demo/errors/maintenance' => 'errors.maintenance',
+        ];
+
+        Route::middleware($middleware)->group(function () use ($pages) {
+            foreach ($pages as $uri => $view) {
+                Route::view($uri, 'adminlte::'.$view)->name('adminlte.'.str_replace('/', '.', $uri));
+            }
+        });
     }
 
     /**
