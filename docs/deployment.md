@@ -56,8 +56,8 @@ php artisan tinker --execute="\App\Models\User::firstOrCreate(
 ```dotenv
 APP_ENV=production
 APP_DEBUG=false
-APP_URL=https://adminlte.io/themes/v4-laravel
-ASSET_URL=https://adminlte.io/themes/v4-laravel   # only if served from a sub-path
+APP_URL=https://adminlte.io/themes/laravel
+ASSET_URL=https://adminlte.io/themes/laravel   # only if served from a sub-path
 ```
 
 ```bash
@@ -128,13 +128,13 @@ server {
 }
 ```
 
-### Served from a sub-path (`https://adminlte.io/themes/v4-laravel/`)
+### Served from a sub-path (`https://adminlte.io/themes/laravel/`)
 
 Set `APP_URL`/`ASSET_URL` (step 5) to the full sub-path, then alias it to the
 app's `public/`:
 
 ```nginx
-location /themes/v4-laravel/ {
+location /themes/laravel/ {
     alias /var/www/adminlte-preview/public/;
     try_files $uri $uri/ @adminlte;
 
@@ -146,7 +146,7 @@ location /themes/v4-laravel/ {
 }
 
 location @adminlte {
-    rewrite /themes/v4-laravel/(.*)$ /themes/v4-laravel/index.php?/$1 last;
+    rewrite /themes/laravel/(.*)$ /themes/laravel/index.php?/$1 last;
 }
 ```
 

@@ -5,18 +5,18 @@
 
 Official [AdminLTE 4](https://adminlte.io) integration for Laravel — Bootstrap 5.3, vanilla JS (no jQuery), Vite-ready.
 
-<!-- TODO: confirm the final preview URL once the Laravel app is live on the SSH preview server (adminlte.io/themes/v4-laravel). See docs/deployment.md. -->
+<!-- TODO: confirm the final preview URL once the Laravel app is live on the SSH preview server (adminlte.io/themes/laravel). See docs/deployment.md. -->
 <p align="center">
-  <a href="https://adminlte.io/themes/v4-laravel/">
+  <a href="https://adminlte.io/themes/laravel/">
     <img alt="AdminLTE 4 for Laravel — dashboard, light theme" src="docs/screenshots/light/dashboard.png" width="49%">
   </a>
-  <a href="https://adminlte.io/themes/v4-laravel/">
+  <a href="https://adminlte.io/themes/laravel/">
     <img alt="AdminLTE 4 for Laravel — dashboard, dark theme" src="docs/screenshots/dark/dashboard.png" width="49%">
   </a>
 </p>
 
 <p align="center">
-  <a href="https://adminlte.io/themes/v4-laravel/"><strong>🔗 Live demo →</strong></a>
+  <a href="https://adminlte.io/themes/laravel/"><strong>🔗 Live demo →</strong></a>
   &nbsp;·&nbsp;
   <a href="docs/installation.md"><strong>Get started →</strong></a>
 </p>
