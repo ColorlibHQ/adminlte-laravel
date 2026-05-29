@@ -31,13 +31,12 @@
 
         {{-- Right side --}}
         <ul class="navbar-nav ms-auto">
-            {{-- Search (toggles the collapsible search bar below the navbar) --}}
+            {{-- Search (opens the ⌘K command palette) --}}
             <li class="nav-item">
-                <a class="nav-link" href="#" role="button"
-                   data-bs-toggle="collapse" data-bs-target="#adminlteNavbarSearch"
-                   aria-controls="adminlteNavbarSearch" aria-expanded="false"
-                   aria-label="{{ __('adminlte.search') }}">
+                <a class="nav-link d-flex align-items-center gap-2" href="#" role="button"
+                   data-adminlte-search aria-label="{{ __('adminlte.search') }}">
                     <i class="bi bi-search"></i>
+                    <kbd class="d-none d-lg-inline small bg-body-secondary text-body-secondary border rounded px-1">⌘K</kbd>
                 </a>
             </li>
 
@@ -66,37 +65,6 @@
             @endif
         </ul>
     </div>
-
-    {{-- Collapsible search bar --}}
-    <div class="collapse" id="adminlteNavbarSearch">
-        <div class="{{ config('adminlte.classes_topnav_container', 'container-fluid') }} pb-2">
-            <form role="search" method="GET" action="{{ config('adminlte.search_url') ?: url('/') }}">
-                <div class="input-group">
-                    <input type="search" name="{{ config('adminlte.search_param', 'q') }}"
-                           class="form-control" placeholder="{{ __('adminlte.search') }}…"
-                           value="{{ request(config('adminlte.search_param', 'q')) }}"
-                           aria-label="{{ __('adminlte.search') }}">
-                    <button class="btn btn-primary" type="submit">
-                        <i class="bi bi-search"></i>
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
 </nav>
 
-@once
-    @push('js')
-        <script>
-            // Focus the navbar search field whenever the search bar is revealed.
-            document.addEventListener('DOMContentLoaded', function () {
-                const box = document.getElementById('adminlteNavbarSearch');
-                if (!box) return;
-                box.addEventListener('shown.bs.collapse', function () {
-                    const input = box.querySelector('input[type="search"]');
-                    if (input) input.focus();
-                });
-            });
-        </script>
-    @endpush
-@endonce
+@include('adminlte::partials.command-palette')

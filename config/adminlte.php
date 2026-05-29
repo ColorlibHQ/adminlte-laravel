@@ -119,10 +119,6 @@ return [
     // "View documentation" CTA button at the bottom of the sidebar (false to hide).
     'sidebar_docs_url' => 'https://adminlte.io/themes/v4/docs/introduction.html',
 
-    // Navbar search: where the search form submits (GET) and the query param name.
-    'search_url' => null,   // null falls back to "/"; set e.g. '/search'
-    'search_param' => 'q',
-
     'sidebar_breakpoint' => 'lg',     // sidebar-expand-{breakpoint}
     'sidebar_mini' => true,           // .sidebar-mini
     'sidebar_collapse' => false,      // start collapsed

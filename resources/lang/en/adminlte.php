@@ -78,6 +78,7 @@ return [
     'no_tasks' => 'No tasks',
     'see_all_tasks' => 'See all tasks',
     'view_documentation' => 'View documentation',
+    'no_results' => 'No results found',
     'home' => 'Home',
     'documentation' => 'Documentation',
     'followers' => 'Followers',
