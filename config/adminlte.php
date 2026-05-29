@@ -117,9 +117,9 @@ return [
     'control_sidebar_theme' => 'dark',
 
     // Documentation URL used by the navbar "Documentation" link and the sidebar
-    // "View documentation" CTA (false to hide the CTA). Defaults to the Laravel
-    // docs for this Laravel integration; point it at your own docs as needed.
-    'sidebar_docs_url' => 'https://laravel.com/docs',
+    // "View documentation" CTA (false to hide the CTA). Points at this package's
+    // own docs; override with your app's docs as needed.
+    'sidebar_docs_url' => 'https://github.com/ColorlibHQ/adminlte-laravel/tree/master/docs',
 
     // Bundled demo/showcase pages (Dashboard v2/v3, Widgets, UI, Forms, Tables,
     // Layout Options, Theme Generate, auth variants, error pages). Set false to
