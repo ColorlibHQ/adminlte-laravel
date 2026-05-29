@@ -5,6 +5,28 @@
 
 Official [AdminLTE 4](https://adminlte.io) integration for Laravel — Bootstrap 5.3, vanilla JS (no jQuery), Vite-ready.
 
+<!-- TODO: replace the preview URL below once the Laravel app is hosted on the preview server. -->
+<p align="center">
+  <a href="https://preview.colorlib.com/theme/adminlte-laravel/">
+    <img alt="AdminLTE 4 for Laravel — dashboard, light theme" src="docs/screenshots/light/dashboard.png" width="49%">
+  </a>
+  <a href="https://preview.colorlib.com/theme/adminlte-laravel/">
+    <img alt="AdminLTE 4 for Laravel — dashboard, dark theme" src="docs/screenshots/dark/dashboard.png" width="49%">
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://preview.colorlib.com/theme/adminlte-laravel/"><strong>🔗 Live demo →</strong></a>
+  &nbsp;·&nbsp;
+  <a href="docs/installation.md"><strong>Get started →</strong></a>
+</p>
+
+<p align="center">
+  <img alt="Kanban board" src="docs/screenshots/light/kanban.png" width="32%">
+  <img alt="Mailbox" src="docs/screenshots/light/mailbox.png" width="32%">
+  <img alt="In-app documentation" src="docs/screenshots/light/docs.png" width="32%">
+</p>
+
 This package gives you a config-driven sidebar menu, ready-to-extend Blade layouts, and a set of AdminLTE Blade components on top of the [`admin-lte`](https://www.npmjs.com/package/admin-lte) npm package.
 
 **What's included:**
@@ -243,6 +265,77 @@ controllers and registers the matching routes, all wired to the package's
 Everything in `config/adminlte.php` is documented inline — title, logo, layout switches (`layout_fixed_sidebar`, `fixed_navbar`, `sidebar_mini`, …), the color-mode toggle, sidebar theme, and custom element classes.
 
 For deeper visual changes (sidebar width, breakpoints, brand colors), compile AdminLTE's SCSS — see [the customization guide](https://adminlte.io/themes/v4/docs/customization.html) and Option B in `resources/css/adminlte.css`.
+
+## Upgrade to a Premium Dashboard
+
+Need advanced features, dedicated support, and production-ready code? Explore our handpicked collection of professional admin templates on [DashboardPack](https://dashboardpack.com/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-laravel).
+
+<table>
+  <tr>
+    <td align="center" width="50%">
+      <a href="https://dashboardpack.com/theme-details/apex-dashboard-nextjs/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-laravel">
+        <img src="docs/screenshots/dashboardpack/apex.png" alt="Apex Dashboard — Next.js 16 admin template with shadcn/ui" width="100%">
+      </a>
+      <br>
+      <a href="https://dashboardpack.com/theme-details/apex-dashboard-nextjs/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-laravel"><strong>Apex Dashboard</strong></a>
+      <br>
+      <sub>Next.js 16 + React 19 + Tailwind CSS v4 + shadcn/ui. 5 dashboard variants, 20+ app pages, 125+ routes, full CRUD.</sub>
+    </td>
+    <td align="center" width="50%">
+      <a href="https://dashboardpack.com/theme-details/zenith-shadcn/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-laravel">
+        <img src="docs/screenshots/dashboardpack/zenith.png" alt="Zenith — ultra-minimal Next.js admin dashboard with shadcn/ui" width="100%">
+      </a>
+      <br>
+      <a href="https://dashboardpack.com/theme-details/zenith-shadcn/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-laravel"><strong>Zenith Dashboard</strong></a>
+      <br>
+      <sub>Next.js 16 + React 19 + Tailwind CSS v4 + shadcn/ui. Achromatic design, 50+ pages, 6 dashboards, live theme customizer.</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" width="50%">
+      <a href="https://dashboardpack.com/theme-details/haze-dashboard-nuxt/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-laravel">
+        <img src="docs/screenshots/dashboardpack/haze.png" alt="Haze — Nuxt 4 admin dashboard with 92+ pages and 5 dashboards" width="100%">
+      </a>
+      <br>
+      <a href="https://dashboardpack.com/theme-details/haze-dashboard-nuxt/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-laravel"><strong>Haze</strong></a>
+      <br>
+      <sub>Nuxt 4 + Nuxt UI v4 + Tailwind CSS v4. 92+ pages, 7 layouts, 5 dashboards, RTL, i18n, mock API layer.</sub>
+    </td>
+    <td align="center" width="50%">
+      <a href="https://dashboardpack.com/theme-details/tailpanel/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-laravel">
+        <img src="docs/screenshots/dashboardpack/tailpanel.png" alt="TailPanel — modern React and Tailwind CSS admin panel" width="100%">
+      </a>
+      <br>
+      <a href="https://dashboardpack.com/theme-details/tailpanel/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-laravel"><strong>TailPanel</strong></a>
+      <br>
+      <sub>React + TypeScript + Tailwind CSS + Vite. 9 dashboard designs, dark and light themes.</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" width="50%">
+      <a href="https://dashboardpack.com/theme-details/admindek-html/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-laravel">
+        <img src="docs/screenshots/dashboardpack/admindek.png" alt="Admindek — feature-rich Bootstrap 5 dashboard with dark mode" width="100%">
+      </a>
+      <br>
+      <a href="https://dashboardpack.com/theme-details/admindek-html/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-laravel"><strong>Admindek</strong></a>
+      <br>
+      <sub>Bootstrap 5 + vanilla JS. 100+ components, dark/light modes, RTL support, 10 color presets.</sub>
+    </td>
+    <td align="center" width="50%">
+      <a href="https://dashboardpack.com/theme-details/svelteforge-premium/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-laravel">
+        <img src="docs/screenshots/dashboardpack/svelteforge.png" alt="SvelteForge Premium — SvelteKit admin dashboard with multi-tenant support" width="100%">
+      </a>
+      <br>
+      <a href="https://dashboardpack.com/theme-details/svelteforge-premium/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-laravel"><strong>SvelteForge Premium</strong></a>
+      <br>
+      <sub>SvelteKit + Tailwind CSS v4. 30+ wired-up modules, multi-tenant from row zero, dark/light/system mode.</sub>
+    </td>
+  </tr>
+</table>
+
+<p align="center">
+  <a href="https://dashboardpack.com/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-laravel"><strong>View All Premium Templates →</strong></a>
+</p>
 
 ## Contributing
 
