@@ -21,12 +21,6 @@ Official [AdminLTE 4](https://adminlte.io) integration for Laravel — Bootstrap
   <a href="docs/installation.md"><strong>Get started →</strong></a>
 </p>
 
-<p align="center">
-  <img alt="Kanban board" src="docs/screenshots/light/kanban.png" width="32%">
-  <img alt="Mailbox" src="docs/screenshots/light/mailbox.png" width="32%">
-  <img alt="In-app documentation" src="docs/screenshots/light/docs.png" width="32%">
-</p>
-
 This package gives you a config-driven sidebar menu, ready-to-extend Blade layouts, and a set of AdminLTE Blade components on top of the [`admin-lte`](https://www.npmjs.com/package/admin-lte) npm package.
 
 **What's included:**
@@ -46,6 +40,31 @@ This package gives you a config-driven sidebar menu, ready-to-extend Blade layou
 - Auth views (login, register, login-v2, register-v2, lockscreen, forgot password, reset password)
 - Error pages (404, 500, maintenance)
 - Vite-first asset pipeline
+
+## Screenshots
+
+Every screenshot is a real page from the running Laravel app — [browse the live demo →](https://adminlte.io/themes/laravel/)
+
+<p align="center">
+  <a href="https://adminlte.io/themes/laravel/"><img alt="Dashboard v2" src="docs/screenshots/light/dashboard2.png" width="32%"></a>
+  <a href="https://adminlte.io/themes/laravel/"><img alt="Dashboard v3" src="docs/screenshots/light/dashboard3.png" width="32%"></a>
+  <a href="https://adminlte.io/themes/laravel/"><img alt="Widgets — small boxes, info boxes, cards" src="docs/screenshots/light/widgets.png" width="32%"></a>
+</p>
+<p align="center">
+  <a href="https://adminlte.io/themes/laravel/"><img alt="Form elements" src="docs/screenshots/light/forms.png" width="32%"></a>
+  <a href="https://adminlte.io/themes/laravel/"><img alt="Data tables" src="docs/screenshots/light/tables.png" width="32%"></a>
+  <a href="https://adminlte.io/themes/laravel/"><img alt="Kanban board (drag-and-drop)" src="docs/screenshots/light/kanban.png" width="32%"></a>
+</p>
+<p align="center">
+  <a href="https://adminlte.io/themes/laravel/"><img alt="Event calendar (FullCalendar)" src="docs/screenshots/light/calendar.png" width="32%"></a>
+  <a href="https://adminlte.io/themes/laravel/"><img alt="Chat" src="docs/screenshots/light/chat.png" width="32%"></a>
+  <a href="https://adminlte.io/themes/laravel/"><img alt="Mailbox" src="docs/screenshots/light/mailbox.png" width="32%"></a>
+</p>
+<p align="center">
+  <a href="https://adminlte.io/themes/laravel/"><img alt="User profile" src="docs/screenshots/light/profile.png" width="32%"></a>
+  <a href="https://adminlte.io/themes/laravel/"><img alt="Invoice" src="docs/screenshots/light/invoice.png" width="32%"></a>
+  <a href="https://adminlte.io/themes/laravel/"><img alt="Theme generator" src="docs/screenshots/light/theme.png" width="32%"></a>
+</p>
 
 ## Documentation
 

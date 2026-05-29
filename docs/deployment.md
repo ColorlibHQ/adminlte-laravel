@@ -167,6 +167,41 @@ php artisan serve --host=127.0.0.1 --port=8000
 location / { proxy_pass http://127.0.0.1:8000; proxy_set_header Host $host; }
 ```
 
+## Other hosting options
+
+### Laravel Forge / managed hosting
+
+Point Forge (or Ploi/RunCloud) at the repo and use this deploy script — it
+covers the build, migrations, and caching in one pass:
+
+```bash
+composer install --optimize-autoloader --no-dev
+npm ci && npm run build
+php artisan migrate --force
+php artisan config:cache && php artisan route:cache && php artisan view:cache
+```
+
+Add `demo@adminlte.io` + `APP_DEMO=true` (step 4 & 6) to the environment so the
+public demo works, and set the site's web root to `public/`.
+
+### Docker
+
+```dockerfile
+FROM php:8.3-fpm AS app
+WORKDIR /var/www/html
+RUN apt-get update && apt-get install -y nodejs npm \
+    && docker-php-ext-install pdo pdo_mysql bcmath
+COPY composer.json composer.lock ./
+RUN composer install --no-dev --optimize-autoloader
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build \
+    && php artisan config:cache && php artisan route:cache && php artisan view:cache
+```
+
+Serve `public/` with Nginx (see §7) in front of the PHP-FPM container.
+
 ## Updating the preview
 
 ```bash
