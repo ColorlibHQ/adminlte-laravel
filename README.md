@@ -17,13 +17,31 @@ This package gives you a config-driven sidebar menu, ready-to-extend Blade layou
 - **Plugin system** for lazy-loading JS libraries (Flatpickr, Tom Select, Tabulator, Quill, **ApexCharts**, **jsVectorMap**, **FullCalendar**, **SortableJS**)
 - **Scaffolding system** (`adminlte:scaffold`) with full DB backing for 11 sections: mailbox, chat, kanban, calendar, projects, file-manager, profile, settings, invoice, pricing, faq
 - **Auth scaffolding** (`adminlte:make-auth`) for plain/Breeze/Fortify integration
-- **Theme generator** demo page for color customization
-- **Dashboard variants** with live ApexCharts visualizations
-- RTL layout support
+- **⌘K command palette** — searches your menu, opens via the navbar pill or Cmd/Ctrl+K
+- **Bundled demo/showcase pages** — Dashboard v1/v2/v3, Widgets, UI Elements, Forms, Tables, Layout Options, Theme Generator (toggle with `config('adminlte.demo')`)
+- RTL layout support + 9 locales
 - Config-driven sidebar menu with permissions, active states, badges
 - Auth views (login, register, login-v2, register-v2, lockscreen, forgot password, reset password)
 - Error pages (404, 500, maintenance)
 - Vite-first asset pipeline
+
+## Documentation
+
+Full docs live in the [`docs/`](docs/) directory:
+
+| Guide | What it covers |
+|---|---|
+| [Installation](docs/installation.md) | Requirements, install, Vite wiring, first page |
+| [Configuration](docs/configuration.md) | Every `config/adminlte.php` key |
+| [Layout](docs/layout.md) | `adminlte::page`, navbar, sidebar, footer, ⌘K search, color mode, RTL |
+| [Menu](docs/menu.md) | Sidebar/navbar menu, treeview, badges, permissions, filters |
+| [Components](docs/components.md) | All 40 Blade components — props, slots, examples |
+| [Plugins](docs/plugins.md) | Lazy-loaded JS libraries and the plugin manager |
+| [Scaffolding](docs/scaffolding.md) | `adminlte:scaffold` — DB-backed application sections |
+| [Authentication](docs/authentication.md) | `adminlte:make-auth` — plain / Breeze / Fortify |
+| [Commands](docs/commands.md) | All Artisan commands and options |
+| [Translations](docs/translations.md) | The 9 locales and key resolution |
+| [Demo pages](docs/demo-pages.md) | The bundled showcase routes |
 
 > The legacy [`jeroennoten/laravel-adminlte`](https://github.com/jeroennoten/Laravel-AdminLTE) targets AdminLTE 3 (Bootstrap 4 + jQuery). This package is the AdminLTE 4 successor: Bootstrap 5.3, vanilla JS, Laravel 13, PHP 8.3+, Vite instead of precompiled assets.
 
@@ -223,6 +241,16 @@ controllers and registers the matching routes, all wired to the package's
 Everything in `config/adminlte.php` is documented inline — title, logo, layout switches (`layout_fixed_sidebar`, `fixed_navbar`, `sidebar_mini`, …), the color-mode toggle, sidebar theme, and custom element classes.
 
 For deeper visual changes (sidebar width, breakpoints, brand colors), compile AdminLTE's SCSS — see [the customization guide](https://adminlte.io/themes/v4/docs/customization.html) and Option B in `resources/css/adminlte.css`.
+
+## Contributing
+
+Issues and PRs welcome. The quality gates (Pint, Larastan level 8, PHPUnit) run
+in CI on PHP 8.3 / 8.4 with Laravel 13 — see
+[docs/contributing.md](docs/contributing.md) for local setup and conventions.
+
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for the release history.
 
 ## License
 

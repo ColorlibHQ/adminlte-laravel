@@ -7,28 +7,66 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Fixed (Asset pipeline infrastructure)
+## [0.8.0] - 2026-05-29
 
-- `@pluginStyles` / `@pluginScripts` now resolve enabled plugins at **request
-  time** instead of compile time, so plugins auto-enabled by components (e.g.
-  `<x-adminlte-chart>` enabling ApexCharts) are reliably injected.
-- Removed the duplicate CDN Bootstrap Icons `<link>` from `master.blade.php`
-  (icons now come solely from the Vite bundle, eliminating font conflicts).
-- `adminlte:install` now installs the plugin npm packages (apexcharts,
-  jsvectormap, fullcalendar, sortablejs) and copies their dist files into
-  `public/vendor/*`, resolving the 404s that left charts/maps/calendar/kanban
-  blank.
-- `app.js` stub now instantiates ApexCharts, jsVectorMap, FullCalendar, and
-  SortableJS from the `data-*` attributes the components emit — the missing
-  link that made those components actually render.
-- Tabs/Tab components: panes now push to a Blade stack so they render inside
-  `.tab-content` instead of (invalidly) inside the nav `<ul>`.
+### Added (Full 1:1 parity with the AdminLTE 4 demo)
 
-### Changed (Quality)
+- **Faithful Dashboard v1** recreation behind Laravel auth — small-boxes,
+  Sales Value ApexCharts area chart, jsVectorMap world map with sparklines,
+  and Direct Chat, matching `index.html`.
+- **Showcase pages** wired to the sidebar (every link now resolves):
+  Dashboard v2 & v3, Widgets (Small Box / Info Box / Cards), UI Elements
+  (General / Icons / Timeline), Forms (Elements / Layout / Validation /
+  Wizard), Tables (Simple / Data), and a config-driven Layout Options page.
+- **⌘K command palette** — a floating overlay that searches the sidebar menu;
+  opens via the navbar search pill or Cmd/Ctrl+K, with arrow-key navigation.
+- **Demo routes** auto-registered by the service provider behind
+  `config('adminlte.demo')` (default `true`) and `demo_middleware`
+  (default `['web', 'auth']`); set `'demo' => false` to skip them.
+- Navbar messages & notifications dropdowns, and a richer user menu, bound to
+  the authenticated user; "View documentation" CTA in the sidebar
+  (`sidebar_docs_url`).
+- Comprehensive documentation under [`docs/`](docs/): installation,
+  configuration, layout, menu, components, plugins, scaffolding,
+  authentication, commands, translations, and demo pages.
 
-- PHPStan level 8 is now fully clean (0 errors) across `src/`, via accurate
-  generic array typehints, `json_encode(...) ?: '{}'` config fallbacks, and a
-  scoped ignore for the package-namespaced `view()` false-positive.
+### Changed
+
+- Scaffolded page designs upgraded to match the originals while keeping their
+  DB backing: **Profile** (About card + Activity/Timeline/Settings tabs),
+  **Invoice** (print-ready with subtotal/tax/total), **Chat** (split-pane with
+  styled bubbles), **Settings** (multi-section), **Calendar** (draggable-events
+  sidebar), **File Manager** (folder breadcrumb + file-type grid).
+- Footer text reduced to a compact, regular-weight line (config-driven via
+  `footer_left` / `footer_right`).
+
+### Fixed
+
+- **Translations**: `__('adminlte.key')` now resolves out of the box — the
+  package registers its lang directory as a default-namespace path. Previously
+  every key (navbar, sidebar, auth views) rendered as a raw `adminlte.*`
+  string because translations were only registered under the `adminlte::`
+  namespace.
+- **Navbar search** now works — replaced the inert AdminLTE 3
+  `data-widget="navbar-search"` hook with the ⌘K command palette.
+- The sidebar "View documentation" CTA collapses to an icon-only button when
+  the sidebar is minimised (and hides on fully-collapsed off-canvas sidebars).
+- `@pluginStyles` / `@pluginScripts` resolve enabled plugins at **request
+  time** instead of compile time, so component-enabled plugins are injected.
+- Removed the duplicate CDN Bootstrap Icons `<link>` (icons now come solely
+  from the Vite bundle).
+- `adminlte:install` installs the plugin npm packages (apexcharts, jsvectormap,
+  fullcalendar, sortablejs) and copies their dist files (plus the RTL
+  stylesheet) into `public/vendor/*`, fixing 404s that left charts/maps/
+  calendar/kanban blank.
+- `app.js` initialises ApexCharts, jsVectorMap, FullCalendar, and SortableJS
+  from the `data-*` attributes the components emit.
+- Tabs/Tab panes push to a Blade stack so they render inside `.tab-content`.
+
+### Quality
+
+- PHPStan level 8 fully clean (0 errors) across `src/`; Pint clean; 26 tests
+  pass. Stopped tracking the PHPStan cache (`/build`).
 
 ## [0.7.0] - 2026-05-29
 
