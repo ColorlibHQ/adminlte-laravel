@@ -20,6 +20,12 @@ class StatusCommand extends Command
             'Published views (resources/views/vendor/adminlte)' => File::isDirectory(resource_path('views/vendor/adminlte')),
             'admin-lte npm package' => File::isDirectory(base_path('node_modules/admin-lte')),
             'bootstrap npm package' => File::isDirectory(base_path('node_modules/bootstrap')),
+            'RTL stylesheet (public/vendor/adminlte/css)' => File::exists(public_path('vendor/adminlte/css/adminlte.rtl.min.css')),
+            'ApexCharts vendor file' => File::exists(public_path('vendor/apexcharts/apexcharts.min.js')),
+            'jsVectorMap vendor file' => File::exists(public_path('vendor/jsvectormap/jsvectormap.min.js')),
+            'FullCalendar vendor file' => File::exists(public_path('vendor/fullcalendar/index.global.min.js')),
+            'SortableJS vendor file' => File::exists(public_path('vendor/sortablejs/sortablejs.min.js')),
+            'Scaffolded sections (resources/views/adminlte)' => File::isDirectory(resource_path('views/adminlte')),
         ];
 
         $this->newLine();

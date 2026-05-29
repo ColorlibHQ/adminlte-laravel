@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Process;
 class InstallCommand extends Command
 {
     protected $signature = 'adminlte:install
-        {--only= : Install only a specific resource (config|views|assets)}
+        {--only= : Install only a specific resource (config|views|assets|lang)}
         {--force : Overwrite existing files}
         {--no-interaction-deps : Skip the npm install prompt}';
 
@@ -32,6 +32,10 @@ class InstallCommand extends Command
 
         if ($only === 'views') {
             $this->publishTag('adminlte-views', 'views');
+        }
+
+        if ($only === 'lang') {
+            $this->publishTag('adminlte-lang', 'language files');
         }
 
         if (! $only) {

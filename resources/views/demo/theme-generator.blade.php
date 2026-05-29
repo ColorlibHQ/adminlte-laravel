@@ -36,20 +36,35 @@
                             <x-adminlte-input-color name="footer_color" value="#f8f9fa" />
                         </div>
                     </div>
-                    <button class="btn btn-primary">{{ __('adminlte.preview') }}</button>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Color Mode</label>
+                            <select id="tg-mode" class="form-select">
+                                <option value="light">Light</option>
+                                <option value="dark">Dark</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Sidebar Theme</label>
+                            <select id="tg-sidebar-theme" class="form-select">
+                                <option value="dark">Dark</option>
+                                <option value="light">Light</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header d-flex align-items-center">
                     <h3 class="card-title">Config Output</h3>
+                    <button id="tg-copy" class="btn btn-sm btn-outline-secondary ms-auto">
+                        <i class="bi bi-clipboard me-1"></i> Copy
+                    </button>
                 </div>
                 <div class="card-body">
-                    <pre id="config-output" class="small" style="max-height: 300px; overflow: auto;">// Paste into config/adminlte.php
-'sidebar_theme' => 'dark',
-'classes_sidebar' => '',
-'classes_topnav' => '',</pre>
+                    <pre id="config-output" class="small mb-0" style="max-height: 320px; overflow: auto;"></pre>
                 </div>
             </div>
         </div>
@@ -58,15 +73,34 @@
 
 @section('js')
     <script>
-        document.querySelectorAll('input[type="color"]').forEach(input => {
-            input.addEventListener('change', () => {
-                updatePreview();
-            });
-        });
+        const mode = document.getElementById('tg-mode');
+        const sidebarTheme = document.getElementById('tg-sidebar-theme');
+        const output = document.getElementById('config-output');
 
         function updatePreview() {
-            const config = `// Theme Configuration\n'sidebar_theme' => 'dark',\n'primary_color' => 'primary',`;
-            document.getElementById('config-output').textContent = config;
+            // Live-apply the colour mode to the document for an instant preview.
+            document.documentElement.setAttribute('data-bs-theme', mode.value);
+
+            output.textContent =
+`// Paste into config/adminlte.php
+'color_mode'    => '${mode.value}',
+'sidebar_theme' => '${sidebarTheme.value}',
+'sidebar_color' => '${document.querySelector('[name=sidebar_color]')?.value ?? ''}',
+'primary_color' => '${document.querySelector('[name=primary_color]')?.value ?? ''}',
+'navbar_color'  => '${document.querySelector('[name=navbar_color]')?.value ?? ''}',
+'footer_color'  => '${document.querySelector('[name=footer_color]')?.value ?? ''}',`;
         }
+
+        document.querySelectorAll('input[type="color"], #tg-mode, #tg-sidebar-theme')
+            .forEach(el => el.addEventListener('change', updatePreview));
+
+        document.getElementById('tg-copy').addEventListener('click', async () => {
+            await navigator.clipboard.writeText(output.textContent);
+            const btn = document.getElementById('tg-copy');
+            btn.innerHTML = '<i class="bi bi-check-lg me-1"></i> Copied';
+            setTimeout(() => { btn.innerHTML = '<i class="bi bi-clipboard me-1"></i> Copy'; }, 1500);
+        });
+
+        updatePreview();
     </script>
 @endsection
