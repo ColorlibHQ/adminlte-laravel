@@ -28,6 +28,7 @@ Behavior:
 
 | Section | Description |
 |---------|-------------|
+| `dashboard` | Data-driven dashboard with real stats — see [`dashboard.md`](dashboard.md) |
 | `mailbox` | Messages mailbox with inbox/read/compose |
 | `chat` | Conversations and chat messaging |
 | `kanban` | Kanban boards with drag-to-reorder cards |
@@ -40,6 +41,8 @@ Behavior:
 | `pricing` | Pricing page |
 | `faq` | FAQ accordion |
 | `notifications` | Database notifications + navbar bell wiring + page — see [`notifications.md`](notifications.md) |
+| `api` | Sanctum personal access tokens + management UI — see [`api.md`](api.md) |
+| `realtime` | Broadcast event + Echo listeners for live chat/notifications — see [`realtime.md`](realtime.md) |
 | `impersonation` | "Log in as" another user (RBAC-gated) — see [`activity-log.md`](activity-log.md) |
 | `activity-log` | Activity/audit log + `LogsActivity` trait + auto auth-event logging — see [`activity-log.md`](activity-log.md) |
 | `rbac` | Roles & permissions, management UI, `HasRoles` on `User` — see [`authorization.md`](authorization.md) |
@@ -55,6 +58,7 @@ Behavior:
 | Policies | `app/Policies/{Model}Policy.php` |
 | Model factories | `database/factories/{Model}Factory.php` |
 | Notifications | `app/Notifications/{Notification}.php` |
+| Broadcast events | `app/Events/{Event}.php` |
 | Model concerns (traits) | `app/Models/Concerns/{Trait}.php` |
 | Feature tests | `tests/Feature/AdminLte/{Section}Test.php` |
 | Seeders | `database/seeders/{Seeder}.php` |

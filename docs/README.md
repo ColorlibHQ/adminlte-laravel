@@ -28,6 +28,9 @@ Official [AdminLTE 4](https://adminlte.io) integration for Laravel — Bootstrap
 - [**Account management**](account-management.md) — avatar, change password, active sessions, delete account
 - [**Notifications**](notifications.md) — database notifications wired into the navbar bell + a notifications page
 - [**Activity log & impersonation**](activity-log.md) — audit log, auto auth-event logging, and "log in as" user
+- [**Dashboard**](dashboard.md) — data-driven dashboard with real stats from your scaffolded models
+- [**API tokens**](api.md) — Sanctum personal access tokens + management UI
+- [**Real-time**](realtime.md) — Reverb/Echo broadcast for live chat & notifications
 
 ## Reference
 
