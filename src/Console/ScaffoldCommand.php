@@ -34,6 +34,7 @@ class ScaffoldCommand extends Command
         'api' => 'Sanctum personal access tokens with a management UI (run install:api first)',
         'impersonation' => 'Log in as another user (RBAC-gated) with a revert banner',
         'activity-log' => 'Activity/audit log with a viewer + a LogsActivity model trait',
+        'realtime' => 'Broadcast event + Echo listeners for live chat & notifications (needs Reverb)',
         'rbac' => 'Roles & permissions (RBAC) with user/role management UI',
     ];
 
@@ -247,6 +248,12 @@ class ScaffoldCommand extends Command
 
         if ($section === 'rbac') {
             $this->scaffoldRbac($force);
+
+            return;
+        }
+
+        if ($section === 'realtime') {
+            $this->scaffoldRealtime($force);
 
             return;
         }
@@ -509,6 +516,50 @@ class ScaffoldCommand extends Command
         }
 
         $this->injectHasRolesIntoUser();
+    }
+
+    /**
+     * Scaffold the real-time layer: a broadcast event for chat messages, the
+     * private-channel authorization, and an Echo listener bundle. Broadcasting
+     * itself (Reverb/Pusher/Ably) is installed separately via
+     * `php artisan install:broadcasting`; everything here no-ops without it.
+     */
+    protected function scaffoldRealtime(bool $force): void
+    {
+        $this->publishFile(
+            'stubs/events/NewChatMessage.php.stub',
+            app_path('Events/NewChatMessage.php'),
+            $force
+        );
+
+        $this->publishFile(
+            'stubs/realtime/adminlte-realtime.js.stub',
+            resource_path('js/adminlte-realtime.js'),
+            $force
+        );
+
+        // Append the channel authorization to routes/channels.php when present.
+        $channels = base_path('routes/channels.php');
+        if (file_exists($channels)) {
+            $contents = (string) file_get_contents($channels);
+            if (str_contains($contents, '// [adminlte:realtime]')) {
+                $this->line('  <comment>channel authorization already present</comment>');
+            } else {
+                $snippet = (string) file_get_contents(__DIR__.'/../../resources/stubs/realtime/channels.php.stub');
+                file_put_contents($channels, rtrim($contents)."\n".$snippet);
+                $this->line('  <info>✓</info> conversation channel added to routes/channels.php');
+            }
+        } else {
+            $this->warn('  routes/channels.php not found — run "php artisan install:broadcasting" first.');
+        }
+
+        $this->newLine();
+        $this->components->info('Real-time scaffolded. To go live:');
+        $this->line('  1. <fg=yellow>php artisan install:broadcasting</> (choose Reverb) and set REVERB_* in .env.');
+        $this->line('  2. <fg=yellow>npm install && npm run build</> (laravel-echo + the Reverb client).');
+        $this->line('  3. Import the listeners from your Vite entry: <fg=yellow>import \'./adminlte-realtime\'</>.');
+        $this->line('  4. Broadcast on send — in ChatController@store: <fg=yellow>broadcast(new \\App\\Events\\NewChatMessage($message))->toOthers();</>');
+        $this->line('  5. Run the server: <fg=yellow>php artisan reverb:start</> (and <fg=yellow>php artisan queue:work</> if the event is queued).');
     }
 
     /**

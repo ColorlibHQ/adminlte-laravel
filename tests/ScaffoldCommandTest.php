@@ -71,6 +71,13 @@ class ScaffoldCommandTest extends TestCase
         }
     }
 
+    public function test_realtime_stubs_exist(): void
+    {
+        $this->assertFileExists("{$this->stubsPath}/events/NewChatMessage.php.stub");
+        $this->assertFileExists("{$this->stubsPath}/realtime/adminlte-realtime.js.stub");
+        $this->assertFileExists("{$this->stubsPath}/realtime/channels.php.stub");
+    }
+
     public function test_every_content_section_has_a_view(): void
     {
         $viewless = [

@@ -1,0 +1,7 @@
+
+// [adminlte:realtime] Authorize listeners on a conversation's private channel.
+Broadcast::channel('conversation.{conversationId}', function ($user, $conversationId) {
+    $conversation = \App\Models\Conversation::find($conversationId);
+
+    return $conversation !== null && $conversation->users->contains($user->id);
+});
