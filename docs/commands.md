@@ -206,7 +206,7 @@ adminlte:scaffold
 
 | Option | Description |
 |--------|-------------|
-| `section` (argument, optional) | One of the 11 section names. Omit it (without `--all`) for an interactive multi-select prompt. |
+| `section` (argument, optional) | One of the 18 section names (see [`scaffolding.md`](scaffolding.md)). Omit it (without `--all`) for an interactive multi-select prompt. |
 | `--all` | Scaffold every section. |
 | `--force` | Overwrite existing files instead of skipping them. |
 | `--seed` | After publishing, run `migrate --force` and `db:seed` for the section's seeder. |

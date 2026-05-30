@@ -7,6 +7,79 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added — Authorization (RBAC)
+
+- **Native, dependency-free RBAC** via `adminlte:scaffold rbac`: roles &
+  permissions tables, `Role`/`Permission` models, a `HasRoles` trait wired into
+  the `User` model (idempotent), `role:`/`permission:` middleware, a seeder
+  (admin/editor/viewer), and a **Users/Roles management UI** under `/admin`.
+- The service provider opportunistically wires it when present (guarded by
+  `class_exists`): registers the scaffolded model policies, aliases the
+  `role`/`permission` middleware, and adds a permission-aware `Gate::before`
+  (admins pass everything; otherwise abilities resolve against permissions, so
+  `@can('manage-x')` and menu `'can' => 'manage-x'` just work).
+- An **ADMINISTRATION** sidebar section (Users, Roles), gated by `can`.
+
+### Added — Deep Laravel integration per scaffolded section
+
+- DB-backed sections now also generate **model factories** (`HasFactory`),
+  **Form Requests** (validated writes), **Policies** (controllers call
+  `authorize()`), and **feature tests** in `tests/Feature/AdminLte/`.
+
+### Added — Dashboard, notifications, account, audit, API, real-time
+
+- **Data-driven dashboard** (`adminlte:scaffold dashboard`): a
+  `DashboardController` + view rendering real aggregates (users, projects,
+  unread messages, upcoming events, projects-by-status, recent activity), each
+  guarded by table existence.
+- **Notifications** (`adminlte:scaffold notifications`): standard Laravel
+  database notifications, a notifications page, and a `NavbarData` helper that
+  feeds the navbar **bell** and **messages** dropdowns from real data (unread
+  notifications / unread mailbox messages) with graceful fallback to demo data.
+- **Account management** — the `profile` scaffold is now a tabbed account page:
+  avatar upload, change password, active sessions + log-out-other-devices, and
+  delete account.
+- **Impersonation** (`adminlte:scaffold impersonation`): RBAC-gated "log in as"
+  from the Users table, a revert banner on every page, and audit logging.
+- **Activity/audit log** (`adminlte:scaffold activity-log`): an `activity_log`
+  table, `Activity` model, a `LogsActivity` model trait, a viewer, and
+  **automatic auth-event logging** (login/logout/failed) via the service
+  provider — all through `ColorlibHQ\AdminLte\Support\ActivityLogger`.
+- **API tokens** (`adminlte:scaffold api`): a Sanctum personal-access-token
+  management UI, `HasApiTokens` wired into `User` (`trait_exists`-guarded), and
+  an example `auth:sanctum` endpoint. Requires `php artisan install:api`.
+- **Real-time** (`adminlte:scaffold realtime`): a `NewChatMessage` broadcast
+  event, conversation channel authorization, and an Echo listener bundle for
+  live chat & notifications. Degrades gracefully without a broadcaster.
+
+### Added — Auth hardening (`adminlte:make-auth`, plain mode)
+
+- Login **rate limiting** (5 attempts per email+IP), **email verification**
+  (controller, view, signed/throttled routes; `User` made to implement
+  `MustVerifyEmail`), and **password confirmation** (controller, view,
+  `password.confirm` route).
+
+### Added — Documentation
+
+- New guides: `authorization`, `account-management`, `notifications`,
+  `activity-log`, `dashboard`, `api`, `realtime`, and `deployment` — all
+  registered in the in-app docs nav and the `docs/` index, and cross-linked
+  from `scaffolding.md`.
+
+### Fixed
+
+- Removed three duplicate keys (`email`, `profile`, `no_messages`) from the
+  `de`/`es` translation files.
+- Sanctum/RBAC trait detection uses `trait_exists` (traits are not classes).
+- `create_activity_log_table` / `create_notifications_table` migrations are
+  guarded against re-runs.
+
+### Quality
+
+- Pint clean; PHPStan level 8 clean; 32 package tests pass (added
+  `MakeAuthCommandTest`; extended `ScaffoldCommandTest` for the new artifact
+  types — notifications, concerns, events — and view-less sections).
+
 ## [0.8.0] - 2026-05-29
 
 ### Added (Full 1:1 parity with the AdminLTE 4 demo)

@@ -12,8 +12,8 @@ adminlte:scaffold [section] [--all] [--force] [--seed]
 
 | Argument / Option | Description |
 |-------------------|-------------|
-| `section` | One of the 11 section names (see below). Omit it (without `--all`) for an interactive multi-select prompt. |
-| `--all` | Scaffold all 11 sections. |
+| `section` | One of the 18 section names (see below). Omit it (without `--all`) for an interactive multi-select prompt. |
+| `--all` | Scaffold all 18 sections. |
 | `--force` | Overwrite existing files instead of skipping them. |
 | `--seed` | After publishing, run `php artisan migrate --force` then `db:seed` for each scaffolded section's seeder. |
 

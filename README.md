@@ -31,8 +31,13 @@ This package gives you a config-driven sidebar menu, ready-to-extend Blade layou
   - Tool components: Modals, Datatables, Rich editor, **Charts (ApexCharts)**, **Vector Map**, **Calendar**, **Kanban**, **Wizard**
 - **Multi-language support** (i18n) with 9 locales: English, German, Spanish, French, Italian, Portuguese, Russian, Chinese, Japanese
 - **Plugin system** for lazy-loading JS libraries (Flatpickr, Tom Select, Tabulator, Quill, **ApexCharts**, **jsVectorMap**, **FullCalendar**, **SortableJS**)
-- **Scaffolding system** (`adminlte:scaffold`) with full DB backing for 11 sections: mailbox, chat, kanban, calendar, projects, file-manager, profile, settings, invoice, pricing, faq
-- **Auth scaffolding** (`adminlte:make-auth`) for plain/Breeze/Fortify integration
+- **Scaffolding system** (`adminlte:scaffold`) with full DB backing for 18 sections: dashboard, mailbox, chat, kanban, calendar, projects, file-manager, profile, settings, invoice, pricing, faq, notifications, api, impersonation, activity-log, realtime, rbac — each DB-backed section also generates **factories, Form Requests, Policies, and feature tests**
+- **Authorization (RBAC)** — dependency-free roles & permissions, `HasRoles` trait, `role`/`permission` middleware, permission-aware Gate, and a Users/Roles management UI ([docs](docs/authorization.md))
+- **Auth scaffolding** (`adminlte:make-auth`) for plain/Breeze/Fortify integration, with **hardening**: login throttling, email verification, password confirmation
+- **Account management** — avatar, change password, active sessions, delete account ([docs](docs/account-management.md))
+- **Database notifications** wired into the navbar bell + a notifications page ([docs](docs/notifications.md))
+- **Activity/audit log** with automatic auth-event logging + **user impersonation** ("log in as") ([docs](docs/activity-log.md))
+- **Data-driven dashboard**, **Sanctum API tokens**, and a **real-time (Reverb/Echo)** layer for live chat & notifications
 - **⌘K command palette** — searches your menu, opens via the navbar pill or Cmd/Ctrl+K
 - **Bundled demo/showcase pages** — Dashboard v1/v2/v3, Widgets, UI Elements, Forms, Tables, Layout Options, Theme Generator (toggle with `config('adminlte.demo')`)
 - RTL layout support + 9 locales
@@ -80,11 +85,19 @@ your app at `/docs`** (rendered with the AdminLTE layout; disable with
 | [Menu](docs/menu.md) | Sidebar/navbar menu, treeview, badges, permissions, filters |
 | [Components](docs/components.md) | All 40 Blade components — props, slots, examples |
 | [Plugins](docs/plugins.md) | Lazy-loaded JS libraries and the plugin manager |
-| [Scaffolding](docs/scaffolding.md) | `adminlte:scaffold` — DB-backed application sections |
-| [Authentication](docs/authentication.md) | `adminlte:make-auth` — plain / Breeze / Fortify |
+| [Scaffolding](docs/scaffolding.md) | `adminlte:scaffold` — DB-backed sections + factories/requests/policies/tests |
+| [Dashboard](docs/dashboard.md) | Data-driven dashboard with real stats |
+| [Authentication](docs/authentication.md) | `adminlte:make-auth` — plain / Breeze / Fortify + hardening |
+| [Authorization](docs/authorization.md) | Dependency-free RBAC: roles, permissions, middleware, Gate |
+| [Account management](docs/account-management.md) | Avatar, password, sessions, delete account |
+| [Notifications](docs/notifications.md) | Database notifications + navbar bell |
+| [Activity log & impersonation](docs/activity-log.md) | Audit log, auth-event logging, "log in as" |
+| [API tokens](docs/api.md) | Sanctum personal access tokens + UI |
+| [Real-time](docs/realtime.md) | Reverb/Echo live chat & notifications |
 | [Commands](docs/commands.md) | All Artisan commands and options |
 | [Translations](docs/translations.md) | The 9 locales and key resolution |
 | [Demo pages](docs/demo-pages.md) | The bundled showcase routes |
+| [Deployment](docs/deployment.md) | Hosting a live preview (Nginx + PHP-FPM) |
 
 > The legacy [`jeroennoten/laravel-adminlte`](https://github.com/jeroennoten/Laravel-AdminLTE) targets AdminLTE 3 (Bootstrap 4 + jQuery). This package is the AdminLTE 4 successor: Bootstrap 5.3, vanilla JS, Laravel 13, PHP 8.3+, Vite instead of precompiled assets.
 
