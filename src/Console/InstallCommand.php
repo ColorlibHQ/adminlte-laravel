@@ -144,6 +144,17 @@ class InstallCommand extends Command
                 File::copy($src, $dest);
             }
 
+            // FullCalendar 6 embeds its CSS in the JS bundle and injects it at
+            // runtime — but that injection doesn't fire reliably inside the
+            // bundled AdminLTE page, so we ship the stylesheet explicitly and
+            // load it via @pluginStyles (the 'fullcalendar' plugin's css key).
+            $fcCss = dirname(__DIR__, 2).'/resources/vendor/fullcalendar/index.global.min.css';
+            if (File::exists($fcCss)) {
+                $fcDest = public_path('vendor/fullcalendar/index.global.min.css');
+                File::ensureDirectoryExists(dirname($fcDest));
+                File::copy($fcCss, $fcDest);
+            }
+
             return true;
         });
     }

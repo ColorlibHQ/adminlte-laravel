@@ -427,6 +427,7 @@ return [
         ],
         'fullcalendar' => [
             'enabled' => false,
+            'css' => 'vendor/fullcalendar/index.global.min.css',
             'js' => 'vendor/fullcalendar/index.global.min.js',
         ],
         'sortablejs' => [

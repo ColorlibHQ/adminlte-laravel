@@ -43,6 +43,29 @@ class PluginSystemTest extends TestCase
         $this->assertNotNull($plugins->getJs('flatpickr'));
     }
 
+    public function test_fullcalendar_css_default_fills_missing_config_key(): void
+    {
+        // Simulates an app whose published config omits the FullCalendar css key
+        // (FC v6 embeds CSS in its JS but doesn't inject it inside the AdminLTE
+        // page, so the stylesheet must be served explicitly). The manager's
+        // defaults must patch it in.
+        $plugins = new PluginManager([
+            'fullcalendar' => ['enabled' => true, 'js' => 'vendor/fullcalendar/index.global.min.js'],
+        ]);
+
+        $this->assertSame('vendor/fullcalendar/index.global.min.css', $plugins->getCss('fullcalendar'));
+        $this->assertStringContainsString('fullcalendar/index.global.min.css', $plugins->renderStyles());
+    }
+
+    public function test_app_config_overrides_plugin_defaults(): void
+    {
+        $plugins = new PluginManager([
+            'fullcalendar' => ['enabled' => true, 'css' => 'custom/my-fc.css'],
+        ]);
+
+        $this->assertSame('custom/my-fc.css', $plugins->getCss('fullcalendar'));
+    }
+
     public function test_plugin_manager_respects_config_enabled(): void
     {
         config()->set('adminlte.plugins.flatpickr.enabled', true);
