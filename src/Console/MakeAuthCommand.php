@@ -23,6 +23,8 @@ class MakeAuthCommand extends Command
         'RegisterController',
         'ForgotPasswordController',
         'ResetPasswordController',
+        'EmailVerificationController',
+        'ConfirmablePasswordController',
     ];
 
     public function handle(): int
@@ -52,14 +54,79 @@ class MakeAuthCommand extends Command
         }
 
         $this->appendAuthRoutes();
+        $this->injectMustVerifyEmail();
 
         $this->newLine();
         $this->components->info('Plain auth scaffolded. Next steps:');
         $this->line('  1. Auth views ship with the package (adminlte::auth.*) — already wired.');
         $this->line('  2. Ensure your User model and the password_reset_tokens table exist.');
-        $this->line('  3. Visit <fg=yellow>/login</> to sign in.');
+        $this->line('  3. Login is rate-limited; email verification + password confirmation routes are registered.');
+        $this->line('  4. Add the <fg=yellow>verified</> middleware to routes that should require a verified email.');
+        $this->line('  5. Visit <fg=yellow>/login</> to sign in.');
 
         return self::SUCCESS;
+    }
+
+    /**
+     * Make the app's User model implement MustVerifyEmail (idempotent), so the
+     * verified middleware and verification notifications work out of the box.
+     */
+    protected function injectMustVerifyEmail(): void
+    {
+        $userModel = app_path('Models/User.php');
+
+        if (! File::exists($userModel)) {
+            $this->warn('  app/Models/User.php not found — implement MustVerifyEmail manually.');
+
+            return;
+        }
+
+        $contents = (string) File::get($userModel);
+
+        // Already implemented? (Match the `implements` clause, not the commented
+        // import that ships in Laravel's default User model.)
+        if (preg_match('/class User extends \w+[^{]*\bimplements\b[^{]*MustVerifyEmail/s', $contents)) {
+            $this->line('  <comment>User model already implements MustVerifyEmail</comment>');
+
+            return;
+        }
+
+        if (str_contains($contents, '// use Illuminate\Contracts\Auth\MustVerifyEmail;')) {
+            // Uncomment the import Laravel ships commented-out by default.
+            $contents = str_replace(
+                '// use Illuminate\Contracts\Auth\MustVerifyEmail;',
+                'use Illuminate\Contracts\Auth\MustVerifyEmail;',
+                $contents
+            );
+        } elseif (! str_contains($contents, 'use Illuminate\Contracts\Auth\MustVerifyEmail;')) {
+            // Otherwise import the contract after the namespace declaration.
+            $contents = (string) preg_replace(
+                '/^(namespace App\\\\Models;\s*)$/m',
+                "$1\nuse Illuminate\\Contracts\\Auth\\MustVerifyEmail;",
+                $contents,
+                1
+            );
+        }
+
+        // Add the interface to the class signature.
+        if (preg_match('/class User extends \w+ implements /', $contents)) {
+            $contents = (string) preg_replace(
+                '/(class User extends \w+ implements )/',
+                '$1MustVerifyEmail, ',
+                $contents,
+                1
+            );
+        } else {
+            $contents = (string) preg_replace(
+                '/(class User extends \w+)/',
+                '$1 implements MustVerifyEmail',
+                $contents,
+                1
+            );
+        }
+
+        File::put($userModel, $contents);
+        $this->line('  <info>✓</info> User model now implements MustVerifyEmail');
     }
 
     protected function scaffoldBreeze(): int

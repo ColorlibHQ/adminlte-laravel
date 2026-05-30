@@ -19,6 +19,11 @@ return [
     'recover_password_now' => 'You are only one step away from your new password, recover your password now.',
     'change_password' => 'Change password',
     'sign_out' => 'Sign out',
+    'verify_email_message' => 'Please verify your email address by clicking the link we just emailed to you. If you didn\'t receive the email, we\'ll gladly send another.',
+    'verification_link_sent' => 'A new verification link has been sent to your email address.',
+    'resend_verification' => 'Resend verification email',
+    'confirm_password_message' => 'This is a secure area. Please confirm your password before continuing.',
+    'confirm' => 'Confirm',
 
     // Layout
     'main_navigation' => 'Main navigation',

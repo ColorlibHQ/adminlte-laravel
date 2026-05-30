@@ -18,6 +18,11 @@ return [
     'recover_password_now' => 'Sie sind nur noch einen Schritt von Ihrem neuen Passwort entfernt. Stellen Sie Ihr Passwort jetzt wieder her.',
     'change_password' => 'Passwort ändern',
     'sign_out' => 'Abmelden',
+    'verify_email_message' => 'Bitte bestätige deine E-Mail-Adresse über den Link, den wir dir gerade gesendet haben. Falls du die E-Mail nicht erhalten hast, senden wir dir gerne eine neue.',
+    'verification_link_sent' => 'Ein neuer Bestätigungslink wurde an deine E-Mail-Adresse gesendet.',
+    'resend_verification' => 'Bestätigungs-E-Mail erneut senden',
+    'confirm_password_message' => 'Dies ist ein gesicherter Bereich. Bitte bestätige dein Passwort, bevor du fortfährst.',
+    'confirm' => 'Bestätigen',
 
     'main_navigation' => 'Hauptnavigation',
     'profile' => 'Profil',

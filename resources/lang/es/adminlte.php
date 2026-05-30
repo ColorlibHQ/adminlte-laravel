@@ -18,6 +18,11 @@ return [
     'recover_password_now' => 'Está a solo un paso de su nueva contraseña. Recupere su contraseña ahora.',
     'change_password' => 'Cambiar contraseña',
     'sign_out' => 'Cerrar sesión',
+    'verify_email_message' => 'Verifica tu dirección de correo electrónico haciendo clic en el enlace que te acabamos de enviar. Si no recibiste el correo, con gusto te enviaremos otro.',
+    'verification_link_sent' => 'Se ha enviado un nuevo enlace de verificación a tu correo electrónico.',
+    'resend_verification' => 'Reenviar correo de verificación',
+    'confirm_password_message' => 'Esta es un área segura. Confirma tu contraseña antes de continuar.',
+    'confirm' => 'Confirmar',
 
     'main_navigation' => 'Navegación principal',
     'profile' => 'Perfil',
