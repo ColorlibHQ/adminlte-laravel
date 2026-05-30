@@ -56,6 +56,9 @@ class ScaffoldCommandTest extends TestCase
             foreach ((array) ($spec['tests'] ?? []) as $test) {
                 $this->assertFileExists("{$this->stubsPath}/tests/{$test}.php.stub", "[$section] test");
             }
+            foreach ((array) ($spec['notifications'] ?? []) as $notification) {
+                $this->assertFileExists("{$this->stubsPath}/notifications/{$notification}.php.stub", "[$section] notification");
+            }
             if (! empty($spec['routes'])) {
                 $this->assertFileExists("{$this->stubsPath}/routes/{$spec['routes']}.php.stub", "[$section] routes");
             }

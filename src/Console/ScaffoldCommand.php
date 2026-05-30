@@ -29,6 +29,7 @@ class ScaffoldCommand extends Command
         'invoice' => 'Invoice generator',
         'pricing' => 'Pricing page',
         'faq' => 'FAQ accordion',
+        'notifications' => 'Database notifications wired into the navbar bell + a notifications page',
         'rbac' => 'Roles & permissions (RBAC) with user/role management UI',
     ];
 
@@ -132,6 +133,16 @@ class ScaffoldCommand extends Command
         'faq' => [
             'views' => 'faq',
             'routes' => 'faq',
+        ],
+        'notifications' => [
+            'migrations' => ['create_notifications_table'],
+            'notifications' => ['AdminLteDemoNotification'],
+            'controllers' => ['NotificationController'],
+            'seeders' => ['AdminLteNotificationsSeeder'],
+            'tests' => ['NotificationsTest'],
+            'views' => 'notifications',
+            'routes' => 'notifications',
+            'seeder' => 'AdminLteNotificationsSeeder',
         ],
         // RBAC is handled by scaffoldRbac(); the seeder key wires up --seed.
         'rbac' => [
@@ -257,6 +268,14 @@ class ScaffoldCommand extends Command
             $this->publishFile(
                 "stubs/tests/{$test}.php.stub",
                 base_path("tests/Feature/AdminLte/{$test}.php"),
+                $force
+            );
+        }
+
+        foreach ((array) ($spec['notifications'] ?? []) as $notification) {
+            $this->publishFile(
+                "stubs/notifications/{$notification}.php.stub",
+                app_path("Notifications/{$notification}.php"),
                 $force
             );
         }

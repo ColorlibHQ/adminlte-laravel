@@ -1,0 +1,4 @@
+    Route::get('notifications', [\App\Http\Controllers\AdminLte\NotificationController::class, 'index'])->name('notifications.index');
+    Route::put('notifications/read-all', [\App\Http\Controllers\AdminLte\NotificationController::class, 'readAll'])->name('notifications.read-all');
+    Route::put('notifications/{id}/read', [\App\Http\Controllers\AdminLte\NotificationController::class, 'read'])->name('notifications.read');
+    Route::delete('notifications/{id}', [\App\Http\Controllers\AdminLte\NotificationController::class, 'destroy'])->name('notifications.destroy');

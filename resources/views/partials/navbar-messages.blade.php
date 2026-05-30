@@ -1,19 +1,24 @@
 @php
-    // Demo messages for the navbar dropdown. Replace with real data in your app.
-    $messages = config('adminlte.navbar_messages', [
-        ['name' => 'Brad Diesel', 'text' => 'Call me whenever you can...', 'time' => '4 Hours Ago', 'star' => 'danger', 'img' => 'vendor/adminlte/img/user1-128x128.jpg'],
-        ['name' => 'John Pierce', 'text' => 'I got your message bro', 'time' => '4 Hours Ago', 'star' => 'secondary', 'img' => 'vendor/adminlte/img/user8-128x128.jpg'],
-        ['name' => 'Nora Silvester', 'text' => 'The subject goes here', 'time' => '4 Hours Ago', 'star' => 'warning', 'img' => 'vendor/adminlte/img/user3-128x128.jpg'],
-    ]);
+    use ColorlibHQ\AdminLte\Support\NavbarData;
+
+    // Real unread mailbox messages when the `adminlte_messages` table exists,
+    // otherwise the config-driven demo data. See NavbarData for the logic.
+    $messages = NavbarData::messages();
+    $messageCount = NavbarData::messageCount();
+    $messagesUrl = \Illuminate\Support\Facades\Route::has('adminlte.mailbox.index')
+        ? route('adminlte.mailbox.index')
+        : '#';
 @endphp
 <li class="nav-item dropdown">
     <a class="nav-link" data-bs-toggle="dropdown" href="#">
         <i class="bi bi-chat-text"></i>
-        <span class="navbar-badge badge text-bg-danger">{{ count($messages) }}</span>
+        @if ($messageCount > 0)
+            <span class="navbar-badge badge text-bg-danger">{{ $messageCount }}</span>
+        @endif
     </a>
     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
-        @foreach ($messages as $msg)
-            <a href="#" class="dropdown-item">
+        @forelse ($messages as $msg)
+            <a href="{{ $messagesUrl }}" class="dropdown-item">
                 <div class="d-flex">
                     <div class="flex-shrink-0">
                         <img src="{{ asset($msg['img']) }}" alt="User Avatar" class="img-size-50 rounded-circle me-3" width="50" height="50">
@@ -29,7 +34,10 @@
                 </div>
             </a>
             <div class="dropdown-divider"></div>
-        @endforeach
-        <a href="#" class="dropdown-item dropdown-footer">{{ __('adminlte.see_all_messages') }}</a>
+        @empty
+            <span class="dropdown-item text-secondary">{{ __('adminlte.no_messages') }}</span>
+            <div class="dropdown-divider"></div>
+        @endforelse
+        <a href="{{ $messagesUrl }}" class="dropdown-item dropdown-footer">{{ __('adminlte.see_all_messages') }}</a>
     </div>
 </li>
