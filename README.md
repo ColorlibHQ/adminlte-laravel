@@ -23,6 +23,18 @@ Official [AdminLTE 4](https://adminlte.io) integration for Laravel — Bootstrap
 
 This package gives you a config-driven sidebar menu, ready-to-extend Blade layouts, and a set of AdminLTE Blade components on top of the [`admin-lte`](https://www.npmjs.com/package/admin-lte) npm package.
 
+## Also available for your stack
+
+AdminLTE comes in several editions — pick the one that matches how you build. You're looking at the **Laravel** edition.
+
+| Edition | Stack | Links |
+|---------|-------|-------|
+| **AdminLTE for Laravel** ⟵ *you are here* | Laravel 13 · Blade · Bootstrap 5.3 | [Repo](https://github.com/ColorlibHQ/adminlte-laravel) · [Live demo](https://laravel.adminlte.io/) |
+| **AdminLTE** (the original) | HTML · Bootstrap 5.3 · vanilla JS | [Repo](https://github.com/ColorlibHQ/AdminLTE) · [Live demo](https://adminlte.io/themes/v4/) |
+| **AdminLTE v3** (legacy) | HTML · Bootstrap 4 · jQuery | [Repo](https://github.com/ColorlibHQ/AdminLTE/tree/v3) · [Live demo](https://adminlte.io/themes/v3/) |
+
+> Need a different framework (React, Vue, Inertia, Tailwind)? See the [premium Laravel dashboards](#premium-laravel-dashboards) below — full backends, not just markup.
+
 **What's included:**
 
 - **40 Blade components** (cards, widgets, forms, charts, calendars, kanban boards, modals)
@@ -298,72 +310,54 @@ Everything in `config/adminlte.php` is documented inline — title, logo, layout
 
 For deeper visual changes (sidebar width, breakpoints, brand colors), compile AdminLTE's SCSS — see [the customization guide](https://adminlte.io/themes/v4/docs/customization.html) and Option B in `resources/css/adminlte.css`.
 
-## Upgrade to a Premium Dashboard
+## Premium Laravel Dashboards
 
-Need advanced features, dedicated support, and production-ready code? Explore our handpicked collection of professional admin templates on [DashboardPack](https://dashboardpack.com/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-laravel).
+This package is free and MIT-licensed. When you need a **production Laravel admin with a real backend out of the box** — Eloquent CRUD, Fortify authentication, role-based permissions, and dozens of polished pages — these commercial Laravel editions from [DashboardPack](https://dashboardpack.com/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-laravel) pick up where the free template leaves off. Each ships **Laravel 13 + Inertia.js 3 + React 19 + Tailwind CSS v4** with a working database, not static mockups.
 
 <table>
   <tr>
     <td align="center" width="50%">
-      <a href="https://dashboardpack.com/theme-details/apex-dashboard-nextjs/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-laravel">
-        <img src="docs/screenshots/dashboardpack/apex.png" alt="Apex Dashboard — Next.js 16 admin template with shadcn/ui" width="100%">
+      <a href="https://dashboardpack.com/theme-details/apex-dashboard-laravel/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-laravel">
+        <img src="docs/screenshots/dashboardpack/apex-laravel.png" alt="Apex Dashboard Laravel — Laravel 13 admin with Inertia, React 19 and Tailwind v4" width="100%">
       </a>
       <br>
-      <a href="https://dashboardpack.com/theme-details/apex-dashboard-nextjs/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-laravel"><strong>Apex Dashboard</strong></a>
+      <a href="https://dashboardpack.com/theme-details/apex-dashboard-laravel/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-laravel"><strong>Apex Dashboard — Laravel</strong></a>
       <br>
-      <sub>Next.js 16 + React 19 + Tailwind CSS v4 + shadcn/ui. 5 dashboard variants, 20+ app pages, 125+ routes, full CRUD.</sub>
+      <sub>Database-backed CRUD (Orders, Products, Customers, Invoices), Fortify auth with 2FA, Spatie RBAC, and 5 dashboards plus 6 app pages.</sub>
     </td>
     <td align="center" width="50%">
-      <a href="https://dashboardpack.com/theme-details/zenith-shadcn/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-laravel">
-        <img src="docs/screenshots/dashboardpack/zenith.png" alt="Zenith — ultra-minimal Next.js admin dashboard with shadcn/ui" width="100%">
+      <a href="https://dashboardpack.com/theme-details/zenith-dashboard-laravel/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-laravel">
+        <img src="docs/screenshots/dashboardpack/zenith-laravel.png" alt="Zenith Dashboard Laravel — ultra-minimal Laravel admin with Inertia and React 19" width="100%">
       </a>
       <br>
-      <a href="https://dashboardpack.com/theme-details/zenith-shadcn/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-laravel"><strong>Zenith Dashboard</strong></a>
+      <a href="https://dashboardpack.com/theme-details/zenith-dashboard-laravel/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-laravel"><strong>Zenith Dashboard — Laravel</strong></a>
       <br>
-      <sub>Next.js 16 + React 19 + Tailwind CSS v4 + shadcn/ui. Achromatic design, 50+ pages, 6 dashboards, live theme customizer.</sub>
-    </td>
-  </tr>
-  <tr>
-    <td align="center" width="50%">
-      <a href="https://dashboardpack.com/theme-details/haze-dashboard-nuxt/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-laravel">
-        <img src="docs/screenshots/dashboardpack/haze.png" alt="Haze — Nuxt 4 admin dashboard with 92+ pages and 5 dashboards" width="100%">
-      </a>
-      <br>
-      <a href="https://dashboardpack.com/theme-details/haze-dashboard-nuxt/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-laravel"><strong>Haze</strong></a>
-      <br>
-      <sub>Nuxt 4 + Nuxt UI v4 + Tailwind CSS v4. 92+ pages, 7 layouts, 5 dashboards, RTL, i18n, mock API layer.</sub>
-    </td>
-    <td align="center" width="50%">
-      <a href="https://dashboardpack.com/theme-details/tailpanel/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-laravel">
-        <img src="docs/screenshots/dashboardpack/tailpanel.png" alt="TailPanel — modern React and Tailwind CSS admin panel" width="100%">
-      </a>
-      <br>
-      <a href="https://dashboardpack.com/theme-details/tailpanel/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-laravel"><strong>TailPanel</strong></a>
-      <br>
-      <sub>React + TypeScript + Tailwind CSS + Vite. 9 dashboard designs, dark and light themes.</sub>
+      <sub>Ultra-minimal achromatic design. Full backend CRUD and role-based access, with 5 dashboard variants and 30+ polished pages.</sub>
     </td>
   </tr>
   <tr>
     <td align="center" width="50%">
-      <a href="https://dashboardpack.com/theme-details/admindek-html/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-laravel">
-        <img src="docs/screenshots/dashboardpack/admindek.png" alt="Admindek — feature-rich Bootstrap 5 dashboard with dark mode" width="100%">
+      <a href="https://dashboardpack.com/theme-details/signal-dashboard-laravel/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-laravel">
+        <img src="docs/screenshots/dashboardpack/signal-laravel.png" alt="Signal Dashboard Laravel — DevOps monitoring admin with a terminal aesthetic" width="100%">
       </a>
       <br>
-      <a href="https://dashboardpack.com/theme-details/admindek-html/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-laravel"><strong>Admindek</strong></a>
+      <a href="https://dashboardpack.com/theme-details/signal-dashboard-laravel/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-laravel"><strong>Signal Dashboard — Laravel</strong></a>
       <br>
-      <sub>Bootstrap 5 + vanilla JS. 100+ components, dark/light modes, RTL support, 10 color presets.</sub>
+      <sub>DevOps monitoring with a terminal aesthetic — 11 infrastructure resources (servers, incidents, deployments, pipelines, containers…) across ~50 pages.</sub>
     </td>
     <td align="center" width="50%">
-      <a href="https://dashboardpack.com/theme-details/svelteforge-premium/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-laravel">
-        <img src="docs/screenshots/dashboardpack/svelteforge.png" alt="SvelteForge Premium — SvelteKit admin dashboard with multi-tenant support" width="100%">
+      <a href="https://dashboardpack.com/theme-details/admindek-dashboard-laravel/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-laravel">
+        <img src="docs/screenshots/dashboardpack/admindek-laravel.png" alt="Admindek Laravel — 80+ page Laravel admin with Fortify auth and Spatie RBAC" width="100%">
       </a>
       <br>
-      <a href="https://dashboardpack.com/theme-details/svelteforge-premium/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-laravel"><strong>SvelteForge Premium</strong></a>
+      <a href="https://dashboardpack.com/theme-details/admindek-dashboard-laravel/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-laravel"><strong>Admindek — Laravel</strong></a>
       <br>
-      <sub>SvelteKit + Tailwind CSS v4. 30+ wired-up modules, multi-tenant from row zero, dark/light/system mode.</sub>
+      <sub>10 dashboard variants and 80+ pages, with Fortify authentication and Spatie role-based access control built in.</sub>
     </td>
   </tr>
 </table>
+
+<sub>Prefer the official AdminLTE-branded premium themes? Browse <a href="https://adminlte.io/premium?utm_source=github&utm_medium=readme&utm_campaign=adminlte-laravel">AdminLTE Premium</a>.</sub>
 
 <p align="center">
   <a href="https://dashboardpack.com/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-laravel"><strong>View All Premium Templates →</strong></a>
