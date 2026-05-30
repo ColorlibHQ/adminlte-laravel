@@ -3,16 +3,21 @@
 namespace App\Http\Controllers\AdminLte;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use App\Http\Requests\AdminLte\StoreMessageRequest;
 use App\Models\Message;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class MailboxController extends Controller
 {
+    use AuthorizesRequests;
+
     public function index(): View
     {
+        $this->authorize('viewAny', \App\Models\Message::class);
+
         $messages = Message::with('sender')
             ->where('to_user_id', Auth::id())
             ->latest()
@@ -23,7 +28,7 @@ class MailboxController extends Controller
 
     public function show(Message $message): View
     {
-        abort_unless($message->to_user_id === Auth::id(), 403);
+        $this->authorize('view', $message);
 
         if (! $message->is_read) {
             $message->update(['is_read' => true]);
@@ -39,13 +44,11 @@ class MailboxController extends Controller
         return view('adminlte.mailbox.compose');
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(StoreMessageRequest $request): RedirectResponse
     {
-        $data = $request->validate([
-            'to_user_id' => ['required', 'exists:users,id'],
-            'subject' => ['required', 'string', 'max:255'],
-            'body' => ['required', 'string'],
-        ]);
+        $this->authorize('create', \App\Models\Message::class);
+
+        $data = $request->validated();
 
         Message::create([
             'from_user_id' => Auth::id(),
@@ -60,7 +63,7 @@ class MailboxController extends Controller
 
     public function destroy(Message $message): RedirectResponse
     {
-        abort_unless($message->to_user_id === Auth::id(), 403);
+        $this->authorize('delete', $message);
 
         $message->delete();
 

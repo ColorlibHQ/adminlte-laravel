@@ -44,6 +44,18 @@ class ScaffoldCommandTest extends TestCase
             foreach ((array) ($spec['seeders'] ?? []) as $seeder) {
                 $this->assertFileExists("{$this->stubsPath}/seeders/{$seeder}.php.stub", "[$section] seeder");
             }
+            foreach ((array) ($spec['factories'] ?? []) as $factory) {
+                $this->assertFileExists("{$this->stubsPath}/factories/{$factory}.php.stub", "[$section] factory");
+            }
+            foreach ((array) ($spec['requests'] ?? []) as $request) {
+                $this->assertFileExists("{$this->stubsPath}/requests/{$request}.php.stub", "[$section] request");
+            }
+            foreach ((array) ($spec['policies'] ?? []) as $policy) {
+                $this->assertFileExists("{$this->stubsPath}/policies/{$policy}.php.stub", "[$section] policy");
+            }
+            foreach ((array) ($spec['tests'] ?? []) as $test) {
+                $this->assertFileExists("{$this->stubsPath}/tests/{$test}.php.stub", "[$section] test");
+            }
             if (! empty($spec['routes'])) {
                 $this->assertFileExists("{$this->stubsPath}/routes/{$spec['routes']}.php.stub", "[$section] routes");
             }
@@ -53,9 +65,12 @@ class ScaffoldCommandTest extends TestCase
         }
     }
 
-    public function test_every_section_has_a_view(): void
+    public function test_every_content_section_has_a_view(): void
     {
         foreach ($this->manifest() as $section => $spec) {
+            if ($section === 'rbac') {
+                continue; // RBAC publishes its own users/ and roles/ view dirs via scaffoldRbac().
+            }
             $this->assertNotEmpty($spec['views'] ?? null, "Section '$section' must define a views directory.");
         }
     }

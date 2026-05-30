@@ -29,6 +29,7 @@ class ScaffoldCommand extends Command
         'invoice' => 'Invoice generator',
         'pricing' => 'Pricing page',
         'faq' => 'FAQ accordion',
+        'rbac' => 'Roles & permissions (RBAC) with user/role management UI',
     ];
 
     /**
@@ -42,8 +43,12 @@ class ScaffoldCommand extends Command
         'mailbox' => [
             'migrations' => ['create_adminlte_messages_table'],
             'models' => ['Message'],
+            'factories' => ['MessageFactory'],
+            'requests' => ['StoreMessageRequest'],
+            'policies' => ['MessagePolicy'],
             'controllers' => ['MailboxController'],
             'seeders' => ['AdminLteMailboxSeeder'],
+            'tests' => ['MailboxTest'],
             'views' => 'mailbox',
             'routes' => 'mailbox',
             'seeder' => 'AdminLteMailboxSeeder',
@@ -51,8 +56,12 @@ class ScaffoldCommand extends Command
         'chat' => [
             'migrations' => ['create_adminlte_conversations_table'],
             'models' => ['Conversation', 'ChatMessage'],
+            'factories' => ['ConversationFactory', 'ChatMessageFactory'],
+            'requests' => ['StoreChatMessageRequest'],
+            'policies' => ['ConversationPolicy'],
             'controllers' => ['ChatController'],
             'seeders' => ['AdminLteChatSeeder'],
+            'tests' => ['ChatTest'],
             'views' => 'chat',
             'routes' => 'chat',
             'seeder' => 'AdminLteChatSeeder',
@@ -60,8 +69,12 @@ class ScaffoldCommand extends Command
         'kanban' => [
             'migrations' => ['create_adminlte_kanban_tables'],
             'models' => ['KanbanBoard', 'KanbanLane', 'KanbanCard'],
+            'factories' => ['KanbanBoardFactory', 'KanbanLaneFactory', 'KanbanCardFactory'],
+            'requests' => ['StoreKanbanCardRequest'],
+            'policies' => ['KanbanCardPolicy'],
             'controllers' => ['KanbanController'],
             'seeders' => ['AdminLteKanbanSeeder'],
+            'tests' => ['KanbanTest'],
             'views' => 'kanban',
             'routes' => 'kanban',
             'seeder' => 'AdminLteKanbanSeeder',
@@ -69,8 +82,12 @@ class ScaffoldCommand extends Command
         'calendar' => [
             'migrations' => ['create_adminlte_events_table'],
             'models' => ['Event'],
+            'factories' => ['EventFactory'],
+            'requests' => ['StoreEventRequest', 'UpdateEventRequest'],
+            'policies' => ['EventPolicy'],
             'controllers' => ['CalendarController'],
             'seeders' => ['AdminLteCalendarSeeder'],
+            'tests' => ['CalendarTest'],
             'views' => 'calendar',
             'routes' => 'calendar',
             'seeder' => 'AdminLteCalendarSeeder',
@@ -78,8 +95,12 @@ class ScaffoldCommand extends Command
         'projects' => [
             'migrations' => ['create_adminlte_projects_table'],
             'models' => ['Project'],
+            'factories' => ['ProjectFactory'],
+            'requests' => ['StoreProjectRequest', 'UpdateProjectRequest'],
+            'policies' => ['ProjectPolicy'],
             'controllers' => ['ProjectsController'],
             'seeders' => ['AdminLteProjectsSeeder'],
+            'tests' => ['ProjectsTest'],
             'views' => 'projects',
             'routes' => 'projects',
             'seeder' => 'AdminLteProjectsSeeder',
@@ -111,6 +132,10 @@ class ScaffoldCommand extends Command
         'faq' => [
             'views' => 'faq',
             'routes' => 'faq',
+        ],
+        // RBAC is handled by scaffoldRbac(); the seeder key wires up --seed.
+        'rbac' => [
+            'seeder' => 'AdminLteRbacSeeder',
         ],
     ];
 
@@ -177,6 +202,12 @@ class ScaffoldCommand extends Command
     {
         $this->components->info("Scaffolding '{$section}'");
 
+        if ($section === 'rbac') {
+            $this->scaffoldRbac($force);
+
+            return;
+        }
+
         $spec = $this->manifest[$section] ?? [];
 
         $migrations = (array) ($spec['migrations'] ?? []);
@@ -194,6 +225,38 @@ class ScaffoldCommand extends Command
             $this->publishFile(
                 "stubs/models/{$model}.php.stub",
                 app_path("Models/{$model}.php"),
+                $force
+            );
+        }
+
+        foreach ((array) ($spec['factories'] ?? []) as $factory) {
+            $this->publishFile(
+                "stubs/factories/{$factory}.php.stub",
+                database_path("factories/{$factory}.php"),
+                $force
+            );
+        }
+
+        foreach ((array) ($spec['requests'] ?? []) as $request) {
+            $this->publishFile(
+                "stubs/requests/{$request}.php.stub",
+                app_path("Http/Requests/AdminLte/{$request}.php"),
+                $force
+            );
+        }
+
+        foreach ((array) ($spec['policies'] ?? []) as $policy) {
+            $this->publishFile(
+                "stubs/policies/{$policy}.php.stub",
+                app_path("Policies/{$policy}.php"),
+                $force
+            );
+        }
+
+        foreach ((array) ($spec['tests'] ?? []) as $test) {
+            $this->publishFile(
+                "stubs/tests/{$test}.php.stub",
+                base_path("tests/Feature/AdminLte/{$test}.php"),
                 $force
             );
         }
@@ -225,6 +288,127 @@ class ScaffoldCommand extends Command
         if (! empty($spec['routes'])) {
             $this->appendRoutes($section, (string) $spec['routes']);
         }
+    }
+
+    /**
+     * Scaffold the native roles & permissions (RBAC) layer: tables, models,
+     * the HasRoles trait, middleware, seeder, management UI, and routes — then
+     * wire the HasRoles trait into the app's User model.
+     */
+    protected function scaffoldRbac(bool $force): void
+    {
+        $timestamp = date('Y_m_d_His');
+
+        $this->publishFile(
+            'stubs/rbac/migrations/create_adminlte_rbac_tables.php.stub',
+            database_path("migrations/{$timestamp}_create_adminlte_rbac_tables.php"),
+            $force
+        );
+
+        foreach (['Role', 'Permission'] as $model) {
+            $this->publishFile(
+                "stubs/rbac/models/{$model}.php.stub",
+                app_path("Models/{$model}.php"),
+                $force
+            );
+        }
+
+        $this->publishFile(
+            'stubs/rbac/models/HasRoles.php.stub',
+            app_path('Models/Concerns/HasRoles.php'),
+            $force
+        );
+
+        foreach (['Role', 'Permission'] as $model) {
+            $this->publishFile(
+                "stubs/factories/{$model}Factory.php.stub",
+                database_path("factories/{$model}Factory.php"),
+                $force
+            );
+        }
+
+        foreach (['RoleMiddleware', 'PermissionMiddleware'] as $mw) {
+            $this->publishFile(
+                "stubs/rbac/middleware/{$mw}.php.stub",
+                app_path("Http/Middleware/{$mw}.php"),
+                $force
+            );
+        }
+
+        $this->publishFile(
+            'stubs/rbac/seeders/AdminLteRbacSeeder.php.stub',
+            database_path('seeders/AdminLteRbacSeeder.php'),
+            $force
+        );
+
+        foreach (['UserController', 'RoleController'] as $controller) {
+            $this->publishFile(
+                "stubs/rbac/controllers/{$controller}.php.stub",
+                app_path("Http/Controllers/AdminLte/{$controller}.php"),
+                $force
+            );
+        }
+
+        foreach (['users', 'roles'] as $dir) {
+            $this->publishDirectory(
+                "stubs/rbac/views/{$dir}",
+                resource_path("views/adminlte/{$dir}"),
+                $force
+            );
+            $this->appendRoutes($dir, $dir);
+        }
+
+        $this->injectHasRolesIntoUser();
+    }
+
+    /**
+     * Add the HasRoles trait to the app's User model (idempotent).
+     */
+    protected function injectHasRolesIntoUser(): void
+    {
+        $userModel = app_path('Models/User.php');
+
+        if (! file_exists($userModel)) {
+            $this->warn('  app/Models/User.php not found — add "use App\Models\Concerns\HasRoles;" manually.');
+
+            return;
+        }
+
+        $contents = (string) file_get_contents($userModel);
+
+        if (str_contains($contents, 'HasRoles')) {
+            $this->line('  <comment>User model already uses HasRoles</comment>');
+
+            return;
+        }
+
+        // Add the import after the namespace declaration.
+        $contents = preg_replace(
+            '/^(namespace App\\\\Models;\s*)$/m',
+            "$1\nuse App\\Models\\Concerns\\HasRoles;",
+            $contents,
+            1
+        );
+
+        // Add `use HasRoles;` to the first trait-use inside the class, or after the class brace.
+        if (preg_match('/(class User extends \w+[^{]*\{\s*\n)(\s*)use /', (string) $contents)) {
+            $contents = preg_replace(
+                '/(class User extends \w+[^{]*\{\s*\n)(\s*)use ([^;]+);/',
+                '$1$2use HasRoles, $3;',
+                (string) $contents,
+                1
+            );
+        } else {
+            $contents = preg_replace(
+                '/(class User extends \w+[^{]*\{\s*\n)/',
+                "$1    use HasRoles;\n\n",
+                (string) $contents,
+                1
+            );
+        }
+
+        file_put_contents($userModel, $contents);
+        $this->line('  <info>✓</info> added HasRoles trait to app/Models/User.php');
     }
 
     /**

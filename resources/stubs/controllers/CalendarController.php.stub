@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\AdminLte;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use App\Http\Requests\AdminLte\StoreEventRequest;
+use App\Http\Requests\AdminLte\UpdateEventRequest;
 use App\Models\Event;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
@@ -11,8 +14,12 @@ use Illuminate\Support\Facades\Auth;
 
 class CalendarController extends Controller
 {
+    use AuthorizesRequests;
+
     public function index(): View
     {
+        $this->authorize('viewAny', \App\Models\Event::class);
+
         return view('adminlte.calendar.index');
     }
 
@@ -30,15 +37,9 @@ class CalendarController extends Controller
         return response()->json($events);
     }
 
-    public function store(Request $request): JsonResponse
+    public function store(StoreEventRequest $request): JsonResponse
     {
-        $data = $request->validate([
-            'title' => ['required', 'string', 'max:255'],
-            'start_at' => ['required', 'date'],
-            'end_at' => ['nullable', 'date', 'after_or_equal:start_at'],
-            'all_day' => ['boolean'],
-            'color' => ['nullable', 'string'],
-        ]);
+        $data = $request->validated();
 
         $event = Event::create([
             ...$data,
@@ -49,18 +50,18 @@ class CalendarController extends Controller
         return response()->json($event->toCalendarArray());
     }
 
-    public function update(Request $request, Event $event): JsonResponse
+    public function update(UpdateEventRequest $request, Event $event): JsonResponse
     {
-        abort_unless($event->user_id === Auth::id(), 403);
+        $this->authorize('update', $event);
 
-        $event->update($request->only(['title', 'start_at', 'end_at', 'all_day', 'color']));
+        $event->update($request->validated());
 
         return response()->json($event->toCalendarArray());
     }
 
     public function destroy(Event $event): JsonResponse
     {
-        abort_unless($event->user_id === Auth::id(), 403);
+        $this->authorize('delete', $event);
 
         $event->delete();
 

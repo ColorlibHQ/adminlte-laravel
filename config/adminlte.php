@@ -297,6 +297,20 @@ return [
             ],
         ],
 
+        ['header' => 'ADMINISTRATION'],
+        [
+            'text' => 'Users',
+            'url' => 'admin/users',
+            'icon' => 'bi bi-people',
+            'can' => 'manage-users',
+        ],
+        [
+            'text' => 'Roles',
+            'url' => 'admin/roles',
+            'icon' => 'bi bi-shield-lock',
+            'can' => 'manage-roles',
+        ],
+
         ['header' => 'EXAMPLES'],
         [
             'text' => 'Auth',

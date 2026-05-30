@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\AdminLte;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use App\Http\Requests\AdminLte\StoreKanbanCardRequest;
 use App\Models\KanbanBoard;
 use App\Models\KanbanCard;
 use Illuminate\Contracts\View\View;
@@ -12,6 +14,8 @@ use Illuminate\Support\Facades\Auth;
 
 class KanbanController extends Controller
 {
+    use AuthorizesRequests;
+
     public function index(): View
     {
         $board = KanbanBoard::with('lanes.cards.assignees')
@@ -21,13 +25,9 @@ class KanbanController extends Controller
         return view('adminlte.kanban.index', compact('board'));
     }
 
-    public function storeCard(Request $request): JsonResponse
+    public function storeCard(StoreKanbanCardRequest $request): JsonResponse
     {
-        $data = $request->validate([
-            'lane_id' => ['required', 'exists:adminlte_kanban_lanes,id'],
-            'title' => ['required', 'string', 'max:255'],
-            'color' => ['nullable', 'string'],
-        ]);
+        $data = $request->validated();
 
         $card = KanbanCard::create([
             'lane_id' => $data['lane_id'],

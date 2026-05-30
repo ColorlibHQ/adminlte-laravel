@@ -9,6 +9,7 @@ use ColorlibHQ\AdminLte\Console\StatusCommand;
 use ColorlibHQ\AdminLte\Plugins\PluginManager;
 use ColorlibHQ\AdminLte\View\Components;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
@@ -103,6 +104,60 @@ class AdminLteServiceProvider extends ServiceProvider
         $this->registerCommands();
         $this->registerDemoRoutes();
         $this->registerDocsRoutes();
+        $this->registerAuthorization();
+    }
+
+    /**
+     * Opportunistically wire the RBAC layer when its published classes exist
+     * (i.e. after `php artisan adminlte:scaffold rbac`): model policies, the
+     * role/permission middleware aliases, and a permission-aware Gate::before.
+     * All guarded by class_exists so a non-RBAC app is unaffected.
+     */
+    private function registerAuthorization(): void
+    {
+        // Model policies for the scaffolded resources. These reference the
+        // consuming app's classes by name (string), so they're only wired when
+        // the app has actually published them.
+        $policies = [
+            'App\Models\Message' => 'App\Policies\MessagePolicy',
+            'App\Models\Project' => 'App\Policies\ProjectPolicy',
+            'App\Models\Event' => 'App\Policies\EventPolicy',
+            'App\Models\KanbanCard' => 'App\Policies\KanbanCardPolicy',
+            'App\Models\Conversation' => 'App\Policies\ConversationPolicy',
+        ];
+        foreach ($policies as $model => $policy) {
+            if (class_exists($model) && class_exists($policy)) {
+                Gate::policy($model, $policy);
+            }
+        }
+
+        // Middleware aliases for the published RBAC middleware.
+        $router = $this->app->make('router');
+        if (class_exists('App\Http\Middleware\RoleMiddleware')) {
+            $router->aliasMiddleware('role', 'App\Http\Middleware\RoleMiddleware');
+        }
+        if (class_exists('App\Http\Middleware\PermissionMiddleware')) {
+            $router->aliasMiddleware('permission', 'App\Http\Middleware\PermissionMiddleware');
+        }
+
+        // Permission-aware gate: admins pass everything; otherwise grant when the
+        // user holds a permission named like the ability (e.g. @can('manage-projects')
+        // or a menu item's 'can' => 'manage-projects'). Returns null to fall through.
+        if (class_exists('App\Models\Permission')) {
+            Gate::before(function ($user, string $ability) {
+                if (! is_object($user)) {
+                    return null;
+                }
+                if (method_exists($user, 'isAdmin') && $user->isAdmin()) {
+                    return true;
+                }
+                if (method_exists($user, 'hasPermission') && $user->hasPermission($ability)) {
+                    return true;
+                }
+
+                return null;
+            });
+        }
     }
 
     /**

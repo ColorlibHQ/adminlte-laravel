@@ -3,15 +3,18 @@
 namespace App\Http\Controllers\AdminLte;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use App\Http\Requests\AdminLte\StoreChatMessageRequest;
 use App\Models\ChatMessage;
 use App\Models\Conversation;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ChatController extends Controller
 {
+    use AuthorizesRequests;
+
     public function index(?Conversation $conversation = null): View
     {
         $conversations = Conversation::with(['users', 'latestMessage'])
@@ -25,16 +28,14 @@ class ChatController extends Controller
         return view('adminlte.chat.index', compact('conversations', 'active'));
     }
 
-    public function store(Request $request, Conversation $conversation): RedirectResponse
+    public function store(StoreChatMessageRequest $request, Conversation $conversation): RedirectResponse
     {
-        $data = $request->validate([
-            'body' => ['required', 'string'],
-        ]);
+        $this->authorize('view', $conversation);
 
         ChatMessage::create([
             'conversation_id' => $conversation->id,
             'user_id' => Auth::id(),
-            'body' => $data['body'],
+            'body' => $request->validated()['body'],
         ]);
 
         return redirect()->route('adminlte.chat.show', $conversation);

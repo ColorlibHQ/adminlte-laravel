@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class KanbanCard extends Model
 {
+    use HasFactory;
+
     protected $table = 'adminlte_kanban_cards';
 
     protected $fillable = ['lane_id', 'title', 'description', 'color', 'position'];

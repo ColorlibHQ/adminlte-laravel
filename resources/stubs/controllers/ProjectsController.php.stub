@@ -3,33 +3,41 @@
 namespace App\Http\Controllers\AdminLte;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use App\Http\Requests\AdminLte\StoreProjectRequest;
+use App\Http\Requests\AdminLte\UpdateProjectRequest;
 use App\Models\Project;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 class ProjectsController extends Controller
 {
+    use AuthorizesRequests;
+
     public function index(): View
     {
+        $this->authorize('viewAny', Project::class);
+
         $projects = Project::latest()->paginate(12);
 
         return view('adminlte.projects.index', compact('projects'));
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(StoreProjectRequest $request): RedirectResponse
     {
-        $data = $this->validateProject($request);
+        $this->authorize('create', Project::class);
 
-        Project::create($data);
+        Project::create($request->validated());
 
         return redirect()->route('adminlte.projects.index')
             ->with('status', __('adminlte.project_created'));
     }
 
-    public function update(Request $request, Project $project): RedirectResponse
+    public function update(UpdateProjectRequest $request, Project $project): RedirectResponse
     {
-        $project->update($this->validateProject($request));
+        $this->authorize('update', $project);
+
+        $project->update($request->validated());
 
         return redirect()->route('adminlte.projects.index')
             ->with('status', __('adminlte.project_updated'));
@@ -37,23 +45,11 @@ class ProjectsController extends Controller
 
     public function destroy(Project $project): RedirectResponse
     {
+        $this->authorize('delete', $project);
+
         $project->delete();
 
         return redirect()->route('adminlte.projects.index')
             ->with('status', __('adminlte.project_deleted'));
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    private function validateProject(Request $request): array
-    {
-        return $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'description' => ['nullable', 'string'],
-            'status' => ['required', 'in:planning,active,on_hold,completed'],
-            'progress' => ['required', 'integer', 'min:0', 'max:100'],
-            'due_date' => ['nullable', 'date'],
-        ]);
     }
 }
