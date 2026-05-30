@@ -41,6 +41,19 @@ return [
     'delete_account_warning' => 'Una vez eliminada tu cuenta, todos sus recursos y datos se borrarán de forma permanente. Esto no se puede deshacer.',
     'delete_account_confirm' => '¿Seguro que quieres eliminar tu cuenta de forma permanente?',
 
+    // Impersonation
+    'login_as' => 'Iniciar sesión como',
+    'impersonating' => 'Estás suplantando a :name.',
+    'leave_impersonation' => 'Salir de la suplantación',
+
+    // Activity log
+    'activity_log' => 'Registro de actividad',
+    'event' => 'Evento',
+    'ip_address' => 'Dirección IP',
+    'user' => 'Usuario',
+    'system' => 'Sistema',
+    'no_activity' => 'Aún no hay actividad registrada.',
+
     'main_navigation' => 'Navegación principal',
     'profile' => 'Perfil',
 
@@ -92,7 +105,6 @@ return [
     'no_notifications' => 'Sin notificaciones',
     'see_all_notifications' => 'Ver todas las notificaciones',
     'messages' => 'Mensajes',
-    'no_messages' => 'Sin mensajes',
     'see_all_messages' => 'Ver todos los mensajes',
     'tasks' => 'Tareas',
     'no_tasks' => 'Sin tareas',
@@ -116,7 +128,6 @@ return [
     'description' => 'Descripción',
     'due_date' => 'Fecha de vencimiento',
     'edit' => 'Editar',
-    'email' => 'Correo electrónico',
     'events' => 'Eventos',
     'faq' => 'Preguntas frecuentes',
     'file_manager' => 'Gestor de archivos',
@@ -138,7 +149,6 @@ return [
     'price' => 'Precio',
     'pricing' => 'Precios',
     'print' => 'Imprimir',
-    'profile' => 'Perfil',
     'progress' => 'Progreso',
     'projects' => 'Proyectos',
     'qty' => 'Cant.',

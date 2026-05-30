@@ -7,7 +7,11 @@ use ColorlibHQ\AdminLte\Console\MakeAuthCommand;
 use ColorlibHQ\AdminLte\Console\ScaffoldCommand;
 use ColorlibHQ\AdminLte\Console\StatusCommand;
 use ColorlibHQ\AdminLte\Plugins\PluginManager;
+use ColorlibHQ\AdminLte\Support\ActivityLogger;
 use ColorlibHQ\AdminLte\View\Components;
+use Illuminate\Auth\Events\Failed;
+use Illuminate\Auth\Events\Login;
+use Illuminate\Auth\Events\Logout;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
@@ -105,6 +109,46 @@ class AdminLteServiceProvider extends ServiceProvider
         $this->registerDemoRoutes();
         $this->registerDocsRoutes();
         $this->registerAuthorization();
+        $this->registerActivityLogging();
+    }
+
+    /**
+     * Auto-record auth events (login / logout / failed login) into the
+     * scaffolded activity_log table. ActivityLogger no-ops when the table is
+     * absent, so this is safe whether or not `adminlte:scaffold activity-log`
+     * has been run.
+     */
+    private function registerActivityLogging(): void
+    {
+        $events = $this->app->make('events');
+
+        $events->listen(Login::class, function ($event): void {
+            ActivityLogger::log(
+                'auth.login',
+                'Signed in',
+                [],
+                null,
+                (int) $event->user->getAuthIdentifier(),
+            );
+        });
+
+        $events->listen(Logout::class, function ($event): void {
+            ActivityLogger::log(
+                'auth.logout',
+                'Signed out',
+                [],
+                null,
+                $event->user ? (int) $event->user->getAuthIdentifier() : null,
+            );
+        });
+
+        $events->listen(Failed::class, function ($event): void {
+            ActivityLogger::log(
+                'auth.failed',
+                'Failed login attempt',
+                ['email' => $event->credentials['email'] ?? null],
+            );
+        });
     }
 
     /**

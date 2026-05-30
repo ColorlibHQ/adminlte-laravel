@@ -59,6 +59,9 @@ class ScaffoldCommandTest extends TestCase
             foreach ((array) ($spec['notifications'] ?? []) as $notification) {
                 $this->assertFileExists("{$this->stubsPath}/notifications/{$notification}.php.stub", "[$section] notification");
             }
+            foreach ((array) ($spec['concerns'] ?? []) as $concern) {
+                $this->assertFileExists("{$this->stubsPath}/concerns/{$concern}.php.stub", "[$section] concern");
+            }
             if (! empty($spec['routes'])) {
                 $this->assertFileExists("{$this->stubsPath}/routes/{$spec['routes']}.php.stub", "[$section] routes");
             }
@@ -70,9 +73,14 @@ class ScaffoldCommandTest extends TestCase
 
     public function test_every_content_section_has_a_view(): void
     {
+        $viewless = [
+            'rbac',          // publishes its own users/ and roles/ view dirs via scaffoldRbac().
+            'impersonation', // controller + routes only; banner lives in the package.
+        ];
+
         foreach ($this->manifest() as $section => $spec) {
-            if ($section === 'rbac') {
-                continue; // RBAC publishes its own users/ and roles/ view dirs via scaffoldRbac().
+            if (in_array($section, $viewless, true)) {
+                continue;
             }
             $this->assertNotEmpty($spec['views'] ?? null, "Section '$section' must define a views directory.");
         }

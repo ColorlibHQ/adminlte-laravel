@@ -52,6 +52,13 @@
                                 @endforelse
                             </td>
                             <td class="text-end">
+                                @if (\Illuminate\Support\Facades\Route::has('adminlte.impersonate.start') && ! $user->is(auth()->user()))
+                                    <a href="{{ route('adminlte.impersonate.start', $user) }}"
+                                       class="btn btn-sm btn-outline-secondary" aria-label="{{ __('adminlte.login_as') }}"
+                                       title="{{ __('adminlte.login_as') }}">
+                                        <i class="bi bi-incognito"></i>
+                                    </a>
+                                @endif
                                 <a href="{{ route('adminlte.users.edit', $user) }}"
                                    class="btn btn-sm btn-outline-secondary" aria-label="{{ __('adminlte.edit') }}">
                                     <i class="bi bi-pencil"></i>

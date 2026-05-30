@@ -41,6 +41,19 @@ return [
     'delete_account_warning' => 'Sobald dein Konto gelöscht ist, werden alle zugehörigen Ressourcen und Daten dauerhaft entfernt. Dies kann nicht rückgängig gemacht werden.',
     'delete_account_confirm' => 'Möchtest du dein Konto wirklich dauerhaft löschen?',
 
+    // Impersonation
+    'login_as' => 'Anmelden als',
+    'impersonating' => 'Du agierst als :name.',
+    'leave_impersonation' => 'Identitätswechsel beenden',
+
+    // Activity log
+    'activity_log' => 'Aktivitätsprotokoll',
+    'event' => 'Ereignis',
+    'ip_address' => 'IP-Adresse',
+    'user' => 'Benutzer',
+    'system' => 'System',
+    'no_activity' => 'Noch keine Aktivität aufgezeichnet.',
+
     'main_navigation' => 'Hauptnavigation',
     'profile' => 'Profil',
 
@@ -92,7 +105,6 @@ return [
     'no_notifications' => 'Keine Benachrichtigungen',
     'see_all_notifications' => 'Alle Benachrichtigungen anzeigen',
     'messages' => 'Nachrichten',
-    'no_messages' => 'Keine Nachrichten',
     'see_all_messages' => 'Alle Nachrichten anzeigen',
     'tasks' => 'Aufgaben',
     'no_tasks' => 'Keine Aufgaben',
@@ -116,7 +128,6 @@ return [
     'description' => 'Beschreibung',
     'due_date' => 'Fälligkeitsdatum',
     'edit' => 'Bearbeiten',
-    'email' => 'E-Mail',
     'events' => 'Ereignisse',
     'faq' => 'FAQ',
     'file_manager' => 'Dateimanager',
@@ -138,7 +149,6 @@ return [
     'price' => 'Preis',
     'pricing' => 'Preise',
     'print' => 'Drucken',
-    'profile' => 'Profil',
     'progress' => 'Fortschritt',
     'projects' => 'Projekte',
     'qty' => 'Menge',

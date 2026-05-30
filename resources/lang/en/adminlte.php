@@ -42,6 +42,19 @@ return [
     'delete_account_warning' => 'Once your account is deleted, all of its resources and data will be permanently removed. This cannot be undone.',
     'delete_account_confirm' => 'Are you sure you want to permanently delete your account?',
 
+    // Impersonation
+    'login_as' => 'Log in as',
+    'impersonating' => 'You are impersonating :name.',
+    'leave_impersonation' => 'Leave impersonation',
+
+    // Activity log
+    'activity_log' => 'Activity Log',
+    'event' => 'Event',
+    'ip_address' => 'IP Address',
+    'user' => 'User',
+    'system' => 'System',
+    'no_activity' => 'No activity recorded yet.',
+
     // Layout
     'main_navigation' => 'Main navigation',
     'profile' => 'Profile',

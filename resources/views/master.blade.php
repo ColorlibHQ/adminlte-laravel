@@ -52,6 +52,8 @@
 <body class="{{ $bodyClasses }}">
     @include('adminlte::partials.preloader')
 
+    @include('adminlte::partials.impersonation-banner')
+
     <div class="app-wrapper">
         @include('adminlte::partials.navbar')
         @include('adminlte::partials.sidebar')

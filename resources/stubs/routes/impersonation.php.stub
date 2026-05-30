@@ -1,0 +1,2 @@
+    Route::get('impersonate/{user}', [\App\Http\Controllers\AdminLte\ImpersonationController::class, 'start'])->name('impersonate.start');
+    Route::get('impersonate-leave', [\App\Http\Controllers\AdminLte\ImpersonationController::class, 'stop'])->name('impersonate.stop');
