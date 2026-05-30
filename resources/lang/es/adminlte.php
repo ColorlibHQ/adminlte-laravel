@@ -24,6 +24,23 @@ return [
     'confirm_password_message' => 'Esta es un área segura. Confirma tu contraseña antes de continuar.',
     'confirm' => 'Confirmar',
 
+    // Account management
+    'avatar' => 'Avatar',
+    'current_password' => 'Contraseña actual',
+    'new_password' => 'Nueva contraseña',
+    'password_updated' => 'Contraseña actualizada.',
+    'avatar_updated' => 'Avatar actualizado.',
+    'email_unverified' => 'Tu dirección de correo electrónico no está verificada.',
+    'sessions' => 'Sesiones',
+    'this_device' => 'Este dispositivo',
+    'sessions_db_only' => 'La gestión de sesiones activas requiere el controlador de sesión de base de datos.',
+    'logout_other_sessions' => 'Cerrar otras sesiones',
+    'other_sessions_logged_out' => 'Se han cerrado todas las demás sesiones.',
+    'danger_zone' => 'Zona de peligro',
+    'delete_account' => 'Eliminar cuenta',
+    'delete_account_warning' => 'Una vez eliminada tu cuenta, todos sus recursos y datos se borrarán de forma permanente. Esto no se puede deshacer.',
+    'delete_account_confirm' => '¿Seguro que quieres eliminar tu cuenta de forma permanente?',
+
     'main_navigation' => 'Navegación principal',
     'profile' => 'Perfil',
 

@@ -1,2 +1,6 @@
     Route::get('profile', [\App\Http\Controllers\AdminLte\ProfileController::class, 'show'])->name('profile.show');
     Route::put('profile', [\App\Http\Controllers\AdminLte\ProfileController::class, 'update'])->name('profile.update');
+    Route::put('profile/password', [\App\Http\Controllers\AdminLte\ProfileController::class, 'updatePassword'])->name('profile.password.update');
+    Route::post('profile/avatar', [\App\Http\Controllers\AdminLte\ProfileController::class, 'updateAvatar'])->name('profile.avatar.update');
+    Route::put('profile/other-sessions', [\App\Http\Controllers\AdminLte\ProfileController::class, 'logoutOtherDevices'])->name('profile.sessions.logout-others');
+    Route::delete('profile', [\App\Http\Controllers\AdminLte\ProfileController::class, 'destroy'])->name('profile.destroy');

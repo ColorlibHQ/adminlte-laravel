@@ -112,7 +112,10 @@ class ScaffoldCommand extends Command
             'routes' => 'file-manager',
         ],
         'profile' => [
+            'migrations' => ['add_profile_fields_to_users_table'],
+            'requests' => ['UpdateProfileRequest', 'UpdatePasswordRequest'],
             'controllers' => ['ProfileController'],
+            'tests' => ['ProfileTest'],
             'views' => 'profile',
             'routes' => 'profile',
         ],

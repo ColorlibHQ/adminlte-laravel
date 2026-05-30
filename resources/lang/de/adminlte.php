@@ -24,6 +24,23 @@ return [
     'confirm_password_message' => 'Dies ist ein gesicherter Bereich. Bitte bestätige dein Passwort, bevor du fortfährst.',
     'confirm' => 'Bestätigen',
 
+    // Account management
+    'avatar' => 'Avatar',
+    'current_password' => 'Aktuelles Passwort',
+    'new_password' => 'Neues Passwort',
+    'password_updated' => 'Passwort aktualisiert.',
+    'avatar_updated' => 'Avatar aktualisiert.',
+    'email_unverified' => 'Deine E-Mail-Adresse ist nicht bestätigt.',
+    'sessions' => 'Sitzungen',
+    'this_device' => 'Dieses Gerät',
+    'sessions_db_only' => 'Die Verwaltung aktiver Sitzungen erfordert den Datenbank-Sitzungstreiber.',
+    'logout_other_sessions' => 'Andere Sitzungen abmelden',
+    'other_sessions_logged_out' => 'Alle anderen Sitzungen wurden abgemeldet.',
+    'danger_zone' => 'Gefahrenzone',
+    'delete_account' => 'Konto löschen',
+    'delete_account_warning' => 'Sobald dein Konto gelöscht ist, werden alle zugehörigen Ressourcen und Daten dauerhaft entfernt. Dies kann nicht rückgängig gemacht werden.',
+    'delete_account_confirm' => 'Möchtest du dein Konto wirklich dauerhaft löschen?',
+
     'main_navigation' => 'Hauptnavigation',
     'profile' => 'Profil',
 

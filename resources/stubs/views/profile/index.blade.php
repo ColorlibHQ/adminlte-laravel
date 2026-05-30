@@ -3,18 +3,7 @@
 @section('title', __('adminlte.profile'))
 
 @section('content_header')
-    <div class="row">
-        <div class="col-sm-6">
-            <h1 class="m-0">{{ __('adminlte.profile') }}</h1>
-        </div>
-        <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-end">
-                <li class="breadcrumb-item"><a href="{{ url('/') }}">{{ __('adminlte.home') }}</a></li>
-                <li class="breadcrumb-item">Pages</li>
-                <li class="breadcrumb-item active" aria-current="page">{{ __('adminlte.profile') }}</li>
-            </ol>
-        </div>
-    </div>
+    <h1 class="m-0">{{ __('adminlte.profile') }}</h1>
 @stop
 
 @section('content')
@@ -22,235 +11,138 @@
         <x-adminlte-alert theme="success" dismissible>{{ session('status') }}</x-adminlte-alert>
     @endif
 
-    <div class="row g-3">
-        {{-- Profile sidebar --}}
-        <div class="col-md-3">
-            {{-- About card --}}
-            <div class="card card-primary card-outline">
-                <div class="card-body box-profile text-center">
-                    <img class="profile-user-img img-fluid rounded-circle mb-2"
-                        src="{{ asset('vendor/adminlte/img/user2-160x160.jpg') }}"
-                        alt="{{ $user->name }}">
-
-                    <h3 class="profile-username">{{ $user->name }}</h3>
-                    <p class="text-secondary mb-3">Product Designer</p>
-
-                    <ul class="list-group list-group-unbordered mb-3 text-start">
-                        <li class="list-group-item d-flex justify-content-between">
-                            <b>{{ __('adminlte.followers') }}</b>
-                            <span class="float-end">1,322</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between">
-                            <b>Following</b>
-                            <span class="float-end">543</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between">
-                            <b>{{ __('adminlte.friends') }}</b>
-                            <span class="float-end">13,287</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between">
-                            <b>{{ __('adminlte.member_since') }}</b>
-                            <span class="float-end">{{ $user->created_at?->format('M Y') }}</span>
-                        </li>
-                    </ul>
-
-                    <a href="#" class="btn btn-primary w-100">
-                        <i class="bi bi-person-plus me-1" aria-hidden="true"></i>
-                        Follow
-                    </a>
+    <div class="row">
+        {{-- Avatar / summary card --}}
+        <div class="col-lg-4">
+            <x-adminlte-card>
+                <div class="text-center">
+                    @php($avatar = $user->avatar ?? null)
+                    <img src="{{ $avatar ? \Illuminate\Support\Facades\Storage::url($avatar) : asset('vendor/adminlte/img/user2-160x160.jpg') }}"
+                         class="rounded-circle mb-2" width="100" height="100" alt="{{ $user->name }}" style="object-fit: cover;">
+                    <h3 class="mb-0">{{ $user->name }}</h3>
+                    <p class="text-secondary">{{ $user->email }}</p>
                 </div>
-            </div>
 
-            {{-- About Me card --}}
-            <div class="card card-primary card-outline mt-3">
-                <div class="card-header">
-                    <div class="card-title">About Me</div>
-                </div>
-                <div class="card-body">
-                    <strong><i class="bi bi-mortarboard me-1" aria-hidden="true"></i> Education</strong>
-                    <p class="text-secondary">BS in Computer Science from the University of Tennessee at Knoxville</p>
-                    <hr>
-
-                    <strong><i class="bi bi-geo-alt me-1" aria-hidden="true"></i> Location</strong>
-                    <p class="text-secondary">Malibu, California</p>
-                    <hr>
-
-                    <strong><i class="bi bi-tags me-1" aria-hidden="true"></i> Skills</strong>
-                    <p>
-                        <span class="badge text-bg-secondary me-1">UI/UX</span>
-                        <span class="badge text-bg-secondary me-1">Figma</span>
-                        <span class="badge text-bg-secondary me-1">Design Systems</span>
-                        <span class="badge text-bg-secondary">Research</span>
-                    </p>
-                    <hr>
-
-                    <strong><i class="bi bi-pencil-square me-1" aria-hidden="true"></i> Notes</strong>
-                    <p class="text-secondary mb-0">
-                        Lorem ipsum represents a long-held tradition for designers, typographers and the like.
-                    </p>
-                </div>
-            </div>
+                <form action="{{ route('adminlte.profile.avatar.update') }}" method="post" enctype="multipart/form-data" class="mt-3">
+                    @csrf
+                    <label class="form-label">{{ __('adminlte.avatar') }}</label>
+                    <input type="file" name="avatar" accept="image/*" class="form-control @error('avatar') is-invalid @enderror" required>
+                    @error('avatar')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    <button type="submit" class="btn btn-primary w-100 mt-2">
+                        <i class="bi bi-upload me-1"></i> {{ __('adminlte.upload') }}
+                    </button>
+                </form>
+            </x-adminlte-card>
         </div>
 
-        {{-- Tabbed content --}}
-        <div class="col-md-9">
-            <div class="card">
-                <div class="card-header p-0 border-bottom-0">
-                    <ul class="nav nav-pills p-2" id="profile-tabs" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="activity-tab" data-bs-toggle="pill"
-                                data-bs-target="#activity" type="button" role="tab"
-                                aria-controls="activity" aria-selected="true">
-                                {{ __('adminlte.activity') }}
-                            </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="timeline-tab" data-bs-toggle="pill"
-                                data-bs-target="#timeline" type="button" role="tab"
-                                aria-controls="timeline" aria-selected="false">
-                                Timeline
-                            </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="settings-tab" data-bs-toggle="pill"
-                                data-bs-target="#settings" type="button" role="tab"
-                                aria-controls="settings" aria-selected="false">
-                                {{ __('adminlte.settings') }}
-                            </button>
-                        </li>
-                    </ul>
-                </div>
-                <div class="card-body">
-                    <div class="tab-content">
-                        {{-- Activity tab --}}
-                        <div class="tab-pane fade show active" id="activity" role="tabpanel" aria-labelledby="activity-tab">
-                            <article class="d-flex gap-3 mb-4">
-                                <img class="flex-shrink-0 rounded-circle"
-                                    src="{{ asset('vendor/adminlte/img/user2-160x160.jpg') }}"
-                                    alt="{{ $user->name }}" style="width: 40px; height: 40px;">
-                                <div class="flex-grow-1">
-                                    <div class="d-flex justify-content-between">
-                                        <h4 class="h6 mb-0">{{ $user->name }}</h4>
-                                        <small class="text-secondary">2 hours ago</small>
-                                    </div>
-                                    <p class="mb-2">
-                                        Shipped <a href="#">design-system v2.4</a> with a refreshed color palette
-                                        and new motion primitives.
-                                    </p>
-                                    <a href="#" class="btn btn-sm btn-outline-secondary">
-                                        <i class="bi bi-hand-thumbs-up me-1" aria-hidden="true"></i> Like
-                                    </a>
-                                    <a href="#" class="btn btn-sm btn-outline-secondary ms-1">
-                                        <i class="bi bi-chat me-1" aria-hidden="true"></i> Comment
-                                    </a>
-                                </div>
-                            </article>
+        <div class="col-lg-8">
+            <x-adminlte-card bodyClass="p-0">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-profile" type="button">{{ __('adminlte.profile') }}</button></li>
+                    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-password" type="button">{{ __('adminlte.change_password') }}</button></li>
+                    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-sessions" type="button">{{ __('adminlte.sessions') }}</button></li>
+                    <li class="nav-item"><button class="nav-link text-danger" data-bs-toggle="tab" data-bs-target="#tab-danger" type="button">{{ __('adminlte.danger_zone') }}</button></li>
+                </ul>
 
-                            <article class="d-flex gap-3 mb-4">
-                                <img class="flex-shrink-0 rounded-circle"
-                                    src="{{ asset('vendor/adminlte/img/user1-128x128.jpg') }}"
-                                    alt="Sarah Ross" style="width: 40px; height: 40px;">
-                                <div class="flex-grow-1">
-                                    <div class="d-flex justify-content-between">
-                                        <h4 class="h6 mb-0">Sarah Ross</h4>
-                                        <small class="text-secondary">Yesterday</small>
-                                    </div>
-                                    <p class="mb-0">
-                                        Posted a question in <a href="#">#design-help</a>: how should we handle
-                                        focus rings on dark-themed CTA buttons?
-                                    </p>
-                                </div>
-                            </article>
-
-                            <article class="d-flex gap-3">
-                                <img class="flex-shrink-0 rounded-circle"
-                                    src="{{ asset('vendor/adminlte/img/user8-128x128.jpg') }}"
-                                    alt="Mike Doe" style="width: 40px; height: 40px;">
-                                <div class="flex-grow-1">
-                                    <div class="d-flex justify-content-between">
-                                        <h4 class="h6 mb-0">Mike Doe</h4>
-                                        <small class="text-secondary">3 days ago</small>
-                                    </div>
-                                    <p class="mb-0">Updated the project board and added <em>Research</em> to the roadmap.</p>
-                                </div>
-                            </article>
-                        </div>
-
-                        {{-- Timeline tab --}}
-                        <div class="tab-pane fade" id="timeline" role="tabpanel" aria-labelledby="timeline-tab">
-                            <div class="timeline">
-                                <div class="timeline-item">
-                                    <span class="timeline-icon bg-success">
-                                        <i class="bi bi-check-lg" aria-hidden="true"></i>
-                                    </span>
-                                    <div class="timeline-body">
-                                        <span class="time"><i class="bi bi-clock me-1"></i> May 16, 2026</span>
-                                        <h3 class="timeline-header">Released v2.4 of the design system</h3>
-                                    </div>
-                                </div>
-
-                                <div class="timeline-item">
-                                    <span class="timeline-icon bg-info">
-                                        <i class="bi bi-mic" aria-hidden="true"></i>
-                                    </span>
-                                    <div class="timeline-body">
-                                        <span class="time"><i class="bi bi-clock me-1"></i> April 22, 2026</span>
-                                        <h3 class="timeline-header">Spoke at the local UX meetup</h3>
-                                    </div>
-                                </div>
-
-                                <div class="timeline-item">
-                                    <span class="timeline-icon bg-warning">
-                                        <i class="bi bi-briefcase" aria-hidden="true"></i>
-                                    </span>
-                                    <div class="timeline-body">
-                                        <span class="time"><i class="bi bi-clock me-1"></i> March 1, 2026</span>
-                                        <h3 class="timeline-header">Joined the product team as Senior Designer</h3>
-                                    </div>
-                                </div>
-
-                                <div class="timeline-end">
-                                    <i class="bi bi-clock"></i>
-                                </div>
+                <div class="tab-content p-3">
+                    {{-- Profile --}}
+                    <div class="tab-pane fade show active" id="tab-profile">
+                        <form action="{{ route('adminlte.profile.update') }}" method="post">
+                            @csrf
+                            @method('PUT')
+                            <div class="mb-3">
+                                <label class="form-label">{{ __('adminlte.name') }}</label>
+                                <input type="text" name="name" value="{{ old('name', $user->name) }}"
+                                       class="form-control @error('name') is-invalid @enderror" required>
+                                @error('name')<div class="invalid-feedback">{{ $message }}</div>@enderror
                             </div>
-                        </div>
+                            <div class="mb-3">
+                                <label class="form-label">{{ __('adminlte.email') }}</label>
+                                <input type="email" name="email" value="{{ old('email', $user->email) }}"
+                                       class="form-control @error('email') is-invalid @enderror" required>
+                                @error('email')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
+                                    <small class="text-warning"><i class="bi bi-exclamation-triangle me-1"></i>{{ __('adminlte.email_unverified') }}</small>
+                                @endif
+                            </div>
+                            <button type="submit" class="btn btn-primary">{{ __('adminlte.save') }}</button>
+                        </form>
+                    </div>
 
-                        {{-- Settings tab --}}
-                        <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
-                            <form method="POST" action="{{ route('adminlte.profile.update') }}" class="row g-3">
+                    {{-- Password --}}
+                    <div class="tab-pane fade" id="tab-password">
+                        <form action="{{ route('adminlte.profile.password.update') }}" method="post">
+                            @csrf
+                            @method('PUT')
+                            <div class="mb-3">
+                                <label class="form-label">{{ __('adminlte.current_password') }}</label>
+                                <input type="password" name="current_password" autocomplete="current-password"
+                                       class="form-control @error('current_password') is-invalid @enderror" required>
+                                @error('current_password')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">{{ __('adminlte.new_password') }}</label>
+                                <input type="password" name="password" autocomplete="new-password"
+                                       class="form-control @error('password') is-invalid @enderror" required>
+                                @error('password')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">{{ __('adminlte.confirm_password') }}</label>
+                                <input type="password" name="password_confirmation" autocomplete="new-password" class="form-control" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">{{ __('adminlte.change_password') }}</button>
+                        </form>
+                    </div>
+
+                    {{-- Sessions --}}
+                    <div class="tab-pane fade" id="tab-sessions">
+                        @if (count($sessions) > 0)
+                            <ul class="list-group mb-3">
+                                @foreach ($sessions as $session)
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span>
+                                            <i class="bi bi-display me-2"></i>
+                                            {{ $session->ip_address }}
+                                            @if ($session->is_current_device)
+                                                <span class="badge text-bg-success ms-2">{{ __('adminlte.this_device') }}</span>
+                                            @endif
+                                            <br><small class="text-secondary">{{ $session->last_active }}</small>
+                                        </span>
+                                    </li>
+                                @endforeach
+                            </ul>
+                            <form action="{{ route('adminlte.profile.sessions.logout-others') }}" method="post">
                                 @csrf
                                 @method('PUT')
-
-                                <div class="col-md-6">
-                                    <label class="form-label" for="profile-name">{{ __('adminlte.name') }}</label>
-                                    <input type="text" name="name" id="profile-name"
-                                        class="form-control @error('name') is-invalid @enderror"
-                                        value="{{ old('name', $user->name) }}" required>
-                                    @error('name')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
+                                <label class="form-label">{{ __('adminlte.confirm_password') }}</label>
+                                <div class="input-group" style="max-width: 360px;">
+                                    <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" required>
+                                    <button type="submit" class="btn btn-outline-danger">{{ __('adminlte.logout_other_sessions') }}</button>
                                 </div>
-
-                                <div class="col-md-6">
-                                    <label class="form-label" for="profile-email">{{ __('adminlte.email') }}</label>
-                                    <input type="email" name="email" id="profile-email"
-                                        class="form-control @error('email') is-invalid @enderror"
-                                        value="{{ old('email', $user->email) }}" required>
-                                    @error('email')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="col-12">
-                                    <button type="submit" class="btn btn-primary">
-                                        <i class="bi bi-check-lg me-1" aria-hidden="true"></i> {{ __('adminlte.save') }}
-                                    </button>
-                                </div>
+                                @error('password')<div class="text-danger small mt-1">{{ $message }}</div>@enderror
                             </form>
-                        </div>
+                        @else
+                            <p class="text-secondary mb-0">{{ __('adminlte.sessions_db_only') }}</p>
+                        @endif
+                    </div>
+
+                    {{-- Danger zone --}}
+                    <div class="tab-pane fade" id="tab-danger">
+                        <p class="text-secondary">{{ __('adminlte.delete_account_warning') }}</p>
+                        <form action="{{ route('adminlte.profile.destroy') }}" method="post"
+                              onsubmit="return confirm('{{ __('adminlte.delete_account_confirm') }}');">
+                            @csrf
+                            @method('DELETE')
+                            <label class="form-label">{{ __('adminlte.confirm_password') }}</label>
+                            <div class="input-group" style="max-width: 360px;">
+                                <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" required>
+                                <button type="submit" class="btn btn-danger">{{ __('adminlte.delete_account') }}</button>
+                            </div>
+                            @error('password')<div class="text-danger small mt-1">{{ $message }}</div>@enderror
+                        </form>
                     </div>
                 </div>
-            </div>
+            </x-adminlte-card>
         </div>
     </div>
 @stop

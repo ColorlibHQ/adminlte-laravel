@@ -25,6 +25,23 @@ return [
     'confirm_password_message' => 'This is a secure area. Please confirm your password before continuing.',
     'confirm' => 'Confirm',
 
+    // Account management
+    'avatar' => 'Avatar',
+    'current_password' => 'Current password',
+    'new_password' => 'New password',
+    'password_updated' => 'Password updated.',
+    'avatar_updated' => 'Avatar updated.',
+    'email_unverified' => 'Your email address is unverified.',
+    'sessions' => 'Sessions',
+    'this_device' => 'This device',
+    'sessions_db_only' => 'Active session management requires the database session driver.',
+    'logout_other_sessions' => 'Log out other sessions',
+    'other_sessions_logged_out' => 'All other sessions have been logged out.',
+    'danger_zone' => 'Danger Zone',
+    'delete_account' => 'Delete account',
+    'delete_account_warning' => 'Once your account is deleted, all of its resources and data will be permanently removed. This cannot be undone.',
+    'delete_account_confirm' => 'Are you sure you want to permanently delete your account?',
+
     // Layout
     'main_navigation' => 'Main navigation',
     'profile' => 'Profile',
