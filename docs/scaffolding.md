@@ -39,6 +39,9 @@ Behavior:
 | `invoice` | Invoice generator |
 | `pricing` | Pricing page |
 | `faq` | FAQ accordion |
+| `notifications` | Database notifications + navbar bell wiring + page — see [`notifications.md`](notifications.md) |
+| `impersonation` | "Log in as" another user (RBAC-gated) — see [`activity-log.md`](activity-log.md) |
+| `activity-log` | Activity/audit log + `LogsActivity` trait + auto auth-event logging — see [`activity-log.md`](activity-log.md) |
 | `rbac` | Roles & permissions, management UI, `HasRoles` on `User` — see [`authorization.md`](authorization.md) |
 
 ## Where files are published
@@ -51,6 +54,8 @@ Behavior:
 | Form Requests | `app/Http/Requests/AdminLte/{Request}.php` |
 | Policies | `app/Policies/{Model}Policy.php` |
 | Model factories | `database/factories/{Model}Factory.php` |
+| Notifications | `app/Notifications/{Notification}.php` |
+| Model concerns (traits) | `app/Models/Concerns/{Trait}.php` |
 | Feature tests | `tests/Feature/AdminLte/{Section}Test.php` |
 | Seeders | `database/seeders/{Seeder}.php` |
 | Views | `resources/views/adminlte/{section}/` |

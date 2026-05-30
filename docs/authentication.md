@@ -186,3 +186,53 @@ Then:
 
 > Because the scaffolded `/admin/*` routes use the `auth` middleware, having a
 > working login flow is a prerequisite for viewing scaffolded sections.
+
+---
+
+## Hardening (plain auth)
+
+`adminlte:make-auth` (plain mode) scaffolds a security-hardened stack out of the
+box — no extra packages required.
+
+### Login rate limiting
+
+`LoginController` throttles failed attempts (5 per `email` + IP) and throws the
+standard `auth.throttle` lockout message. On success the limiter is cleared and
+the session is regenerated.
+
+### Email verification
+
+The command publishes `EmailVerificationController` (notice / verify / resend),
+registers the verification routes (`verification.notice`; `verification.verify`
+behind `signed` + `throttle:6,1`; `verification.send` behind `throttle:6,1`), and
+ships the `adminlte::auth.verify-email` view. It also makes your `User` model
+implement `MustVerifyEmail` (uncommenting Laravel's default import; idempotent).
+
+Protect routes that require a verified address with the `verified` middleware:
+
+```php
+Route::middleware(['auth', 'verified'])->group(function () {
+    // ...
+});
+```
+
+### Password confirmation
+
+`ConfirmablePasswordController` + the `adminlte::auth.confirm-password` view + the
+`password.confirm` route let you guard sensitive actions. Apply the
+`password.confirm` middleware to anything that should re-prompt for the password:
+
+```php
+Route::get('billing', BillingController::class)->middleware('password.confirm');
+```
+
+> **Two-factor authentication.** For TOTP-based 2FA, use the Fortify integration
+> (`adminlte:make-auth --type=fortify`) and point Fortify's 2FA challenge view at
+> AdminLTE — Fortify provides the canonical, well-tested 2FA implementation
+> rather than hand-rolled crypto.
+
+### Account management
+
+The `profile` scaffold provides a full account page (avatar upload, change
+password, active sessions, delete account). See
+[`account-management.md`](account-management.md).
