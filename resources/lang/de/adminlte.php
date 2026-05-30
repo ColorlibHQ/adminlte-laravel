@@ -55,6 +55,7 @@ return [
     'no_activity' => 'Noch keine Aktivität aufgezeichnet.',
 
     'main_navigation' => 'Hauptnavigation',
+    'dashboard' => 'Dashboard',
     'profile' => 'Profil',
 
     'light' => 'Hell',

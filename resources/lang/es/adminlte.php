@@ -55,6 +55,7 @@ return [
     'no_activity' => 'Aún no hay actividad registrada.',
 
     'main_navigation' => 'Navegación principal',
+    'dashboard' => 'Tablero',
     'profile' => 'Perfil',
 
     'light' => 'Claro',

@@ -57,6 +57,7 @@ return [
 
     // Layout
     'main_navigation' => 'Main navigation',
+    'dashboard' => 'Dashboard',
     'profile' => 'Profile',
 
     // Color mode

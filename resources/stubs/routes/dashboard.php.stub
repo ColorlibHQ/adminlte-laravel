@@ -1,0 +1,1 @@
+    Route::get('dashboard', [\App\Http\Controllers\AdminLte\DashboardController::class, 'index'])->name('dashboard');

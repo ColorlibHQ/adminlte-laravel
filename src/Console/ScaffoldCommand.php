@@ -18,6 +18,7 @@ class ScaffoldCommand extends Command
      * @var array<string, string>
      */
     protected array $sections = [
+        'dashboard' => 'Data-driven dashboard with real stats from your scaffolded models',
         'mailbox' => 'Messages mailbox with inbox/read/compose',
         'chat' => 'Conversations and chat messaging',
         'kanban' => 'Kanban boards with drag-to-reorder cards',
@@ -43,6 +44,12 @@ class ScaffoldCommand extends Command
      * @var array<string, array<string, mixed>>
      */
     protected array $manifest = [
+        'dashboard' => [
+            'controllers' => ['DashboardController'],
+            'tests' => ['DashboardTest'],
+            'views' => 'dashboard',
+            'routes' => 'dashboard',
+        ],
         'mailbox' => [
             'migrations' => ['create_adminlte_messages_table'],
             'models' => ['Message'],
