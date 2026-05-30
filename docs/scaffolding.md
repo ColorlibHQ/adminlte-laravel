@@ -39,6 +39,7 @@ Behavior:
 | `invoice` | Invoice generator |
 | `pricing` | Pricing page |
 | `faq` | FAQ accordion |
+| `rbac` | Roles & permissions, management UI, `HasRoles` on `User` — see [`authorization.md`](authorization.md) |
 
 ## Where files are published
 
@@ -47,9 +48,33 @@ Behavior:
 | Migrations | `database/migrations/{timestamp}_{name}.php` (timestamps staggered for deterministic order) |
 | Models | `app/Models/{Model}.php` |
 | Controllers | `app/Http/Controllers/AdminLte/{Controller}.php` |
+| Form Requests | `app/Http/Requests/AdminLte/{Request}.php` |
+| Policies | `app/Policies/{Model}Policy.php` |
+| Model factories | `database/factories/{Model}Factory.php` |
+| Feature tests | `tests/Feature/AdminLte/{Section}Test.php` |
 | Seeders | `database/seeders/{Seeder}.php` |
 | Views | `resources/views/adminlte/{section}/` |
 | Routes | appended into a managed group in `routes/web.php` (see below) |
+
+---
+
+## Deep Laravel artifacts
+
+The DB-backed sections don't just publish a controller and a view — they
+generate the full set of building blocks a Laravel developer expects, so the
+scaffolded code is production-shaped from day one rather than a throwaway demo.
+
+| Artifact | What it gives you |
+|----------|-------------------|
+| **Model factories** | Every scaffolded model uses the `HasFactory` trait and ships a matching factory in `database/factories/`, so you can `Message::factory()->count(10)->create()` in seeders and tests immediately. |
+| **Form Requests** | Write operations are validated through dedicated `Store*` / `Update*` Form Request classes (`$request->validated()`), keeping validation rules out of the controller. |
+| **Policies** | Each DB-backed model gets a Policy with `viewAny` / `view` / `create` / `update` / `delete` methods (ownership-aware where relevant). Controllers call `$this->authorize(...)` on every action. |
+| **Feature tests** | Each section ships a `tests/Feature/AdminLte/` test that asserts guests are redirected, authenticated users can view, and CRUD + authorization behave — runnable with `php artisan test` right after scaffolding. |
+
+The Policies are registered automatically by the package (guarded by
+`class_exists`), and authorization keys resolve through the optional RBAC layer.
+See [`authorization.md`](authorization.md) for roles, permissions, and how the
+menu and Policies tie into Gate.
 
 ---
 

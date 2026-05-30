@@ -186,6 +186,7 @@ class AdminLteServiceProvider extends ServiceProvider
             'plugins' => 'Plugins',
             'scaffolding' => 'Scaffolding',
             'authentication' => 'Authentication',
+            'authorization' => 'Authorization',
             'commands' => 'Commands',
             'translations' => 'Translations',
             'demo-pages' => 'Demo pages',

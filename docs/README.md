@@ -22,8 +22,9 @@ Official [AdminLTE 4](https://adminlte.io) integration for Laravel — Bootstrap
 
 ## Application scaffolding
 
-- [**Scaffolding**](scaffolding.md) — `adminlte:scaffold` generates DB-backed sections (mailbox, chat, kanban, calendar, projects, …)
+- [**Scaffolding**](scaffolding.md) — `adminlte:scaffold` generates DB-backed sections (mailbox, chat, kanban, calendar, projects, …) with factories, form requests, policies & feature tests
 - [**Authentication**](authentication.md) — `adminlte:make-auth` (plain / Breeze / Fortify)
+- [**Authorization**](authorization.md) — dependency-free RBAC: roles, permissions, `HasRoles`, middleware, Gate, users/roles UI
 
 ## Reference
 

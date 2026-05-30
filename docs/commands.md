@@ -228,7 +228,15 @@ php artisan adminlte:scaffold --all
 
 # Re-scaffold and overwrite customizations
 php artisan adminlte:scaffold projects --force
+
+# Roles & permissions layer (HasRoles on User, users/roles UI), seeded
+php artisan adminlte:scaffold rbac --seed
 ```
+
+DB-backed sections also publish **factories, form requests, policies, and feature
+tests** alongside the model and controller — see [`scaffolding.md`](scaffolding.md).
+The `rbac` section installs a dependency-free roles/permissions layer — see
+[`authorization.md`](authorization.md).
 
 See [`scaffolding.md`](scaffolding.md) for the full per-section manifest, the DB
 tables created, and the route group injected into `routes/web.php`.
