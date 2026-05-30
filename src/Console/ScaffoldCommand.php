@@ -31,6 +31,7 @@ class ScaffoldCommand extends Command
         'pricing' => 'Pricing page',
         'faq' => 'FAQ accordion',
         'notifications' => 'Database notifications wired into the navbar bell + a notifications page',
+        'api' => 'Sanctum personal access tokens with a management UI (run install:api first)',
         'impersonation' => 'Log in as another user (RBAC-gated) with a revert banner',
         'activity-log' => 'Activity/audit log with a viewer + a LogsActivity model trait',
         'rbac' => 'Roles & permissions (RBAC) with user/role management UI',
@@ -155,6 +156,12 @@ class ScaffoldCommand extends Command
             'views' => 'notifications',
             'routes' => 'notifications',
             'seeder' => 'AdminLteNotificationsSeeder',
+        ],
+        'api' => [
+            'controllers' => ['ApiTokenController'],
+            'tests' => ['ApiTokenTest'],
+            'views' => 'api-tokens',
+            'routes' => 'api-tokens',
         ],
         'impersonation' => [
             'controllers' => ['ImpersonationController'],
@@ -340,6 +347,97 @@ class ScaffoldCommand extends Command
         if (! empty($spec['routes'])) {
             $this->appendRoutes($section, (string) $spec['routes']);
         }
+
+        if ($section === 'api') {
+            $this->injectHasApiTokens();
+            $this->appendApiExampleRoute();
+        }
+    }
+
+    /**
+     * Add Sanctum's HasApiTokens trait to the app's User model (idempotent).
+     * Only runs when Sanctum is installed, so the User model never references a
+     * missing trait.
+     */
+    protected function injectHasApiTokens(): void
+    {
+        if (! trait_exists('Laravel\Sanctum\HasApiTokens')) {
+            $this->warn('  Sanctum not detected — run "php artisan install:api", then re-run this command to wire HasApiTokens into User.');
+
+            return;
+        }
+
+        $userModel = app_path('Models/User.php');
+
+        if (! file_exists($userModel)) {
+            $this->warn('  app/Models/User.php not found — add "use Laravel\Sanctum\HasApiTokens;" manually.');
+
+            return;
+        }
+
+        $contents = (string) file_get_contents($userModel);
+
+        if (str_contains($contents, 'HasApiTokens')) {
+            $this->line('  <comment>User model already uses HasApiTokens</comment>');
+
+            return;
+        }
+
+        $contents = (string) preg_replace(
+            '/^(namespace App\\\\Models;\s*)$/m',
+            "$1\nuse Laravel\\Sanctum\\HasApiTokens;",
+            $contents,
+            1
+        );
+
+        if (preg_match('/(class User extends \w+[^{]*\{\s*\n)(\s*)use /', $contents)) {
+            $contents = (string) preg_replace(
+                '/(class User extends \w+[^{]*\{\s*\n)(\s*)use ([^;]+);/',
+                '$1$2use HasApiTokens, $3;',
+                $contents,
+                1
+            );
+        } else {
+            $contents = (string) preg_replace(
+                '/(class User extends \w+[^{]*\{\s*\n)/',
+                "$1    use HasApiTokens;\n\n",
+                $contents,
+                1
+            );
+        }
+
+        file_put_contents($userModel, $contents);
+        $this->line('  <info>✓</info> added HasApiTokens trait to app/Models/User.php');
+    }
+
+    /**
+     * Append an example Sanctum-protected endpoint to routes/api.php (idempotent).
+     */
+    protected function appendApiExampleRoute(): void
+    {
+        $apiRoutes = base_path('routes/api.php');
+
+        if (! file_exists($apiRoutes)) {
+            $this->warn('  routes/api.php not found — run "php artisan install:api" to create it.');
+
+            return;
+        }
+
+        $contents = (string) file_get_contents($apiRoutes);
+
+        if (str_contains($contents, '// [adminlte:api]')) {
+            $this->line('  <comment>example API route already present</comment>');
+
+            return;
+        }
+
+        $snippet = "\n// [adminlte:api] Example Sanctum-protected endpoint.\n"
+            ."Route::middleware('auth:sanctum')->get('/user', function (\\Illuminate\\Http\\Request \$request) {\n"
+            ."    return \$request->user();\n"
+            ."});\n";
+
+        file_put_contents($apiRoutes, $contents.$snippet);
+        $this->line('  <info>✓</info> example endpoint added to routes/api.php');
     }
 
     /**

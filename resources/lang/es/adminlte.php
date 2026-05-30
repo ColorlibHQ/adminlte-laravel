@@ -46,6 +46,18 @@ return [
     'impersonating' => 'Estás suplantando a :name.',
     'leave_impersonation' => 'Salir de la suplantación',
 
+    // API tokens (Sanctum)
+    'api_tokens' => 'Tokens de API',
+    'new_token' => 'Nuevo token',
+    'token_name' => 'Nombre del token',
+    'last_used' => 'Último uso',
+    'never' => 'Nunca',
+    'revoke' => 'Revocar',
+    'no_tokens' => 'Aún no hay tokens de API.',
+    'token_created' => 'Token creado.',
+    'token_revoked' => 'Token revocado.',
+    'token_copy_now' => 'Copia tu nuevo token ahora — no se mostrará de nuevo:',
+
     // Activity log
     'activity_log' => 'Registro de actividad',
     'event' => 'Evento',

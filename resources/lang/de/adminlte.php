@@ -46,6 +46,18 @@ return [
     'impersonating' => 'Du agierst als :name.',
     'leave_impersonation' => 'Identitätswechsel beenden',
 
+    // API tokens (Sanctum)
+    'api_tokens' => 'API-Tokens',
+    'new_token' => 'Neues Token',
+    'token_name' => 'Token-Name',
+    'last_used' => 'Zuletzt verwendet',
+    'never' => 'Nie',
+    'revoke' => 'Widerrufen',
+    'no_tokens' => 'Noch keine API-Tokens.',
+    'token_created' => 'Token erstellt.',
+    'token_revoked' => 'Token widerrufen.',
+    'token_copy_now' => 'Kopiere dein neues Token jetzt — es wird nicht erneut angezeigt:',
+
     // Activity log
     'activity_log' => 'Aktivitätsprotokoll',
     'event' => 'Ereignis',
