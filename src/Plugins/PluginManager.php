@@ -117,7 +117,7 @@ class PluginManager
         $out = '';
         foreach (array_keys($this->getEnabledPlugins()) as $plugin) {
             foreach ((array) ($this->config[$plugin]['css'] ?? []) as $css) {
-                $out .= '<link rel="stylesheet" href="'.asset($css).'">'.PHP_EOL;
+                $out .= '<link rel="stylesheet" href="'.$this->assetUrl($css).'">'.PHP_EOL;
             }
         }
 
@@ -132,10 +132,32 @@ class PluginManager
         $out = '';
         foreach (array_keys($this->getEnabledPlugins()) as $plugin) {
             foreach ((array) ($this->config[$plugin]['js'] ?? []) as $js) {
-                $out .= '<script src="'.asset($js).'"></script>'.PHP_EOL;
+                $out .= '<script src="'.$this->assetUrl($js).'"></script>'.PHP_EOL;
             }
         }
 
         return $out;
+    }
+
+    /**
+     * Build an asset URL with a cache-busting `?v=<mtime>` query so a CDN
+     * (e.g. Cloudflare) re-fetches a vendor file whenever its contents change —
+     * vendor plugin files keep stable names, so without this an updated file
+     * stays masked by the cached old one. Falls back to a plain URL when the
+     * file isn't on disk (e.g. during tests or remote/asset-host setups).
+     */
+    protected function assetUrl(string $path): string
+    {
+        $url = asset($path);
+
+        if (function_exists('public_path')) {
+            $full = public_path($path);
+            $mtime = is_file($full) ? @filemtime($full) : false;
+            if ($mtime !== false) {
+                $url .= (str_contains($url, '?') ? '&' : '?').'v='.$mtime;
+            }
+        }
+
+        return $url;
     }
 }
