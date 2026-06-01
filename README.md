@@ -25,15 +25,28 @@ This package gives you a config-driven sidebar menu, ready-to-extend Blade layou
 
 ## Also available for your stack
 
-AdminLTE comes in several editions — pick the one that matches how you build. You're looking at the **Laravel** edition.
+The same AdminLTE 4 dashboard, in the framework you know best — you're looking at the **Laravel** edition:
 
-| Edition | Stack | Links |
-|---------|-------|-------|
-| **AdminLTE for Laravel** ⟵ *you are here* | Laravel 13 · Blade · Bootstrap 5.3 | [Repo](https://github.com/ColorlibHQ/adminlte-laravel) · [Live demo](https://laravel.adminlte.io/) |
-| **AdminLTE** (the original) | HTML · Bootstrap 5.3 · vanilla JS | [Repo](https://github.com/ColorlibHQ/AdminLTE) · [Live demo](https://adminlte.io/themes/v4/) |
-| **AdminLTE v3** (legacy) | HTML · Bootstrap 4 · jQuery | [Repo](https://github.com/ColorlibHQ/AdminLTE/tree/v3) · [Live demo](https://adminlte.io/themes/v3/) |
+<p align="center">
+  <a href="https://github.com/ColorlibHQ/adminlte-react"><img height="36" alt="React" src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB"></a>
+  <a href="https://github.com/ColorlibHQ/adminlte-react"><img height="36" alt="Next.js" src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white"></a>
+  <a href="https://github.com/ColorlibHQ/adminlte-vue"><img height="36" alt="Vue" src="https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D"></a>
+  <a href="https://github.com/ColorlibHQ/adminlte-vue"><img height="36" alt="Nuxt" src="https://img.shields.io/badge/Nuxt-00DC82?style=for-the-badge&logo=nuxt&logoColor=white"></a>
+  <a href="https://github.com/ColorlibHQ/adminlte-laravel"><img height="36" alt="Laravel — you are here" src="https://img.shields.io/badge/Laravel-you%20are%20here-FF2D20?style=for-the-badge&logo=laravel&logoColor=white"></a>
+  <a href="https://github.com/ColorlibHQ/adminlte-django"><img height="36" alt="Django" src="https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white"></a>
+</p>
 
-> Need a different framework (React, Vue, Inertia, Tailwind)? See the [premium Laravel dashboards](#premium-laravel-dashboards) below — full backends, not just markup.
+<p align="center"><sub>
+  Frameworks:
+  <a href="https://github.com/ColorlibHQ/adminlte-react">React</a> ·
+  <a href="https://github.com/ColorlibHQ/adminlte-react">Next.js</a> ·
+  <a href="https://github.com/ColorlibHQ/adminlte-vue">Vue</a> ·
+  <a href="https://github.com/ColorlibHQ/adminlte-vue">Nuxt</a> ·
+  <strong>Laravel</strong> (you are here) ·
+  <a href="https://github.com/ColorlibHQ/adminlte-django">Django</a>
+</sub></p>
+
+> Also available as the original [AdminLTE](https://github.com/ColorlibHQ/AdminLTE) (HTML · Bootstrap 5.3 · vanilla JS — [demo](https://adminlte.io/themes/v4/)) and the legacy [AdminLTE v3](https://github.com/ColorlibHQ/AdminLTE/tree/v3) (Bootstrap 4 · jQuery — [demo](https://adminlte.io/themes/v3/)). Need a full backend, not just markup? See the [premium Laravel dashboards](#premium-laravel-dashboards) below.
 
 **What's included:**
 
