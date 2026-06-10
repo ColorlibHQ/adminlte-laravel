@@ -17,3 +17,13 @@ parameters:
             paths:
                 - src/View/Components
                 - src/AdminLteServiceProvider.php
+
+        # The provider opportunistically wires consuming-app classes
+        # (App\Models\..., App\Policies\...) that only exist after
+        # `adminlte:scaffold`. They can never exist while analysing the
+        # package itself, so PHPStan sees class_exists() as always-false.
+        # The guards are the whole point — keep them.
+        -
+            message: '#Call to function class_exists\(\) with .App\\#'
+            paths:
+                - src/AdminLteServiceProvider.php
