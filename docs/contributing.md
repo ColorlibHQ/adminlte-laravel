@@ -15,19 +15,18 @@ composer install
 
 ## Quality gates
 
-All three must pass before a PR is merged (they also run in CI):
+All three must pass before a PR is merged (they also run in CI). Composer
+scripts wrap the right flags for you:
 
 ```bash
-# Code style (Laravel Pint, PSR-12)
-vendor/bin/pint            # fix
-vendor/bin/pint --test     # check only
+composer lint       # code style check (Laravel Pint, PSR-12)
+composer fix        # code style, applying fixes
+composer analyse    # static analysis (Larastan / PHPStan level 8,
+                    # with the required --memory-limit baked in)
+composer test       # PHPUnit via Testbench
+composer check      # all three, in CI order
 
-# Static analysis (Larastan / PHPStan level 8)
-vendor/bin/phpstan analyse --memory-limit=2G
-
-# Tests (PHPUnit via Testbench)
-composer test
-# or a single test:
+# Run a single test:
 vendor/bin/phpunit tests/SmokeTest.php --filter testComponentsRenderWithoutErrors
 ```
 
@@ -65,10 +64,29 @@ docs/                           This documentation
   view under `resources/views/components/{category}/`, register it in the
   `$components` map in `AdminLteServiceProvider`, document it in
   [components.md](components.md), and add a render test.
-- **New translation key?** Add it to `resources/lang/en/adminlte.php` (the other
-  locales fall back to English until translated).
+- **New translation key?** Add it to **all 9** locale files in
+  `resources/lang/` — every locale ships complete, and PRs that add keys only
+  to `en` will be asked to backfill. Verify with:
+
+  ```bash
+  php -r '$en = require "resources/lang/en/adminlte.php";
+  foreach (["de","es","fr","it","ja","pt_BR","ru","zh"] as $l)
+      echo $l, ": ", count(array_diff_key($en, require "resources/lang/$l/adminlte.php")), PHP_EOL;'
+  # every line must print 0
+  ```
+
+- **Accessibility**: decorative icons get `aria-hidden="true"`; form errors are
+  linked to their control via `aria-describedby`; interactive toggles expose
+  state (`aria-expanded`). Keep new views to the same standard.
+
+## Reporting security issues
+
+Please don't open public issues for vulnerabilities — use
+[GitHub Security Advisories](https://github.com/ColorlibHQ/adminlte-laravel/security/advisories/new)
+(see `.github/SECURITY.md`).
 
 ## CI
 
-GitHub Actions runs the matrix on PHP 8.3 / 8.4 with Laravel 13:
-**Pint → Larastan → PHPUnit**. All steps must be green.
+GitHub Actions runs the matrix on PHP 8.3 / 8.4 / 8.5 with Laravel 13:
+**composer lint → composer analyse → composer test**. All steps must be green.
+Dependabot keeps Composer dev-dependencies and the workflow actions current.

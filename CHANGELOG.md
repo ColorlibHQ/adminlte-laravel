@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-06-10
+
+First stable release. The package now offers full AdminLTE 4 demo parity,
+40 Blade components, an 18-section scaffolding system, dependency-free RBAC,
+9 complete locales, in-app docs, and a 57-test suite — Pint, PHPStan level 8
+and PHPUnit run green on PHP 8.3–8.5 / Laravel 13.
+
 ### Added — Authorization (RBAC)
 
 - **Native, dependency-free RBAC** via `adminlte:scaffold rbac`: roles &
@@ -66,8 +73,48 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   registered in the in-app docs nav and the `docs/` index, and cross-linked
   from `scaffolding.md`.
 
+### Added — Polish pass (i18n, a11y, DX)
+
+- **All 9 locales are now complete.** Backfilled the missing keys (33 in
+  `de`/`es`, 76 in `fr`/`it`/`ja`/`pt_BR`/`ru`/`zh`) covering account
+  management, email verification, sessions, impersonation, API tokens,
+  activity log, navbar, and the RBAC UI.
+- `AdminLte::add()` — append menu items at runtime; and `addAfter()` now
+  really splices items after the item whose `key`/`text`/`header` matches
+  (it previously appended to the end regardless of the key).
+- Accessibility: decorative icons are `aria-hidden`; form components link
+  validation errors via `aria-describedby`/`aria-invalid`; sidebar submenu
+  toggles expose `aria-expanded` (kept in sync by the published `app.js`);
+  the command palette is a proper `combobox`/`listbox` with
+  `aria-activedescendant`.
+- Composer scripts: `composer test` / `lint` / `fix` / `analyse` / `check`
+  (`analyse` bakes in the `--memory-limit=1G` PHPStan now needs). CI uses
+  them and also runs on PHP 8.5.
+- Community files: issue/PR templates, `SECURITY.md`, Dependabot config.
+- 23 new tests: runtime menu mutations, docs routes (incl. traversal
+  attempts), component escaping/XSS regressions, `NavbarData` fallbacks.
+
+### Changed
+
+- `adminlte:install` pins every npm dependency to a tested major version
+  (notably `fullcalendar@^6.1` — v7 is breaking) and prints install guidance
+  for the optional plugins (Flatpickr, Tom Select, Tabulator, Quill).
+- Auth and error layouts no longer load Bootstrap Icons from the jsDelivr
+  CDN — the icons already ship in the Vite bundle (`resources/css/adminlte.css`),
+  so offline/strict-CSP apps work and the double-load is gone.
+- The command palette builds its result list with `textContent` instead of
+  HTML string concatenation.
+
 ### Fixed
 
+- `NavbarData::notifications()`/`messages()` now respect the `$limit`
+  argument for demo/fallback data too.
+- Profile Card social links reject dangerous URL schemes (`javascript:`,
+  `data:`) — only `http(s)`, `mailto` and relative URLs render.
+- Docs route asserts the resolved file stays inside `docs/` (defense in
+  depth on top of the existing slug sanitization).
+- ApexCharts init in the published `app.js` is wrapped in try/catch so one
+  bad chart config can't break every chart on the page.
 - Removed three duplicate keys (`email`, `profile`, `no_messages`) from the
   `de`/`es` translation files.
 - Sanctum/RBAC trait detection uses `trait_exists` (traits are not classes).

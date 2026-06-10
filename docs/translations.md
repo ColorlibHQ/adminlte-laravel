@@ -3,12 +3,15 @@
 All package views — the auth screens, navbar dropdowns, user menu, command
 palette, and components — use Laravel's translation helper with the `adminlte`
 group, e.g. `__('adminlte.search')` or `__('adminlte.sign_out')`. The package
-ships about 130 keys (143 entries in the English file) per locale.
+ships roughly 220 keys per locale, covering the layout, auth flows, account
+management, sessions, impersonation, API tokens, the activity log, and the
+RBAC management UI.
 
 ## Bundled locales
 
 Nine locales ship under `resources/lang/`, each with a single `adminlte.php`
-file:
+file. **Every locale is complete** — all nine carry the full key set, so no
+locale silently falls back to English:
 
 | Code | Language |
 | --- | --- |
@@ -75,3 +78,18 @@ App::setLocale('de');
 
 The master layout reflects the active locale on the `<html lang="...">`
 attribute (converting underscores to hyphens, e.g. `pt_BR` → `pt-BR`).
+
+## Contributing a locale or fixing a translation
+
+PRs are welcome — copy `resources/lang/en/adminlte.php` to your locale
+directory and translate the values (never the keys; keep placeholders like
+`:name` intact). New keys must be added to **all nine** locale files in the
+same change. You can verify completeness with:
+
+```bash
+php -r '$en = require "resources/lang/en/adminlte.php";
+foreach (["de","es","fr","it","ja","pt_BR","ru","zh"] as $l)
+    echo $l, ": ", count(array_diff_key($en, require "resources/lang/$l/adminlte.php")), PHP_EOL;'
+```
+
+Every line should print `0`. See [contributing.md](contributing.md).

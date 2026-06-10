@@ -4,293 +4,150 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**AdminLTE 4 for Laravel** is an official Laravel package integration of AdminLTE 4 (Bootstrap 5.3, vanilla JS). It provides:
+**AdminLTE 4 for Laravel** (`colorlibhq/adminlte-laravel`) is the official Laravel package integration of AdminLTE 4 (Bootstrap 5.3, vanilla JS, no jQuery). It provides:
 
 - Config-driven sidebar menu with permissions, active states, badges
-- 21+ Blade components (cards, widgets, forms, modals, navbar dropdowns)
-- Multi-language support (i18n) with English, German, Spanish translations
-- Plugin system for lazy-loading JS libraries (Flatpickr, Tom Select, Tabulator, Quill)
-- RTL layout support
-- Auth views (login, register, forgot-password, reset-password)
+- 40 Blade components (widgets, forms, charts, calendar, kanban, wizard, modals)
+- Scaffolding system (`adminlte:scaffold`) for 18 DB-backed app sections
+- Dependency-free RBAC (roles, permissions, middleware, permission-aware Gate)
+- Auth scaffolding (`adminlte:make-auth`) for plain/Breeze/Fortify
+- Plugin system for lazy-loading JS libraries (Flatpickr, Tom Select, Tabulator, Quill, ApexCharts, jsVectorMap, FullCalendar, SortableJS)
+- i18n with 9 locales (en, de, es, fr, it, ja, pt_BR, ru, zh), RTL support
+- Bundled demo pages and in-app docs (served at `/docs`)
 - Vite-first asset pipeline
 
-This is a **package** (Composer), not a Laravel application. The package provides reusable components and infrastructure for Laravel apps that consume it.
+This is a **Composer package**, not a Laravel application. Requires PHP ^8.3 and Laravel (illuminate) ^13.0. Tests run against Orchestra Testbench — the package is never "run" directly; it's consumed via `composer require colorlibhq/adminlte-laravel` + `php artisan adminlte:install`.
 
 ## Development Commands
 
-### Testing & Quality Assurance
-
 ```bash
-# Run tests (PHPUnit)
-composer test
-# or: vendor/bin/phpunit
+composer test       # PHPUnit
+composer lint       # Pint check only (what CI runs)
+composer fix        # Pint, applying fixes
+composer analyse    # PHPStan level 8 (bakes in --memory-limit=1G — the bare
+                    # `vendor/bin/phpstan` exhausts PHP's default 128M limit)
+composer check      # lint + analyse + test (the full CI sequence)
 
-# Run single test class/method
+# Run a single test class/method
 vendor/bin/phpunit tests/SmokeTest.php
 vendor/bin/phpunit tests/SmokeTest.php --filter testComponentsRenderWithoutErrors
-
-# Check code style (Pint/Laravel's formatter)
-vendor/bin/pint
-vendor/bin/pint --test    # check only, don't fix
-
-# Run static analysis (Larastan + phpstan)
-vendor/bin/phpstan
-vendor/bin/phpstan --memory-limit=2G  # if hitting memory limits
 ```
 
-### Installation & Setup
-
-```bash
-# Install dependencies
-composer install
-
-# The package itself is never "run" — it's consumed by Laravel apps via:
-# composer require colorlibhq/adminlte-laravel
-# php artisan adminlte:install
-```
+CI (`.github/workflows/tests.yml`) runs on PHP 8.3 + 8.4 + 8.5 against Laravel 13 / Testbench 11, in this order: **composer lint → composer analyse → composer test**. All three must pass.
 
 ## Architecture & Key Concepts
 
 ### Service Provider (`AdminLteServiceProvider`)
 
-- Registers 27 Blade components under the `adminlte-` prefix (e.g., `<x-adminlte-card>`)
-- Registers the `AdminLte` singleton (menu builder) and `PluginManager` singleton
-- Registers `@pluginStyles` and `@pluginScripts` Blade directives
-- Publishes config, views, stubs, and language files
-- Registers Artisan commands: `adminlte:install`, `adminlte:status`
+Single entry point. On boot it:
 
-### Core Components
+- Registers 40 Blade components under the `adminlte-` prefix (e.g. `<x-adminlte-card>`), from the `$components` map at the top of the class
+- Registers the `AdminLte` menu-builder singleton (aliased `adminlte`) and the `PluginManager` singleton
+- Registers `@pluginStyles` / `@pluginScripts` Blade directives — these emit PHP that runs at **request time**, so plugins enabled by components during render are reflected
+- Registers translations both under the `adminlte::` namespace **and** as a default-namespace path, so views can use plain `__('adminlte.key')` without publishing
+- Registers demo routes (`/demo/*`, toggle with `config('adminlte.demo')`) and in-app docs routes (`/docs/{page}`, renders the markdown in `docs/` with the AdminLTE layout)
+- Opportunistically wires RBAC for the consuming app: model policies, `role`/`permission` middleware aliases, and a permission-aware `Gate::before` — all guarded by `class_exists` on `App\...` classes that only exist after `adminlte:scaffold rbac`
+- Listens to auth events (Login/Logout/Failed) and writes them via `ActivityLogger`, which **no-ops when the `activity_log` table is absent**
 
-#### Menu System (`AdminLte` + `MenuItemHelper`)
+### Artisan Commands (`src/Console/`)
 
-- **`AdminLte` class** (singleton): Builds and filters the sidebar menu from config
-- Menu items flow through a **filter pipeline** (`config/adminlte.filters`):
+| Command | Purpose |
+| --- | --- |
+| `adminlte:install` | Publish config + Vite stubs, wire Vite, prompt for npm deps (`--only=config\|views\|assets\|lang`) |
+| `adminlte:scaffold {section}` | Publish a DB-backed section into the consuming app (`--all`, `--force`, `--seed`) |
+| `adminlte:make-auth` | Auth controllers/routes (`--type=plain\|breeze\|fortify`) with hardening |
+| `adminlte:status` | Show install state |
+
+### Scaffolding System (`ScaffoldCommand` + `resources/stubs/`)
+
+The largest subsystem. `ScaffoldCommand` holds a declarative `$manifest` mapping each of 18 sections (dashboard, mailbox, chat, kanban, calendar, projects, file-manager, profile, settings, invoice, pricing, faq, notifications, api, impersonation, activity-log, realtime, rbac) to what it publishes: migrations, models, factories, controllers, Form Requests, policies, seeders, feature tests, views, and route stubs. All stubs live in `resources/stubs/` as `.php.stub` files organized by type (`models/`, `controllers/`, `migrations/`, `policies/`, `rbac/`, `realtime/`, etc.). To change what a section generates, edit both the manifest and the stub files.
+
+### Menu System (`AdminLte` + `MenuItemHelper`)
+
+- **`AdminLte` class** (singleton): builds and filters the sidebar/navbar menu from `config('adminlte.menu')`
+- Menu items flow through a **filter pipeline** (`config('adminlte.filters')`), in order:
   1. `SearchFilter` — normalizes menu data
-  2. `GateFilter` — filters by authorization (`can` key)
+  2. `GateFilter` — filters by authorization (`can` key; works with the RBAC `Gate::before`)
   3. `HrefFilter` — resolves routes to URLs
   4. `ActiveFilter` — marks current page as active
-- Supports nested submenus, badges, icons, section headers, navbar items
-- Singleton ensures runtime `addAfter()` calls persist for the request
-- Scoped menu retrieval: `menu('sidebar')`, `menu('navbar-left')`, `menu('navbar-right')`
+- Singleton ensures runtime `addAfter()` calls persist for the request (reset next request)
+- Scoped retrieval: `menu('sidebar')`, `menu('navbar-left')`, `menu('navbar-right')`
+- The filter pipeline is the single source of truth for menu rendering logic
 
-#### Plugin System (`PluginManager`)
+### Plugin System (`PluginManager`)
 
-- Lazy-loads optional JS/CSS libraries (Flatpickr, Tom Select, Tabulator, Quill)
-- Config in `config/adminlte.php` under `plugins` key
-- Components like `<x-adminlte-input-flatpickr>` trigger plugin registration
-- `@pluginStyles` / `@pluginScripts` directives inject assets
+- Lazy-loads optional JS/CSS libraries; config under `config('adminlte.plugins')` (flatpickr, tom_select, tabulator, quill, apexcharts, jsvectormap, fullcalendar, sortablejs)
+- Plugin-backed components call `app(PluginManager::class)->enable('plugin-name')` in their **constructor** — rendering the component is what triggers asset loading
+- `renderStyles()`/`renderScripts()` append a cache-busting `?v=<filemtime>` to asset URLs (skipped when the file isn't on disk, e.g. in tests)
+- Bundled default asset paths are patched into config entries that omit `css`/`js` keys
 
-#### Blade Components
+### Blade Components
 
-**Location:** `src/View/Components/{Form,Widget,Tool}/` (corresponds to view files in `resources/views/components/`)
+**PHP classes:** `src/View/Components/{Form,Widget,Tool}/` → **views:** `resources/views/components/{form,widget,tool}/` (namespaced `adminlte::`)
 
-**Categories:**
+- **Widget** (21): Card, SmallBox, InfoBox, Alert, Callout, Progress, Timeline, ProgressGroup, DescriptionBlock, ProfileCard, Ratings, NavNotifications, NavMessages, NavTasks, DirectChat, Toast, Tabs/Tab, Accordion/AccordionItem, Breadcrumb
+- **Form** (9): Input, InputSwitch, InputColor, InputFile, InputFlatpickr, InputTomSelect, Textarea, Select, Button
+- **Tool** (10): Modal, Datatable, Editor, Chart, VectorMap, Calendar, Kanban, Sortable, Wizard/WizardStep
 
-- **Widget components** (`Widget/`): Card, SmallBox, InfoBox, Alert, Callout, Progress, Timeline, ProgressGroup, DescriptionBlock, ProfileCard, Ratings, NavNotifications, NavMessages, NavTasks
-- **Form components** (`Form/`): Input, InputSwitch, InputColor, InputFile, InputFlatpickr (plugin), InputTomSelect (plugin), Textarea, Select, Button
-- **Tool components** (`Tool/`): Modal, Datatable (plugin), Editor (plugin)
+**Pattern:** constructor parameters become tag attributes; public helper methods (e.g. `cardClass()`) compute dynamic CSS/conditional content; `render()` returns the matching `adminlte::components.*` view. Plugin-backed components additionally call `PluginManager::enable()` in the constructor.
 
-**Component Structure:**
+### Support Classes (`src/Support/`)
 
-```php
-// src/View/Components/Widget/Card.php
-class Card extends Component {
-    public function __construct(
-        public ?string $title = null,
-        public ?string $icon = null,
-        public ?string $theme = null,  // primary, success, warning, danger, info
-        public bool $outline = false,
-        // ... more options
-    ) {}
-
-    public function cardClass(): string {
-        // Helper to build dynamic CSS classes
-    }
-
-    public function render(): View {
-        return view('adminlte::components.widget.card');  // maps to resources/views/components/widget/card.blade.php
-    }
-}
-```
-
-**Key Patterns:**
-
-- Constructor parameters become component attributes
-- Private helper methods (like `cardClass()`) compute dynamic classes or conditional content
-- `render()` points to the corresponding Blade view
-- Views are namespaced: `adminlte::` namespace points to `resources/views/`
-
-#### Config
-
-- **`config/adminlte.php`**: Title, logo, layout toggles, color-mode, sidebar theme, user menu, menu definition, filters, plugins, language fallback
-- **Published during install** via `php artisan adminlte:install`
-- Menu defined as array of items: `['text' => 'Page', 'route' => 'page.show', 'icon' => 'bi bi-home']`
-
-### Language/Translation
-
-- **Location:** `resources/lang/{en,de,es}/`
-- All auth views and components use the `__('adminlte.key')` pattern
-- Form validation messages, buttons, labels are translatable
-- 7 additional language stubs (French, Italian, Portuguese, Russian, Turkish, Ukrainian, Japanese) for user extension
+- **`ActivityLogger`** — static `log()` into the scaffolded `activity_log` table; silently no-ops if the table doesn't exist, so package code can call it unconditionally
+- **`NavbarData`** — feeds the navbar notification/message dropdowns from real DB tables when scaffolded, falling back to demo data otherwise
 
 ## Testing
 
-### Test Structure
-
-- **Location:** `tests/`
-- **Test case base:** `TestCase.php` extends Orchestra Testbench (isolates package tests from a parent app)
-- **Key test files:**
-  - `SmokeTest.php` — component rendering, menu filtering, auth views
-  - `PluginSystemTest.php` — plugin registration and directive output
-  - `WidgetComponentTest.php` — widget-specific assertions
-
-### Testing Patterns
+- **Base:** `tests/TestCase.php` extends Orchestra Testbench and registers only `AdminLteServiceProvider`
+- **Files:** `SmokeTest.php` (component rendering, menu filtering, auth views), `PluginSystemTest.php`, `WidgetComponentTest.php`, `ScaffoldCommandTest.php`, `MakeAuthCommandTest.php`
+- Component tests render the namespaced view directly and assert on output strings:
 
 ```php
-// Components render without errors
-$view = view('adminlte::components.widget.card', [
-    'title' => 'Test',
-    'icon' => 'bi bi-home',
-])->render();
+$view = view('adminlte::components.widget.card', [...])->render();
 $this->assertStringContainsString('card', $view);
-
-// Menu items are filtered correctly
-$menu = app('adminlte')->menu('sidebar');
-$this->assertCount(2, $menu);
-
-// Plugin manager tracks enabled plugins
-$this->assertTrue(app(PluginManager::class)->isEnabled('flatpickr'));
 ```
 
-### CI/CD (GitHub Actions)
-
-- Runs on PHP 8.3 and 8.4 with Laravel 13
-- Steps: **Pint** (code style) → **Larastan** (static analysis) → **PHPUnit** (tests)
-- All steps must pass for PR merge
+- Scaffold/auth command tests run the artisan command in Testbench and assert published files exist/contain expected content
 
 ## Common Development Patterns
 
 ### Adding a New Component
 
-1. **Create the PHP class** in `src/View/Components/{Category}/YourComponent.php`
-   - Extend `Illuminate\View\Component`
-   - Define public constructor parameters (become tag attributes)
-   - Add private helper methods for computed CSS/logic
-   - Implement `render()` returning a Blade view
+1. PHP class in `src/View/Components/{Category}/YourComponent.php` extending `Illuminate\View\Component`
+2. Blade view in `resources/views/components/{category}/your-component.blade.php`
+3. Register in the `$components` array in `AdminLteServiceProvider` (`'your-component' => ...` → `<x-adminlte-your-component>`)
+4. Test rendering in `tests/WidgetComponentTest.php` or similar
 
-2. **Create the Blade view** in `resources/views/components/{category}/your-component.blade.php`
-   - Use `$slot` for content slots
-   - Reference component properties directly: `{{ $title }}`
-   - Call helper methods: `{{ $this->cardClass() }}`
+### Adding a Menu Filter
 
-3. **Register in `AdminLteServiceProvider`**
-   ```php
-   private array $components = [
-       'your-component' => Components\Category\YourComponent::class,
-   ];
-   ```
-   - Used as `<x-adminlte-your-component>`
-
-4. **Test it** in `tests/WidgetComponentTest.php` or similar
-   - Render with sample data
-   - Assert key strings are present
-
-### Adding a New Filter
-
-1. **Create the filter** in `src/Menu/Filters/YourFilter.php`
-   - Implement `FilterInterface` (single method: `transform(array $item): ?array`)
-   - Return null to drop the item; otherwise modify and return
-
-2. **Register in `config/adminlte.php`**
-   ```php
-   'filters' => [
-       // ... existing filters
-       YourFilter::class,
-   ],
-   ```
-
-3. **Test the filter** — unit test or integration test via menu rendering
+1. Implement `FilterInterface` in `src/Menu/Filters/` — `transform(array $item): ?array`, return null to drop the item
+2. Append to `'filters'` in `config/adminlte.php` (order matters)
 
 ### Adding a Plugin
 
-1. **Register in `config/adminlte.php`**
-   ```php
-   'plugins' => [
-       'your-lib' => [
-           'enabled' => true,
-           'css' => 'your-lib.min.css',
-           'js' => 'your-lib.min.js',
-       ],
-   ],
-   ```
+1. Add entry under `'plugins'` in `config/adminlte.php` (`enabled`, `css`, `js`)
+2. Create a component whose constructor calls `app(PluginManager::class)->enable('your-lib')`
+3. Test via `@pluginStyles`/`@pluginScripts` output in `PluginSystemTest.php`
 
-2. **Create a component that depends on it** (e.g., `InputYourLib`)
-   - Constructor calls `app(PluginManager::class)->require('your-lib')`
-   - Component render triggers plugin registration automatically
+### Adding a Scaffold Section
 
-3. **Test via `@pluginStyles` and `@pluginScripts`** directives
-   - Verify asset URLs are present in rendered output
-
-## File Structure Summary
-
-```
-src/
-  AdminLte.php                    # Menu builder singleton
-  AdminLteServiceProvider.php     # Main service provider
-  Console/
-    InstallCommand.php            # php artisan adminlte:install
-    StatusCommand.php             # php artisan adminlte:status
-  Menu/
-    MenuItemHelper.php            # Static menu utilities
-    Filters/
-      FilterInterface.php         # Filter contract
-      SearchFilter.php            # Data normalization
-      GateFilter.php              # Authorization
-      HrefFilter.php              # Route/URL resolution
-      ActiveFilter.php            # Active state marking
-  Plugins/
-    PluginManager.php             # JS library management
-  View/Components/
-    Form/                         # 9 form components
-    Widget/                       # 12 widget components
-    Tool/                         # 3 tool components
-
-resources/
-  views/
-    components/                   # Blade templates for each component
-    layouts/                      # master, page layouts
-    partials/                     # navbar, sidebar, footer, etc.
-    auth/                         # login, register, etc.
-  lang/
-    en/, de/, es/                 # Translation files
-  stubs/
-    app.js.stub, app.css.stub     # Vite entry stubs
-
-tests/
-  TestCase.php                    # Testbench base
-  SmokeTest.php                   # Rendering & integration tests
-  PluginSystemTest.php            # Plugin system tests
-  WidgetComponentTest.php         # Widget-specific tests
-
-config/
-  adminlte.php                    # Published to consumer's config/
-
-phpunit.xml.dist                  # PHPUnit config
-phpstan.neon                      # Larastan config (level 8)
-```
+1. Add `.php.stub` files under the matching `resources/stubs/` subdirectories
+2. Add the section to `$sections` and `$manifest` in `ScaffoldCommand`
+3. Add a feature test in `tests/ScaffoldCommandTest.php`
+4. Document in `docs/scaffolding.md` (docs are user-facing — served in-app at `/docs`)
 
 ## Code Style & Standards
 
-- **PHP Style:** PSR-12 (enforced via Pint)
-- **Static Analysis:** PHPStan level 8 via Larastan
-- **Type Hints:** Strict types, explicit return types on all methods
-- **Documentation:** Inline doc blocks for public APIs
-- **Naming:** Camel case (PHP methods), kebab-case (Blade component tags and view names)
+- **PHP:** PSR-12 via Pint; strict types and explicit return types
+- **Static analysis:** PHPStan level 8 via Larastan (`phpstan.neon`; `view('adminlte::...')` view-string errors are intentionally ignored because PHPStan doesn't boot the provider)
+- **Naming:** camelCase methods, kebab-case Blade component tags and view names
 
 ## Important Notes
 
-- **This is a package**, not a consuming Laravel app. Tests use Orchestra Testbench to isolate the package.
-- **Menu is a singleton** — runtime `addAfter()` calls persist for the request but reset on the next request.
-- **Components are published during install** — config, views, stubs can be customized by the consuming app.
-- **Filters run in order** — the filter pipeline is the single source of truth for menu rendering logic.
-- **Plugins are lazy** — assets only load if a component explicitly requires them.
+- **This is a package**, not an app — never assume an `app/` directory; consuming-app classes (`App\Models\...`) are referenced as strings and guarded with `class_exists`
+- **Menu is a singleton** — runtime mutations persist per-request only
+- **Plugins are lazy** — assets load only if a rendered component enables them
+- **`docs/` is dual-purpose** — GitHub docs *and* rendered in-app at `/docs`; keep markdown links relative (`foo.md`), the docs route rewrites them
+- **Demo pages** under `resources/views/demo/` mirror the AdminLTE showcase and back the live demo at laravel.adminlte.io
+- **All 9 locales must stay complete** — when adding a translatable string, add the key to every file in `resources/lang/`; verify with `php -r '$en=require "resources/lang/en/adminlte.php"; foreach(["de","es","fr","it","ja","pt_BR","ru","zh"] as $l) print $l.": ".count(array_diff_key($en, require "resources/lang/$l/adminlte.php")).PHP_EOL;'` (all zeros)
+- **`config('adminlte.logo')` / footer keys render unescaped** (`{!! !!}`) by design — they must only ever hold trusted hardcoded markup; never route user input into them

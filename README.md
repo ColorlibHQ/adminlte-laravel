@@ -54,7 +54,7 @@ The same AdminLTE 4 dashboard, in the framework you know best — you're looking
   - Widget components: Card, Small Box, Info Box, Alert, Callout, Progress, Timeline, Ratings, Direct Chat, Toast, Tabs, Accordion, Breadcrumb, and more
   - Form components: Input, Select, Textarea, Switches, Color pickers, Flatpickr, Tom Select
   - Tool components: Modals, Datatables, Rich editor, **Charts (ApexCharts)**, **Vector Map**, **Calendar**, **Kanban**, **Wizard**
-- **Multi-language support** (i18n) with 9 locales: English, German, Spanish, French, Italian, Portuguese, Russian, Chinese, Japanese
+- **Multi-language support** (i18n) with 9 **complete** locales: English, German, Spanish, French, Italian, Portuguese, Russian, Chinese, Japanese — every key translated in every locale, no English fallbacks
 - **Plugin system** for lazy-loading JS libraries (Flatpickr, Tom Select, Tabulator, Quill, **ApexCharts**, **jsVectorMap**, **FullCalendar**, **SortableJS**)
 - **Scaffolding system** (`adminlte:scaffold`) with full DB backing for 18 sections: dashboard, mailbox, chat, kanban, calendar, projects, file-manager, profile, settings, invoice, pricing, faq, notifications, api, impersonation, activity-log, realtime, rbac — each DB-backed section also generates **factories, Form Requests, Policies, and feature tests**
 - **Authorization (RBAC)** — dependency-free roles & permissions, `HasRoles` trait, `role`/`permission` middleware, permission-aware Gate, and a Users/Roles management UI ([docs](docs/authorization.md))
@@ -66,7 +66,8 @@ The same AdminLTE 4 dashboard, in the framework you know best — you're looking
 - **⌘K command palette** — searches your menu, opens via the navbar pill or Cmd/Ctrl+K
 - **Bundled demo/showcase pages** — Dashboard v1/v2/v3, Widgets, UI Elements, Forms, Tables, Layout Options, Theme Generator (toggle with `config('adminlte.demo')`)
 - RTL layout support + 9 locales
-- Config-driven sidebar menu with permissions, active states, badges
+- **Accessibility built in** — ARIA-labelled controls, screen-reader-tracked submenu state, error messages linked to their form fields, an accessible command palette (combobox/listbox)
+- Config-driven sidebar menu with permissions, active states, badges — plus runtime additions via `addAfter()`/`add()`
 - Auth views (login, register, login-v2, register-v2, lockscreen, forgot password, reset password)
 - Error pages (404, 500, maintenance)
 - Vite-first asset pipeline
@@ -139,7 +140,7 @@ composer require colorlibhq/adminlte-laravel
 php artisan adminlte:install
 ```
 
-`adminlte:install` publishes `config/adminlte.php`, drops the Vite entry stubs into `resources/js/adminlte.js` and `resources/css/adminlte.css`, and offers to `npm install` the frontend dependencies (`admin-lte`, `bootstrap`, `@popperjs/core`, `overlayscrollbars`, `bootstrap-icons`, `sass`).
+`adminlte:install` publishes `config/adminlte.php`, drops the Vite entry stubs into `resources/js/adminlte.js` and `resources/css/adminlte.css`, and offers to `npm install` the frontend dependencies, pinned to the tested major versions (`admin-lte@^4.0`, `bootstrap@^5.3`, `@popperjs/core@^2.11`, `overlayscrollbars@^2.0`, `bootstrap-icons@^1.13`, `apexcharts@^5.0`, `jsvectormap@^1.7`, `fullcalendar@^6.1`, `sortablejs@^1.15`, `sass@^1.77`). Optional plugins (Flatpickr, Tom Select, Tabulator, Quill) are listed separately — install them only if you enable them ([docs](docs/plugins.md)).
 
 Add the two entry files to your `vite.config.js`:
 
@@ -379,8 +380,10 @@ This package is free and MIT-licensed. When you need a **production Laravel admi
 ## Contributing
 
 Issues and PRs welcome. The quality gates (Pint, Larastan level 8, PHPUnit) run
-in CI on PHP 8.3 / 8.4 with Laravel 13 — see
-[docs/contributing.md](docs/contributing.md) for local setup and conventions.
+in CI on PHP 8.3 / 8.4 / 8.5 with Laravel 13 — run them all locally with
+`composer check`. See [docs/contributing.md](docs/contributing.md) for setup
+and conventions, and [.github/SECURITY.md](.github/SECURITY.md) for reporting
+vulnerabilities privately.
 
 ## Changelog
 
