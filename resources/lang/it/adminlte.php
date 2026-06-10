@@ -150,4 +150,98 @@ return [
     'project_deleted' => 'Progetto eliminato.',
     'profile_updated' => 'Profilo aggiornato.',
     'settings_saved' => 'Impostazioni salvate.',
+
+    // Viste di autenticazione (continuazione)
+    'verify_email_message' => 'Verifica il tuo indirizzo e-mail cliccando sul link che ti abbiamo appena inviato. Se non hai ricevuto l\'e-mail, te ne invieremo volentieri un\'altra.',
+    'verification_link_sent' => 'Un nuovo link di verifica è stato inviato al tuo indirizzo e-mail.',
+    'resend_verification' => 'Invia di nuovo l\'e-mail di verifica',
+    'confirm_password_message' => 'Questa è un\'area protetta. Conferma la tua password prima di continuare.',
+    'confirm' => 'Conferma',
+
+    // Gestione dell'account
+    'avatar' => 'Avatar',
+    'current_password' => 'Password attuale',
+    'new_password' => 'Nuova password',
+    'password_updated' => 'Password aggiornata.',
+    'avatar_updated' => 'Avatar aggiornato.',
+    'email_unverified' => 'Il tuo indirizzo e-mail non è verificato.',
+    'sessions' => 'Sessioni',
+    'this_device' => 'Questo dispositivo',
+    'sessions_db_only' => 'La gestione delle sessioni attive richiede il driver di sessione database.',
+    'logout_other_sessions' => 'Disconnetti le altre sessioni',
+    'other_sessions_logged_out' => 'Tutte le altre sessioni sono state disconnesse.',
+    'danger_zone' => 'Zona pericolosa',
+    'delete_account' => 'Elimina account',
+    'delete_account_warning' => 'Una volta eliminato il tuo account, tutte le sue risorse e i suoi dati verranno rimossi in modo permanente. Questa operazione non può essere annullata.',
+    'delete_account_confirm' => 'Sei sicuro di voler eliminare definitivamente il tuo account?',
+
+    // Impersonificazione
+    'login_as' => 'Accedi come',
+    'impersonating' => 'Stai impersonando :name.',
+    'leave_impersonation' => 'Termina impersonificazione',
+
+    // Token API (Sanctum)
+    'api_tokens' => 'Token API',
+    'new_token' => 'Nuovo token',
+    'token_name' => 'Nome del token',
+    'last_used' => 'Ultimo utilizzo',
+    'never' => 'Mai',
+    'revoke' => 'Revoca',
+    'no_tokens' => 'Ancora nessun token API.',
+    'token_created' => 'Token creato.',
+    'token_revoked' => 'Token revocato.',
+    'token_copy_now' => 'Copia subito il tuo nuovo token: non verrà mostrato di nuovo:',
+
+    // Registro attività
+    'activity_log' => 'Registro attività',
+    'event' => 'Evento',
+    'ip_address' => 'Indirizzo IP',
+    'user' => 'Utente',
+    'system' => 'Sistema',
+    'no_activity' => 'Ancora nessuna attività registrata.',
+
+    // Layout
+    'dashboard' => 'Dashboard',
+
+    // Generale (continuazione)
+    'mark_all_as_read' => 'Segna tutto come letto',
+    'all_marked_read' => 'Tutte le notifiche sono state segnate come lette.',
+    'notification_deleted' => 'Notifica eliminata.',
+
+    // Menu a discesa della barra di navigazione (continuazione)
+    'view_documentation' => 'Visualizza la documentazione',
+    'no_results' => 'Nessun risultato trovato',
+    'pages' => 'Pagine',
+    'tax' => 'Imposte',
+    'online' => 'Online',
+    'generate_pdf' => 'Genera PDF',
+    'submit_payment' => 'Invia pagamento',
+    'invoice_footer_note' => 'Grazie per la tua fiducia. Il pagamento è previsto entro 31 giorni; ti preghiamo di saldare questa fattura entro tale termine.',
+    'home' => 'Home',
+    'documentation' => 'Documentazione',
+
+    // RBAC / gestione di utenti e ruoli
+    'administration' => 'Amministrazione',
+    'users' => 'Utenti',
+    'roles' => 'Ruoli',
+    'permissions' => 'Permessi',
+    'label' => 'Etichetta',
+    'create' => 'Crea',
+    'new_user' => 'Nuovo utente',
+    'new_role' => 'Nuovo ruolo',
+    'edit_user' => 'Modifica utente',
+    'edit_role' => 'Modifica ruolo',
+    'no_users' => 'Ancora nessun utente.',
+    'no_roles' => 'Ancora nessun ruolo.',
+    'no_permissions' => 'Nessun permesso definito.',
+    'user_created' => 'Utente creato.',
+    'user_updated' => 'Utente aggiornato.',
+    'user_deleted' => 'Utente eliminato.',
+    'role_created' => 'Ruolo creato.',
+    'role_updated' => 'Ruolo aggiornato.',
+    'role_deleted' => 'Ruolo eliminato.',
+    'followers' => 'Follower',
+    'sales' => 'Vendite',
+    'friends' => 'Amici',
+    'search' => 'Cerca',
 ];

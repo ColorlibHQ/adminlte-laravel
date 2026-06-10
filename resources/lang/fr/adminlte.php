@@ -150,4 +150,98 @@ return [
     'project_deleted' => 'Projet supprimé.',
     'profile_updated' => 'Profil mis à jour.',
     'settings_saved' => 'Paramètres enregistrés.',
+
+    // Vues d'authentification (suite)
+    'verify_email_message' => 'Veuillez vérifier votre adresse e-mail en cliquant sur le lien que nous venons de vous envoyer. Si vous n\'avez pas reçu l\'e-mail, nous vous en enverrons volontiers un autre.',
+    'verification_link_sent' => 'Un nouveau lien de vérification a été envoyé à votre adresse e-mail.',
+    'resend_verification' => 'Renvoyer l\'e-mail de vérification',
+    'confirm_password_message' => 'Ceci est une zone sécurisée. Veuillez confirmer votre mot de passe avant de continuer.',
+    'confirm' => 'Confirmer',
+
+    // Gestion du compte
+    'avatar' => 'Avatar',
+    'current_password' => 'Mot de passe actuel',
+    'new_password' => 'Nouveau mot de passe',
+    'password_updated' => 'Mot de passe mis à jour.',
+    'avatar_updated' => 'Avatar mis à jour.',
+    'email_unverified' => 'Votre adresse e-mail n\'est pas vérifiée.',
+    'sessions' => 'Sessions',
+    'this_device' => 'Cet appareil',
+    'sessions_db_only' => 'La gestion des sessions actives nécessite le pilote de session « database ».',
+    'logout_other_sessions' => 'Déconnecter les autres sessions',
+    'other_sessions_logged_out' => 'Toutes les autres sessions ont été déconnectées.',
+    'danger_zone' => 'Zone de danger',
+    'delete_account' => 'Supprimer le compte',
+    'delete_account_warning' => 'Une fois votre compte supprimé, toutes ses ressources et données seront définitivement effacées. Cette action est irréversible.',
+    'delete_account_confirm' => 'Êtes-vous sûr de vouloir supprimer définitivement votre compte ?',
+
+    // Usurpation d'identité
+    'login_as' => 'Se connecter en tant que',
+    'impersonating' => 'Vous naviguez en tant que :name.',
+    'leave_impersonation' => 'Quitter l\'usurpation d\'identité',
+
+    // Jetons API (Sanctum)
+    'api_tokens' => 'Jetons API',
+    'new_token' => 'Nouveau jeton',
+    'token_name' => 'Nom du jeton',
+    'last_used' => 'Dernière utilisation',
+    'never' => 'Jamais',
+    'revoke' => 'Révoquer',
+    'no_tokens' => 'Aucun jeton API pour le moment.',
+    'token_created' => 'Jeton créé.',
+    'token_revoked' => 'Jeton révoqué.',
+    'token_copy_now' => 'Copiez votre nouveau jeton maintenant — il ne sera plus affiché :',
+
+    // Journal d'activité
+    'activity_log' => 'Journal d\'activité',
+    'event' => 'Événement',
+    'ip_address' => 'Adresse IP',
+    'user' => 'Utilisateur',
+    'system' => 'Système',
+    'no_activity' => 'Aucune activité enregistrée pour le moment.',
+
+    // Mise en page (suite)
+    'dashboard' => 'Tableau de bord',
+
+    // Général (suite)
+    'mark_all_as_read' => 'Tout marquer comme lu',
+    'all_marked_read' => 'Toutes les notifications ont été marquées comme lues.',
+    'notification_deleted' => 'Notification supprimée.',
+
+    // Menus déroulants de la barre de navigation (suite)
+    'view_documentation' => 'Voir la documentation',
+    'no_results' => 'Aucun résultat trouvé',
+    'pages' => 'Pages',
+    'tax' => 'Taxe',
+    'online' => 'En ligne',
+    'generate_pdf' => 'Générer le PDF',
+    'submit_payment' => 'Effectuer le paiement',
+    'invoice_footer_note' => 'Merci de votre confiance. Le paiement est attendu sous 31 jours ; veuillez régler cette facture dans ce délai.',
+    'home' => 'Accueil',
+    'documentation' => 'Documentation',
+
+    // RBAC / gestion des utilisateurs et des rôles
+    'administration' => 'Administration',
+    'users' => 'Utilisateurs',
+    'roles' => 'Rôles',
+    'permissions' => 'Permissions',
+    'label' => 'Libellé',
+    'create' => 'Créer',
+    'new_user' => 'Nouvel utilisateur',
+    'new_role' => 'Nouveau rôle',
+    'edit_user' => 'Modifier l\'utilisateur',
+    'edit_role' => 'Modifier le rôle',
+    'no_users' => 'Aucun utilisateur pour le moment.',
+    'no_roles' => 'Aucun rôle pour le moment.',
+    'no_permissions' => 'Aucune permission définie.',
+    'user_created' => 'Utilisateur créé.',
+    'user_updated' => 'Utilisateur mis à jour.',
+    'user_deleted' => 'Utilisateur supprimé.',
+    'role_created' => 'Rôle créé.',
+    'role_updated' => 'Rôle mis à jour.',
+    'role_deleted' => 'Rôle supprimé.',
+    'followers' => 'Abonnés',
+    'sales' => 'Ventes',
+    'friends' => 'Amis',
+    'search' => 'Rechercher',
 ];

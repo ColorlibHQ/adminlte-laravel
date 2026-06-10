@@ -150,4 +150,98 @@ return [
     'project_deleted' => 'プロジェクトを削除しました。',
     'profile_updated' => 'プロフィールを更新しました。',
     'settings_saved' => '設定を保存しました。',
+
+    // Auth views
+    'verify_email_message' => 'お送りしたメール内のリンクをクリックして、メールアドレスを確認してください。メールが届いていない場合は、再送いたします。',
+    'verification_link_sent' => '新しい確認リンクをメールアドレスに送信しました。',
+    'resend_verification' => '確認メールを再送する',
+    'confirm_password_message' => 'こちらはセキュリティ保護された領域です。続行する前にパスワードを確認してください。',
+    'confirm' => '確認',
+
+    // Account management
+    'avatar' => 'アバター',
+    'current_password' => '現在のパスワード',
+    'new_password' => '新しいパスワード',
+    'password_updated' => 'パスワードを更新しました。',
+    'avatar_updated' => 'アバターを更新しました。',
+    'email_unverified' => 'メールアドレスが未確認です。',
+    'sessions' => 'セッション',
+    'this_device' => 'このデバイス',
+    'sessions_db_only' => 'アクティブセッションの管理にはデータベースセッションドライバーが必要です。',
+    'logout_other_sessions' => '他のセッションからログアウト',
+    'other_sessions_logged_out' => '他のすべてのセッションからログアウトしました。',
+    'danger_zone' => '危険な操作',
+    'delete_account' => 'アカウントを削除',
+    'delete_account_warning' => 'アカウントを削除すると、すべてのリソースとデータが完全に削除されます。この操作は取り消せません。',
+    'delete_account_confirm' => '本当にアカウントを完全に削除してもよろしいですか？',
+
+    // Impersonation
+    'login_as' => 'このユーザーとしてログイン',
+    'impersonating' => ':name として操作しています。',
+    'leave_impersonation' => '代理ログインを終了',
+
+    // API tokens (Sanctum)
+    'api_tokens' => 'APIトークン',
+    'new_token' => '新しいトークン',
+    'token_name' => 'トークン名',
+    'last_used' => '最終使用',
+    'never' => '未使用',
+    'revoke' => '無効化',
+    'no_tokens' => 'APIトークンはまだありません。',
+    'token_created' => 'トークンを作成しました。',
+    'token_revoked' => 'トークンを無効化しました。',
+    'token_copy_now' => '新しいトークンを今すぐコピーしてください。再表示はできません：',
+
+    // Activity log
+    'activity_log' => 'アクティビティログ',
+    'event' => 'イベント',
+    'ip_address' => 'IPアドレス',
+    'user' => 'ユーザー',
+    'system' => 'システム',
+    'no_activity' => 'まだアクティビティは記録されていません。',
+
+    // Layout
+    'dashboard' => 'ダッシュボード',
+
+    // General
+    'mark_all_as_read' => 'すべて既読にする',
+    'all_marked_read' => 'すべての通知を既読にしました。',
+    'notification_deleted' => '通知を削除しました。',
+
+    // Navbar dropdowns
+    'view_documentation' => 'ドキュメントを表示',
+    'no_results' => '結果が見つかりません',
+    'pages' => 'ページ',
+    'tax' => '税',
+    'online' => 'オンライン',
+    'generate_pdf' => 'PDFを生成',
+    'submit_payment' => '支払いを送信',
+    'invoice_footer_note' => 'お取引いただきありがとうございます。お支払い期限は31日以内です。期限内に本請求書のお手続きをお願いいたします。',
+    'home' => 'ホーム',
+    'documentation' => 'ドキュメント',
+
+    // RBAC / user & role management
+    'administration' => '管理',
+    'users' => 'ユーザー',
+    'roles' => 'ロール',
+    'permissions' => '権限',
+    'label' => 'ラベル',
+    'create' => '作成',
+    'new_user' => '新規ユーザー',
+    'new_role' => '新規ロール',
+    'edit_user' => 'ユーザーを編集',
+    'edit_role' => 'ロールを編集',
+    'no_users' => 'まだユーザーはいません。',
+    'no_roles' => 'まだロールはありません。',
+    'no_permissions' => '権限が定義されていません。',
+    'user_created' => 'ユーザーを作成しました。',
+    'user_updated' => 'ユーザーを更新しました。',
+    'user_deleted' => 'ユーザーを削除しました。',
+    'role_created' => 'ロールを作成しました。',
+    'role_updated' => 'ロールを更新しました。',
+    'role_deleted' => 'ロールを削除しました。',
+    'followers' => 'フォロワー',
+    'sales' => '売上',
+    'friends' => '友達',
+    'search' => '検索',
 ];
