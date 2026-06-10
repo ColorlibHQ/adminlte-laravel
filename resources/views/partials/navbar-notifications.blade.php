@@ -11,7 +11,7 @@
 @endphp
 <li class="nav-item dropdown">
     <a class="nav-link" data-bs-toggle="dropdown" href="#">
-        <i class="bi bi-bell-fill"></i>
+        <i class="bi bi-bell-fill" aria-hidden="true"></i>
         @if ($notificationCount > 0)
             <span class="navbar-badge badge text-bg-warning">{{ $notificationCount }}</span>
         @endif

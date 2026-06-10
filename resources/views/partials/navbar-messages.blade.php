@@ -11,7 +11,7 @@
 @endphp
 <li class="nav-item dropdown">
     <a class="nav-link" data-bs-toggle="dropdown" href="#">
-        <i class="bi bi-chat-text"></i>
+        <i class="bi bi-chat-text" aria-hidden="true"></i>
         @if ($messageCount > 0)
             <span class="navbar-badge badge text-bg-danger">{{ $messageCount }}</span>
         @endif
@@ -26,10 +26,10 @@
                     <div class="flex-grow-1">
                         <h3 class="dropdown-item-title">
                             {{ $msg['name'] }}
-                            <span class="float-end fs-7 text-{{ $msg['star'] }}"><i class="bi bi-star-fill"></i></span>
+                            <span class="float-end fs-7 text-{{ $msg['star'] }}"><i class="bi bi-star-fill" aria-hidden="true"></i></span>
                         </h3>
                         <p class="fs-7">{{ $msg['text'] }}</p>
-                        <p class="fs-7 text-secondary"><i class="bi bi-clock-fill me-1"></i> {{ $msg['time'] }}</p>
+                        <p class="fs-7 text-secondary"><i class="bi bi-clock-fill me-1" aria-hidden="true"></i> {{ $msg['time'] }}</p>
                     </div>
                 </div>
             </a>

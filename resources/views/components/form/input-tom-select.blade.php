@@ -17,6 +17,7 @@
             class="form-select @error($dotName()) is-invalid @enderror"
             data-tom-select
             data-tom-select-config="{{ $tomSelectConfig() }}"
+            @if ($hasError) aria-invalid="true" aria-describedby="{{ $id }}-error" @endif
             {{ $multiple ? 'multiple' : '' }}
             {{ $attributes->whereDoesntStartWith('class') }}>
         @foreach ($options as $optionValue => $optionLabel)
@@ -28,6 +29,6 @@
     </select>
 
     @if ($hasError)
-        <div class="invalid-feedback d-block">{{ $error }}</div>
+        <div class="invalid-feedback d-block" id="{{ $id }}-error">{{ $error }}</div>
     @endif
 </div>

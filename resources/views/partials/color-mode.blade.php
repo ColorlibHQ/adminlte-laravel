@@ -3,27 +3,27 @@
 <li class="nav-item dropdown">
     <a class="nav-link" href="#" id="bd-theme" aria-label="Toggle color scheme"
        data-bs-toggle="dropdown" aria-expanded="false">
-        <i class="bi bi-sun-fill" data-lte-theme-icon="light"></i>
-        <i class="bi bi-moon-fill d-none" data-lte-theme-icon="dark"></i>
-        <i class="bi bi-circle-half d-none" data-lte-theme-icon="auto"></i>
+        <i class="bi bi-sun-fill" data-lte-theme-icon="light" aria-hidden="true"></i>
+        <i class="bi bi-moon-fill d-none" data-lte-theme-icon="dark" aria-hidden="true"></i>
+        <i class="bi bi-circle-half d-none" data-lte-theme-icon="auto" aria-hidden="true"></i>
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="bd-theme" style="--bs-dropdown-min-width: 8rem;">
         <li>
             <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
-                <i class="bi bi-sun-fill me-2"></i>{{ __('Light') }}
-                <i class="bi bi-check-lg ms-auto d-none"></i>
+                <i class="bi bi-sun-fill me-2" aria-hidden="true"></i>{{ __('Light') }}
+                <i class="bi bi-check-lg ms-auto d-none" aria-hidden="true"></i>
             </button>
         </li>
         <li>
             <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
-                <i class="bi bi-moon-fill me-2"></i>{{ __('Dark') }}
-                <i class="bi bi-check-lg ms-auto d-none"></i>
+                <i class="bi bi-moon-fill me-2" aria-hidden="true"></i>{{ __('Dark') }}
+                <i class="bi bi-check-lg ms-auto d-none" aria-hidden="true"></i>
             </button>
         </li>
         <li>
             <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto" aria-pressed="true">
-                <i class="bi bi-circle-half me-2"></i>{{ __('Auto') }}
-                <i class="bi bi-check-lg ms-auto d-none"></i>
+                <i class="bi bi-circle-half me-2" aria-hidden="true"></i>{{ __('Auto') }}
+                <i class="bi bi-check-lg ms-auto d-none" aria-hidden="true"></i>
             </button>
         </li>
     </ul>

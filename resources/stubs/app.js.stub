@@ -46,8 +46,12 @@ function initCharts() {
   document.querySelectorAll('[data-apexchart]').forEach((el) => {
     if (el.dataset.apexchartReady) return
     const config = parseConfig(el, 'data-apexchart-config')
-    new window.ApexCharts(el, config).render()
-    el.dataset.apexchartReady = 'true'
+    try {
+      new window.ApexCharts(el, config).render()
+      el.dataset.apexchartReady = 'true'
+    } catch (e) {
+      console.warn('AdminLTE: ApexCharts init failed (check the chart config)', e)
+    }
   })
 }
 
@@ -102,6 +106,25 @@ function initSortables() {
   })
 }
 
+// --- Sidebar treeview a11y --------------------------------------------------
+// AdminLTE's Treeview toggles .menu-open on the <li>; mirror that state onto
+// the toggle link's aria-expanded so screen readers track open/closed submenus.
+function initTreeviewA11y() {
+  const sidebar = document.querySelector('.app-sidebar')
+  if (!sidebar || typeof MutationObserver === 'undefined') return
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((m) => {
+      const link = m.target.querySelector(':scope > a.nav-link[aria-expanded]')
+      if (link) link.setAttribute('aria-expanded', m.target.classList.contains('menu-open') ? 'true' : 'false')
+    })
+  })
+  sidebar.querySelectorAll('li.nav-item').forEach((li) => {
+    if (li.querySelector(':scope > ul.nav-treeview')) {
+      observer.observe(li, { attributes: true, attributeFilter: ['class'] })
+    }
+  })
+}
+
 whenReady(() => {
   // Wire OverlayScrollbars to the sidebar (matches the AdminLTE demo behaviour)
   const sidebar = document.querySelector('.sidebar-wrapper')
@@ -115,4 +138,5 @@ whenReady(() => {
   initVectorMaps()
   initCalendars()
   initSortables()
+  initTreeviewA11y()
 })

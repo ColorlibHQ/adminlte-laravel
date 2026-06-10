@@ -13,6 +13,7 @@
         name="{{ $name }}"
         id="{{ $id }}"
         value="{{ $resolvedValue($attributes->get('value')) }}"
+        @if ($hasError()) aria-invalid="true" aria-describedby="{{ $id }}-error" @endif
         {{ $attributes->except('value')->merge(['class' => 'form-control'.($hasError() ? ' is-invalid' : '')]) }}>
 
     @isset($append)
@@ -21,7 +22,7 @@
     @endisset
 
     @if ($hasError())
-        <div class="invalid-feedback d-block">{{ $errorMessage() }}</div>
+        <div class="invalid-feedback d-block" id="{{ $id }}-error">{{ $errorMessage() }}</div>
     @endif
 
     {{ $slot ?? '' }}

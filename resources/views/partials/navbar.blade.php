@@ -7,7 +7,7 @@
         <ul class="navbar-nav">
             <li class="nav-item">
                 <a class="nav-link" data-lte-toggle="sidebar" href="#" role="button" aria-label="{{ __('Toggle sidebar') }}">
-                    <i class="bi bi-list"></i>
+                    <i class="bi bi-list" aria-hidden="true"></i>
                 </a>
             </li>
 
@@ -35,7 +35,7 @@
             <li class="nav-item d-flex align-items-center me-lg-2">
                 <button type="button" data-adminlte-search aria-label="{{ __('adminlte.search') }}"
                         class="adminlte-search-trigger btn btn-sm border rounded-pill d-flex align-items-center gap-2 px-2 px-lg-3 text-body-secondary">
-                    <i class="bi bi-search"></i>
+                    <i class="bi bi-search" aria-hidden="true"></i>
                     <span class="d-none d-lg-inline">{{ __('adminlte.search') }}…</span>
                     <kbd class="d-none d-lg-inline small border rounded px-1 ms-lg-3">⌘K</kbd>
                 </button>
@@ -50,8 +50,8 @@
             {{-- Fullscreen toggle --}}
             <li class="nav-item">
                 <a class="nav-link" href="#" data-lte-toggle="fullscreen" aria-label="{{ __('Toggle fullscreen') }}">
-                    <i data-lte-icon="maximize" class="bi bi-arrows-fullscreen"></i>
-                    <i data-lte-icon="minimize" class="bi bi-fullscreen-exit d-none"></i>
+                    <i data-lte-icon="maximize" class="bi bi-arrows-fullscreen" aria-hidden="true"></i>
+                    <i data-lte-icon="minimize" class="bi bi-fullscreen-exit d-none" aria-hidden="true"></i>
                 </a>
             </li>
 

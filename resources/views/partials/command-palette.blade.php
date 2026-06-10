@@ -37,14 +37,15 @@
     <div class="adminlte-cmdk__backdrop" data-cmdk-close></div>
     <div class="adminlte-cmdk__dialog card shadow-lg">
         <div class="input-group input-group-lg border-bottom">
-            <span class="input-group-text bg-transparent border-0"><i class="bi bi-search"></i></span>
+            <span class="input-group-text bg-transparent border-0"><i class="bi bi-search" aria-hidden="true"></i></span>
             <input type="text" id="adminlteCommandPaletteInput" class="form-control border-0 shadow-none"
-                   placeholder="{{ __('adminlte.search') }}…" autocomplete="off" aria-label="{{ __('adminlte.search') }}">
+                   placeholder="{{ __('adminlte.search') }}…" autocomplete="off" aria-label="{{ __('adminlte.search') }}"
+                   role="combobox" aria-expanded="true" aria-controls="adminlteCommandPaletteResults" aria-autocomplete="list">
             <span class="input-group-text bg-transparent border-0">
                 <kbd class="small bg-body-secondary text-body-secondary border rounded px-1">Esc</kbd>
             </span>
         </div>
-        <ul id="adminlteCommandPaletteResults" class="list-group list-group-flush adminlte-cmdk__results"></ul>
+        <ul id="adminlteCommandPaletteResults" class="list-group list-group-flush adminlte-cmdk__results" role="listbox"></ul>
         <div class="adminlte-cmdk__empty text-muted small p-3 text-center d-none">{{ __('adminlte.no_results') }}</div>
     </div>
 </div>
@@ -87,17 +88,38 @@
         filtered.forEach((it, i) => {
             const li = document.createElement('li');
             li.className = 'list-group-item list-group-item-action' + (i === active ? ' active' : '');
-            li.innerHTML = '<i class="' + it.icon + '"></i><span>' + it.text + '</span>' +
-                (it.group ? '<small>' + it.group + '</small>' : '');
+            li.id = 'adminlteCmdkOption' + i;
+            li.setAttribute('role', 'option');
+            li.setAttribute('aria-selected', i === active ? 'true' : 'false');
+            const icon = document.createElement('i');
+            icon.className = it.icon;
+            icon.setAttribute('aria-hidden', 'true');
+            const text = document.createElement('span');
+            text.textContent = it.text;
+            li.append(icon, text);
+            if (it.group) {
+                const group = document.createElement('small');
+                group.textContent = it.group;
+                li.append(group);
+            }
             li.addEventListener('click', () => go(i));
             li.addEventListener('mousemove', () => { active = i; paint(); });
             list.appendChild(li);
         });
+        paint();
     };
     const paint = () => {
-        [...list.children].forEach((li, i) => li.classList.toggle('active', i === active));
+        [...list.children].forEach((li, i) => {
+            li.classList.toggle('active', i === active);
+            li.setAttribute('aria-selected', i === active ? 'true' : 'false');
+        });
         const el = list.children[active];
-        if (el) el.scrollIntoView({ block: 'nearest' });
+        if (el) {
+            el.scrollIntoView({ block: 'nearest' });
+            input.setAttribute('aria-activedescendant', el.id);
+        } else {
+            input.removeAttribute('aria-activedescendant');
+        }
     };
     const filter = (q) => {
         q = (q || '').trim().toLowerCase();

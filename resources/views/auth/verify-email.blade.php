@@ -10,7 +10,7 @@
     <form action="{{ route('verification.send') }}" method="post">
         @csrf
         <button type="submit" class="btn btn-primary w-100 mb-3">
-            <i class="bi bi-envelope-arrow-up me-1"></i> {{ __('adminlte.resend_verification') }}
+            <i class="bi bi-envelope-arrow-up me-1" aria-hidden="true"></i> {{ __('adminlte.resend_verification') }}
         </button>
     </form>
 
