@@ -17,7 +17,7 @@
         @if ($socials)
             <div class="text-center">
                 @foreach ($socials as $social)
-                    <a href="{{ $social['url'] }}"
+                    <a href="{{ $socialUrl($social) }}"
                        class="btn btn-sm btn-{{ $social['color'] ?? 'primary' }}"
                        target="_blank"
                        rel="noopener noreferrer">

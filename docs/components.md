@@ -279,6 +279,10 @@ A user profile card with avatar, name, title, description, and social links.
 
 **Slots:** `$slot` (extra content below the card body).
 
+> Social `url` values are scheme-checked: `http(s)`, `mailto` and relative
+> URLs render as-is; anything else (`javascript:`, `data:`, …) is replaced
+> with `#`, so the prop is safe to feed from user-editable profile data.
+
 **Example**
 
 ```blade

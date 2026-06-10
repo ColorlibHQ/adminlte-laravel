@@ -20,6 +20,24 @@ class ProfileCard extends Component
         public ?string $class = null,
     ) {}
 
+    /**
+     * Social URLs may come from user-editable profile data, so reject
+     * dangerous schemes (javascript:, data:, ...) instead of echoing them.
+     *
+     * @param  array<string, mixed>  $social
+     */
+    public function socialUrl(array $social): string
+    {
+        $url = (string) ($social['url'] ?? '');
+        $scheme = strtolower((string) parse_url($url, PHP_URL_SCHEME));
+
+        if ($url === '' || ($scheme !== '' && ! in_array($scheme, ['http', 'https', 'mailto'], true))) {
+            return '#';
+        }
+
+        return $url;
+    }
+
     public function render(): View
     {
         return view('adminlte::components.widget.profile-card');

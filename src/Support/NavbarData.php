@@ -47,7 +47,7 @@ class NavbarData
                 })->all();
         }
 
-        return self::demoNotifications();
+        return array_slice(self::demoNotifications(), 0, $limit);
     }
 
     public static function notificationCount(): int
@@ -93,7 +93,7 @@ class NavbarData
             return [];
         }
 
-        return self::demoMessages();
+        return array_slice(self::demoMessages(), 0, $limit);
     }
 
     public static function messageCount(): int

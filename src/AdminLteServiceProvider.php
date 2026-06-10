@@ -251,6 +251,18 @@ class AdminLteServiceProvider extends ServiceProvider
 
                 abort_unless(is_file($file), 404);
 
+                // Defense-in-depth: the slug regex above already blocks
+                // traversal; assert the resolved path stays inside docs/ so
+                // a future regex change can't silently reintroduce it.
+                $realFile = realpath($file);
+                $realDocs = realpath($docsPath);
+                abort_unless(
+                    $realFile !== false
+                    && $realDocs !== false
+                    && str_starts_with($realFile, $realDocs.DIRECTORY_SEPARATOR),
+                    404
+                );
+
                 $markdown = (string) file_get_contents($file);
                 // Str::markdown() already uses the GitHub-flavored converter
                 // (tables, fenced code, strikethrough, autolinks).

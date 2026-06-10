@@ -48,7 +48,9 @@ return [
     | Logo
     |--------------------------------------------------------------------------
     |
-    | The brand logo shown in the sidebar. `logo` accepts HTML.
+    | The brand logo shown in the sidebar. `logo` accepts HTML and is
+    | rendered UNESCAPED ({!! !!}) — only ever put trusted, hardcoded
+    | markup here, never user-supplied or database-driven content.
     |
     */
 
@@ -108,6 +110,11 @@ return [
     |--------------------------------------------------------------------------
     | Footer & Preloader
     |--------------------------------------------------------------------------
+    |
+    | `footer_left` / `footer_right` accept HTML and are rendered UNESCAPED
+    | ({!! !!}) — only ever put trusted, hardcoded markup here, never
+    | user-supplied or database-driven content.
+    |
     */
 
     'footer_left' => 'Copyright &copy; 2014-'.date('Y').' <a href="https://adminlte.io" class="text-decoration-none">AdminLTE.io</a>. All rights reserved.',

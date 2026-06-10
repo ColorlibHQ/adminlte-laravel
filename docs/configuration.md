@@ -26,6 +26,10 @@ are the values shipped with the package.
 | `logo_img_class` | `'brand-image opacity-75 shadow'` | CSS classes applied to the logo image. |
 | `logo_img_alt` | `'AdminLTE Logo'` | `alt` text for the logo image. |
 
+> **Security note:** `logo` is rendered unescaped (`{!! !!}`) so it can hold
+> markup like `<b>Admin</b>LTE`. Only put trusted, hardcoded markup here —
+> never user-supplied or database-driven content.
+
 ### Authentication Logo
 
 | Key | Default | Description |
@@ -131,6 +135,10 @@ Body-level switches that map directly to AdminLTE 4 body classes. A value of
 | `footer_left` | Copyright string with `AdminLTE.io` link | HTML shown on the left side of the footer. |
 | `footer_right` | `'Anything you want'` | HTML shown on the right side of the footer. |
 | `preloader` | `false` | Show a full-page preloader on load. |
+
+> **Security note:** `footer_left` / `footer_right` are rendered unescaped
+> (`{!! !!}`) so they can hold links and markup. Only put trusted, hardcoded
+> markup here — never user-supplied or database-driven content.
 | `control_sidebar` | `false` | Enable the right-hand control sidebar panel. |
 | `control_sidebar_theme` | `'dark'` | Theme for the control sidebar (`'dark'` or `'light'`). |
 
