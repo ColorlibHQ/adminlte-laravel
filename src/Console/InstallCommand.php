@@ -8,6 +8,23 @@ use Illuminate\Support\Facades\Process;
 
 class InstallCommand extends Command
 {
+    /**
+     * Core frontend dependencies, pinned to the major (or minor, where the
+     * next release line is known to break) versions this package is built
+     * and tested against. fullcalendar is pinned below ^7 — v7 removes the
+     * bundled CSS and the Bootstrap 5 theme, which breaks the calendar
+     * component until the package explicitly supports it.
+     */
+    private const NPM_DEPENDENCIES = 'admin-lte@^4.0 bootstrap@^5.3 @popperjs/core@^2.11 '
+        .'overlayscrollbars@^2.0 bootstrap-icons@^1.13 apexcharts@^5.0 jsvectormap@^1.7 '
+        .'fullcalendar@^6.1 sortablejs@^1.15 sass@^1.77';
+
+    /**
+     * Optional plugin libraries (disabled by default in config/adminlte.php).
+     * Listed in install guidance so users enabling those plugins know what to add.
+     */
+    private const NPM_OPTIONAL_DEPENDENCIES = 'flatpickr@^4.6 tom-select@^2.4 tabulator-tables@^6.0 quill@^2.0';
+
     protected $signature = 'adminlte:install
         {--only= : Install only a specific resource (config|views|assets|lang)}
         {--force : Overwrite existing files}
@@ -99,18 +116,23 @@ class InstallCommand extends Command
 
         if (! $this->confirm('Install frontend dependencies (admin-lte, bootstrap, plugin libraries, etc.) via npm now?', true)) {
             $this->line('Skipped. Install manually with:');
-            $this->line('  <fg=yellow>npm install -D admin-lte@^4.0 bootstrap@^5.3 @popperjs/core overlayscrollbars bootstrap-icons apexcharts jsvectormap fullcalendar sortablejs sass</>');
+            $this->line('  <fg=yellow>npm install -D '.self::NPM_DEPENDENCIES.'</>');
+            $this->line('  Optional plugins (Flatpickr, Tom Select, Tabulator, Quill — disabled by default):');
+            $this->line('  <fg=yellow>npm install -D '.self::NPM_OPTIONAL_DEPENDENCIES.'</>');
 
             return;
         }
 
         $this->components->task('Running npm install', function () {
             $result = Process::path(base_path())->run(
-                'npm install -D admin-lte@^4.0 bootstrap@^5.3 @popperjs/core overlayscrollbars bootstrap-icons apexcharts jsvectormap fullcalendar sortablejs sass'
+                'npm install -D '.self::NPM_DEPENDENCIES
             );
 
             return $result->successful();
         });
+
+        $this->line('  Using an optional plugin (Flatpickr, Tom Select, Tabulator, Quill)? Add it with:');
+        $this->line('  <fg=yellow>npm install -D '.self::NPM_OPTIONAL_DEPENDENCIES.'</>');
 
         $this->copyVendorFiles();
     }

@@ -79,25 +79,38 @@ When run without `--only` and without `--no-interaction-deps`, the command promp
 If accepted, it runs:
 
 ```bash
-npm install -D admin-lte@^4.0 bootstrap@^5.3 @popperjs/core overlayscrollbars \
-  bootstrap-icons apexcharts jsvectormap fullcalendar sortablejs sass
+npm install -D admin-lte@^4.0 bootstrap@^5.3 @popperjs/core@^2.11 overlayscrollbars@^2.0 \
+  bootstrap-icons@^1.13 apexcharts@^5.0 jsvectormap@^1.7 fullcalendar@^6.1 \
+  sortablejs@^1.15 sass@^1.77
 ```
+
+Every dependency is pinned to the major version the package is built and
+tested against, so a fresh install can't pick up a breaking upstream major
+(`fullcalendar` is deliberately held below v7, which removes the bundled CSS
+and the Bootstrap 5 theme).
 
 | Package | Role |
 |---------|------|
 | `admin-lte@^4.0` | AdminLTE 4 core CSS/JS |
 | `bootstrap@^5.3` | Bootstrap 5.3 framework |
-| `@popperjs/core` | Tooltip/dropdown positioning (Bootstrap dependency) |
-| `overlayscrollbars` | Custom sidebar scrollbars |
-| `bootstrap-icons` | Icon font |
-| `apexcharts` | Charts |
-| `jsvectormap` | Vector maps |
-| `fullcalendar` | Calendar section |
-| `sortablejs` | Kanban drag-to-reorder |
-| `sass` | SCSS compilation |
+| `@popperjs/core@^2.11` | Tooltip/dropdown positioning (Bootstrap dependency) |
+| `overlayscrollbars@^2.0` | Custom sidebar scrollbars |
+| `bootstrap-icons@^1.13` | Icon font |
+| `apexcharts@^5.0` | Charts |
+| `jsvectormap@^1.7` | Vector maps |
+| `fullcalendar@^6.1` | Calendar section |
+| `sortablejs@^1.15` | Kanban drag-to-reorder |
+| `sass@^1.77` | SCSS compilation |
 
-If the prompt is declined (or `--no-interaction-deps` is passed), the same command
-is printed for you to run manually and the vendor copy step is skipped.
+The optional plugins — disabled by default in `config/adminlte.php` — are not
+installed automatically. The command prints this hint after installing:
+
+```bash
+npm install -D flatpickr@^4.6 tom-select@^2.4 tabulator-tables@^6.0 quill@^2.0
+```
+
+If the prompt is declined (or `--no-interaction-deps` is passed), the same
+commands are printed for you to run manually and the vendor copy step is skipped.
 
 ### Vendor file copying
 

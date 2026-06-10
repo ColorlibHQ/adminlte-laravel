@@ -130,7 +130,12 @@ calls required:
 The last entry is the RTL stylesheet loaded by the master layout when
 `layout_rtl` is on. The remaining plugins referenced in config (Flatpickr, Tom
 Select, Tabulator, Quill) are bundled/imported through your Vite pipeline rather
-than copied here.
+than copied here. They're disabled by default and not part of the installer's
+npm step — add them when you enable them:
+
+```bash
+npm install -D flatpickr@^4.6 tom-select@^2.4 tabulator-tables@^6.0 quill@^2.0
+```
 
 ## The `app.js` initializers
 
@@ -142,10 +147,11 @@ initializer no-ops if its global is absent:
 
 | Initializer | Trigger attribute | Notes |
 | --- | --- | --- |
-| `initCharts()` | `[data-apexchart]` | Reads `data-apexchart-config` (JSON), renders an ApexCharts instance. |
+| `initCharts()` | `[data-apexchart]` | Reads `data-apexchart-config` (JSON), renders an ApexCharts instance. Wrapped in try/catch so one bad config can't break other charts. |
 | `initVectorMaps()` | `[data-jsvectormap]` | Requires an element `id`; reads `data-jsvectormap-config`. Warns if map data is missing. |
 | `initCalendars()` | `[data-fullcalendar]` | Reads `data-fullcalendar-config`; renders a FullCalendar. |
 | `initSortables()` | `[data-sortable]` and `[data-sortable-kanban]` | Generic lists read `data-sortable-options`; kanban lanes (`[data-sortable-group]`) share one group per board. |
+| `initTreeviewA11y()` | sidebar treeview items | Mirrors AdminLTE's `.menu-open` class onto the toggle link's `aria-expanded`, so screen readers track submenu state. |
 
 Each initializer marks processed elements with a `data-*Ready` flag so they
 aren't initialized twice. Invalid JSON in a config attribute is logged with a
