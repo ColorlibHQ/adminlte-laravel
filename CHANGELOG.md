@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-06-10
+
+### Fixed
+
+- Dev tooling only — nothing changes for consuming apps:
+  - `phpunit/phpunit` constraint widened to `^12.4 || ^13.0` (PHPUnit 13
+    requires PHP ≥ 8.4.1, which made `composer update` unresolvable for
+    contributors and CI on PHP 8.3).
+  - PHPStan: ignore the always-false `class_exists('App\…')` finding the
+    latest release reports for the service provider's intentional
+    consuming-app guards.
+
 ## [1.0.0] - 2026-06-10
 
 First stable release. The package now offers full AdminLTE 4 demo parity,
