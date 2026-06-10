@@ -41,16 +41,50 @@ class AdminLte
     }
 
     /**
-     * Append items to the menu at runtime (e.g. from a service provider).
+     * Insert items into the menu at runtime (e.g. from a service provider),
+     * directly after the item whose `key`, `text` or `header` matches
+     * $itemKey. Falls back to appending when no item matches.
      *
      * @param  array<string, mixed>  ...$items
      */
     public function addAfter(string $itemKey, array ...$items): void
     {
-        // Simplest useful runtime hook: append to the end. (A fuller
-        // implementation could splice relative to $itemKey.)
+        $index = $this->findIndex($itemKey);
+
+        if ($index === null) {
+            array_push($this->menu, ...$items);
+        } else {
+            array_splice($this->menu, $index + 1, 0, $items);
+        }
+
+        $this->filteredMenu = [];
+    }
+
+    /**
+     * Append items to the end of the menu at runtime.
+     *
+     * @param  array<string, mixed>  ...$items
+     */
+    public function add(array ...$items): void
+    {
         array_push($this->menu, ...$items);
         $this->filteredMenu = [];
+    }
+
+    /**
+     * Locate a top-level menu item by its `key`, `text` or `header` value.
+     */
+    protected function findIndex(string $itemKey): ?int
+    {
+        foreach ($this->menu as $index => $item) {
+            foreach (['key', 'text', 'header'] as $attribute) {
+                if (($item[$attribute] ?? null) === $itemKey) {
+                    return $index;
+                }
+            }
+        }
+
+        return null;
     }
 
     /**

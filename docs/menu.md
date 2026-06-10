@@ -239,22 +239,27 @@ Scope rules (see `MenuItemHelper`):
 
 ---
 
-## Runtime Additions (`addAfter`)
+## Runtime Additions (`addAfter` / `add`)
 
-Items can be appended at runtime (e.g. from a service provider's `boot()`),
+Items can be added at runtime (e.g. from a service provider's `boot()`),
 which is useful for package- or permission-driven menus:
 
 ```php
-app('adminlte')->addAfter('some-key',
+// Insert directly after the item whose `key`, `text` or `header` matches:
+app('adminlte')->addAfter('Dashboard',
     ['header' => 'REPORTS'],
     ['text' => 'Sales', 'route' => 'reports.sales', 'icon' => 'bi bi-graph-up'],
 );
+
+// Or simply append to the end of the menu:
+app('adminlte')->add(
+    ['text' => 'Status', 'url' => 'status', 'icon' => 'bi bi-activity'],
+);
 ```
 
-> Note: the current implementation appends the given items to the **end** of the
-> menu and clears the cached filtered list so the additions are picked up on the
-> next `menu()` call. The `$itemKey` argument is accepted for forward
-> compatibility but items are not yet spliced relative to it.
+Give menu items an explicit `'key' => 'dashboard'` attribute when you want a
+stable anchor for `addAfter()` that survives text changes and translation. If
+no item matches the given key, the items are appended to the end.
 
 Because the menu builder is a singleton, runtime additions persist for the rest
 of the request and reset on the next request.
