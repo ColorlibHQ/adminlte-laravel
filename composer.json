@@ -45,6 +45,24 @@
             "ColorlibHQ\\AdminLte\\Tests\\": "tests/"
         }
     },
+    "scripts": {
+        "test": "phpunit",
+        "lint": "pint --test",
+        "fix": "pint",
+        "analyse": "phpstan --memory-limit=1G",
+        "check": [
+            "@lint",
+            "@analyse",
+            "@test"
+        ]
+    },
+    "scripts-descriptions": {
+        "test": "Run the PHPUnit test suite",
+        "lint": "Check code style with Pint (no changes)",
+        "fix": "Fix code style with Pint",
+        "analyse": "Run PHPStan static analysis",
+        "check": "Run lint, analyse and test (what CI runs)"
+    },
     "extra": {
         "laravel": {
             "providers": [

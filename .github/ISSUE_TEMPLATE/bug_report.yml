@@ -1,0 +1,48 @@
+name: Bug report
+description: Report a problem with the package
+labels: [bug]
+body:
+  - type: input
+    id: package-version
+    attributes:
+      label: Package version
+      placeholder: e.g. 1.2.0
+    validations:
+      required: true
+  - type: input
+    id: laravel-version
+    attributes:
+      label: Laravel version
+      placeholder: e.g. 13.1
+    validations:
+      required: true
+  - type: input
+    id: php-version
+    attributes:
+      label: PHP version
+      placeholder: e.g. 8.4.2
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: Describe the bug, including what you expected to happen instead.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: Minimal steps starting from a fresh Laravel app, e.g. install commands, config changes, the Blade/markup used.
+      placeholder: |
+        1. composer require colorlibhq/adminlte-laravel
+        2. php artisan adminlte:install
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    id: extra
+    attributes:
+      label: Relevant config / logs / screenshots
+      description: Any adminlte.php config excerpts, console errors, or screenshots that help.

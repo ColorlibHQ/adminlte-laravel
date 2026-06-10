@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentation
+    url: https://github.com/ColorlibHQ/adminlte-laravel/tree/master/docs
+    about: Installation, configuration, components, scaffolding, and more.
+  - name: AdminLTE (core template) issues
+    url: https://github.com/ColorlibHQ/AdminLTE/issues
+    about: Problems with the AdminLTE CSS/JS itself (not the Laravel integration) belong upstream.
