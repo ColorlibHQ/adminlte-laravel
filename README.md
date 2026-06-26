@@ -34,6 +34,9 @@ The same AdminLTE 4 dashboard, in the framework you know best — you're looking
   <a href="https://github.com/ColorlibHQ/adminlte-vue"><img height="36" alt="Nuxt" src="https://img.shields.io/badge/Nuxt-00DC82?style=for-the-badge&logo=nuxt&logoColor=white"></a>
   <a href="https://github.com/ColorlibHQ/adminlte-laravel"><img height="36" alt="Laravel — you are here" src="https://img.shields.io/badge/Laravel-you%20are%20here-FF2D20?style=for-the-badge&logo=laravel&logoColor=white"></a>
   <a href="https://github.com/ColorlibHQ/adminlte-django"><img height="36" alt="Django" src="https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white"></a>
+  <a href="https://github.com/ColorlibHQ/adminlte-symfony"><img height="36" alt="Symfony" src="https://img.shields.io/badge/Symfony-000000?style=for-the-badge&logo=symfony&logoColor=white"></a>
+  <a href="https://github.com/ColorlibHQ/adminlte-angular"><img height="36" alt="Angular" src="https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white"></a>
+  <a href="https://github.com/ColorlibHQ/adminlte-aspnet"><img height="36" alt="ASP.NET" src="https://img.shields.io/badge/ASP.NET-512BD4?style=for-the-badge&logo=dotnet&logoColor=white"></a>
 </p>
 
 <p align="center"><sub>
@@ -43,7 +46,10 @@ The same AdminLTE 4 dashboard, in the framework you know best — you're looking
   <a href="https://github.com/ColorlibHQ/adminlte-vue">Vue</a> ·
   <a href="https://github.com/ColorlibHQ/adminlte-vue">Nuxt</a> ·
   <strong>Laravel</strong> (you are here) ·
-  <a href="https://github.com/ColorlibHQ/adminlte-django">Django</a>
+  <a href="https://github.com/ColorlibHQ/adminlte-django">Django</a> ·
+  <a href="https://github.com/ColorlibHQ/adminlte-symfony">Symfony</a> ·
+  <a href="https://github.com/ColorlibHQ/adminlte-angular">Angular</a> ·
+  <a href="https://github.com/ColorlibHQ/adminlte-aspnet">ASP.NET</a>
 </sub></p>
 
 > Also available as the original [AdminLTE](https://github.com/ColorlibHQ/AdminLTE) (HTML · Bootstrap 5.3 · vanilla JS — [demo](https://adminlte.io/themes/v4/)) and the legacy [AdminLTE v3](https://github.com/ColorlibHQ/AdminLTE/tree/v3) (Bootstrap 4 · jQuery — [demo](https://adminlte.io/themes/v3/)). Need a full backend, not just markup? See the [premium Laravel dashboards](#premium-laravel-dashboards) below.
