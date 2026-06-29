@@ -44,6 +44,11 @@ The same AdminLTE 4 dashboard, in the framework you know best — you're looking
 </div>
 <!-- ADMINLTE-ECOSYSTEM:END -->
 
+<p align="center">
+  <a href="https://laravel.adminlte.io"><img src=".github/preview.png" alt="AdminLTE 4 for Laravel — dashboard preview" width="100%"></a>
+</p>
+
+
 > Also available as the original [AdminLTE](https://github.com/ColorlibHQ/AdminLTE) (HTML · Bootstrap 5.3 · vanilla JS — [demo](https://adminlte.io/themes/v4/)) and the legacy [AdminLTE v3](https://github.com/ColorlibHQ/AdminLTE/tree/v3) (Bootstrap 4 · jQuery — [demo](https://adminlte.io/themes/v3/)). Need a full backend, not just markup? See the [premium Laravel dashboards](#premium-laravel-dashboards) below.
 
 **What's included:**
