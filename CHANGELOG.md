@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.2] - 2026-07-09
+
+### Fixed
+
+- `adminlte:install` CSS stub now imports OverlayScrollbars via the
+  export-safe `overlayscrollbars/overlayscrollbars.css` specifier. The old
+  `overlayscrollbars/styles/overlayscrollbars.css` path is absent from the
+  package's `exports` map before 2.5.0, so Vite/PostCSS failed on installs
+  resolving to overlayscrollbars 2.0–2.4 (`Missing "./styles/…" specifier`).
+  The short specifier resolves across the whole 2.x range.
+  ([#3](https://github.com/ColorlibHQ/adminlte-laravel/issues/3))
+
+### Changed
+
+- Bumped the frontend dependency versions advertised by `adminlte:install`
+  (and the matching README/docs) to the current latest: `admin-lte@^4.1`,
+  `overlayscrollbars@^2.16`, `apexcharts@^5.16`, `sass@^1.101`,
+  `tom-select@^2.6`, `tabulator-tables@^6.5`. `fullcalendar` stays at
+  `^6.1` — v7 drops the bundled CSS and Bootstrap 5 theme the calendar
+  component relies on. No `composer.json` changes: every PHP constraint
+  already allows the current major (verified green against Laravel 13.19,
+  PHPUnit 13.2.4, Pint 1.29.3, Larastan 3.10).
+- CI: `actions/checkout` upgraded v6 → v7.
+  ([#2](https://github.com/ColorlibHQ/adminlte-laravel/pull/2))
+
 ## [1.0.1] - 2026-06-10
 
 ### Fixed
