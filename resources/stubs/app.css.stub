@@ -7,7 +7,7 @@
  * Option A (default): import the prebuilt CSS — fastest, no SCSS toolchain.
  */
 @import 'bootstrap-icons/font/bootstrap-icons.css';
-@import 'overlayscrollbars/styles/overlayscrollbars.css';
+@import 'overlayscrollbars/overlayscrollbars.css';
 @import 'admin-lte/dist/css/adminlte.css';
 
 /*
