@@ -15,15 +15,15 @@ class InstallCommand extends Command
      * bundled CSS and the Bootstrap 5 theme, which breaks the calendar
      * component until the package explicitly supports it.
      */
-    private const NPM_DEPENDENCIES = 'admin-lte@^4.0 bootstrap@^5.3 @popperjs/core@^2.11 '
-        .'overlayscrollbars@^2.0 bootstrap-icons@^1.13 apexcharts@^5.0 jsvectormap@^1.7 '
-        .'fullcalendar@^6.1 sortablejs@^1.15 sass@^1.77';
+    private const NPM_DEPENDENCIES = 'admin-lte@^4.1 bootstrap@^5.3 @popperjs/core@^2.11 '
+        .'overlayscrollbars@^2.16 bootstrap-icons@^1.13 apexcharts@^5.16 jsvectormap@^1.7 '
+        .'fullcalendar@^6.1 sortablejs@^1.15 sass@^1.101';
 
     /**
      * Optional plugin libraries (disabled by default in config/adminlte.php).
      * Listed in install guidance so users enabling those plugins know what to add.
      */
-    private const NPM_OPTIONAL_DEPENDENCIES = 'flatpickr@^4.6 tom-select@^2.4 tabulator-tables@^6.0 quill@^2.0';
+    private const NPM_OPTIONAL_DEPENDENCIES = 'flatpickr@^4.6 tom-select@^2.6 tabulator-tables@^6.5 quill@^2.0';
 
     protected $signature = 'adminlte:install
         {--only= : Install only a specific resource (config|views|assets|lang)}

@@ -30,9 +30,9 @@ This will:
   `resources/js/adminlte.js`.
 - Offer to `npm install` the frontend dependencies, pinned to the major
   versions the package is tested against:
-  `admin-lte@^4.0`, `bootstrap@^5.3`, `@popperjs/core@^2.11`,
-  `overlayscrollbars@^2.0`, `bootstrap-icons@^1.13`, `apexcharts@^5.0`,
-  `jsvectormap@^1.7`, `fullcalendar@^6.1`, `sortablejs@^1.15`, `sass@^1.77`.
+  `admin-lte@^4.1`, `bootstrap@^5.3`, `@popperjs/core@^2.11`,
+  `overlayscrollbars@^2.16`, `bootstrap-icons@^1.13`, `apexcharts@^5.16`,
+  `jsvectormap@^1.7`, `fullcalendar@^6.1`, `sortablejs@^1.15`, `sass@^1.101`.
 - Copy the plugin vendor files (ApexCharts, jsVectorMap, FullCalendar,
   SortableJS, plus the AdminLTE RTL stylesheet) into `public/vendor/`.
 
@@ -41,7 +41,7 @@ by default and not installed — add them only if you enable them in
 `config/adminlte.php`:
 
 ```bash
-npm install -D flatpickr@^4.6 tom-select@^2.4 tabulator-tables@^6.0 quill@^2.0
+npm install -D flatpickr@^4.6 tom-select@^2.6 tabulator-tables@^6.5 quill@^2.0
 ```
 
 See [plugins.md](plugins.md) for details.
