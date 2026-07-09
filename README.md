@@ -143,7 +143,7 @@ composer require colorlibhq/adminlte-laravel
 php artisan adminlte:install
 ```
 
-`adminlte:install` publishes `config/adminlte.php`, drops the Vite entry stubs into `resources/js/adminlte.js` and `resources/css/adminlte.css`, and offers to `npm install` the frontend dependencies, pinned to the tested major versions (`admin-lte@^4.0`, `bootstrap@^5.3`, `@popperjs/core@^2.11`, `overlayscrollbars@^2.0`, `bootstrap-icons@^1.13`, `apexcharts@^5.0`, `jsvectormap@^1.7`, `fullcalendar@^6.1`, `sortablejs@^1.15`, `sass@^1.77`). Optional plugins (Flatpickr, Tom Select, Tabulator, Quill) are listed separately — install them only if you enable them ([docs](docs/plugins.md)).
+`adminlte:install` publishes `config/adminlte.php`, drops the Vite entry stubs into `resources/js/adminlte.js` and `resources/css/adminlte.css`, and offers to `npm install` the frontend dependencies, pinned to the tested major versions (`admin-lte@^4.1`, `bootstrap@^5.3`, `@popperjs/core@^2.11`, `overlayscrollbars@^2.16`, `bootstrap-icons@^1.13`, `apexcharts@^5.16`, `jsvectormap@^1.7`, `fullcalendar@^6.1`, `sortablejs@^1.15`, `sass@^1.101`). Optional plugins (Flatpickr, Tom Select, Tabulator, Quill) are listed separately — install them only if you enable them ([docs](docs/plugins.md)).
 
 Add the two entry files to your `vite.config.js`:
 

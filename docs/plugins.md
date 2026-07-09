@@ -134,7 +134,7 @@ than copied here. They're disabled by default and not part of the installer's
 npm step — add them when you enable them:
 
 ```bash
-npm install -D flatpickr@^4.6 tom-select@^2.4 tabulator-tables@^6.0 quill@^2.0
+npm install -D flatpickr@^4.6 tom-select@^2.6 tabulator-tables@^6.5 quill@^2.0
 ```
 
 ## The `app.js` initializers
