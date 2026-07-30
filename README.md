@@ -8,10 +8,10 @@ Official [AdminLTE 4](https://adminlte.io) integration for Laravel — Bootstrap
 <!-- Live preview: laravel.adminlte.io (hosted on the SSH preview server). See docs/deployment.md. -->
 <p align="center">
   <a href="https://laravel.adminlte.io/">
-    <img alt="AdminLTE 4 for Laravel — dashboard, light theme" src="docs/screenshots/light/dashboard.png" width="49%">
+    <img alt="AdminLTE 4 for Laravel — dashboard, light theme" src="docs/screenshots/light/dashboard.webp" width="49%">
   </a>
   <a href="https://laravel.adminlte.io/">
-    <img alt="AdminLTE 4 for Laravel — dashboard, dark theme" src="docs/screenshots/dark/dashboard.png" width="49%">
+    <img alt="AdminLTE 4 for Laravel — dashboard, dark theme" src="docs/screenshots/dark/dashboard.webp" width="49%">
   </a>
 </p>
 
@@ -45,7 +45,7 @@ The same AdminLTE 4 dashboard, in the framework you know best — you're looking
 <!-- ADMINLTE-ECOSYSTEM:END -->
 
 <p align="center">
-  <a href="https://laravel.adminlte.io"><img src=".github/preview.png" alt="AdminLTE 4 for Laravel — dashboard preview" width="100%"></a>
+  <a href="https://laravel.adminlte.io"><img src=".github/preview.webp" alt="AdminLTE 4 for Laravel — dashboard preview" width="100%"></a>
 </p>
 
 
@@ -80,23 +80,23 @@ The same AdminLTE 4 dashboard, in the framework you know best — you're looking
 Every screenshot is a real page from the running Laravel app — [browse the live demo →](https://laravel.adminlte.io/)
 
 <p align="center">
-  <a href="https://laravel.adminlte.io/"><img alt="Dashboard v2" src="docs/screenshots/light/dashboard2.png" width="32%"></a>
-  <a href="https://laravel.adminlte.io/"><img alt="Dashboard v3" src="docs/screenshots/light/dashboard3.png" width="32%"></a>
+  <a href="https://laravel.adminlte.io/"><img alt="Dashboard v2" src="docs/screenshots/light/dashboard2.webp" width="32%"></a>
+  <a href="https://laravel.adminlte.io/"><img alt="Dashboard v3" src="docs/screenshots/light/dashboard3.webp" width="32%"></a>
   <a href="https://laravel.adminlte.io/"><img alt="Widgets — small boxes, info boxes, cards" src="docs/screenshots/light/widgets.png" width="32%"></a>
 </p>
 <p align="center">
-  <a href="https://laravel.adminlte.io/"><img alt="Form elements" src="docs/screenshots/light/forms.png" width="32%"></a>
-  <a href="https://laravel.adminlte.io/"><img alt="Data tables" src="docs/screenshots/light/tables.png" width="32%"></a>
-  <a href="https://laravel.adminlte.io/"><img alt="Kanban board (drag-and-drop)" src="docs/screenshots/light/kanban.png" width="32%"></a>
+  <a href="https://laravel.adminlte.io/"><img alt="Form elements" src="docs/screenshots/light/forms.webp" width="32%"></a>
+  <a href="https://laravel.adminlte.io/"><img alt="Data tables" src="docs/screenshots/light/tables.webp" width="32%"></a>
+  <a href="https://laravel.adminlte.io/"><img alt="Kanban board (drag-and-drop)" src="docs/screenshots/light/kanban.webp" width="32%"></a>
 </p>
 <p align="center">
-  <a href="https://laravel.adminlte.io/"><img alt="Event calendar (FullCalendar)" src="docs/screenshots/light/calendar.png" width="32%"></a>
-  <a href="https://laravel.adminlte.io/"><img alt="Chat" src="docs/screenshots/light/chat.png" width="32%"></a>
-  <a href="https://laravel.adminlte.io/"><img alt="Mailbox" src="docs/screenshots/light/mailbox.png" width="32%"></a>
+  <a href="https://laravel.adminlte.io/"><img alt="Event calendar (FullCalendar)" src="docs/screenshots/light/calendar.webp" width="32%"></a>
+  <a href="https://laravel.adminlte.io/"><img alt="Chat" src="docs/screenshots/light/chat.webp" width="32%"></a>
+  <a href="https://laravel.adminlte.io/"><img alt="Mailbox" src="docs/screenshots/light/mailbox.webp" width="32%"></a>
 </p>
 <p align="center">
-  <a href="https://laravel.adminlte.io/"><img alt="User profile" src="docs/screenshots/light/profile.png" width="32%"></a>
-  <a href="https://laravel.adminlte.io/"><img alt="Invoice" src="docs/screenshots/light/invoice.png" width="32%"></a>
+  <a href="https://laravel.adminlte.io/"><img alt="User profile" src="docs/screenshots/light/profile.webp" width="32%"></a>
+  <a href="https://laravel.adminlte.io/"><img alt="Invoice" src="docs/screenshots/light/invoice.webp" width="32%"></a>
   <a href="https://laravel.adminlte.io/"><img alt="Theme generator" src="docs/screenshots/light/theme.png" width="32%"></a>
 </p>
 
@@ -335,7 +335,7 @@ This package is free and MIT-licensed. When you need a **production Laravel admi
   <tr>
     <td align="center" width="50%">
       <a href="https://dashboardpack.com/theme-details/apex-dashboard-laravel/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-laravel">
-        <img src="docs/screenshots/dashboardpack/apex-laravel.png" alt="Apex Dashboard Laravel — Laravel 13 admin with Inertia, React 19 and Tailwind v4" width="100%">
+        <img src="docs/screenshots/dashboardpack/apex-laravel.webp" alt="Apex Dashboard Laravel — Laravel 13 admin with Inertia, React 19 and Tailwind v4" width="100%">
       </a>
       <br>
       <a href="https://dashboardpack.com/theme-details/apex-dashboard-laravel/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-laravel"><strong>Apex Dashboard — Laravel</strong></a>
@@ -344,7 +344,7 @@ This package is free and MIT-licensed. When you need a **production Laravel admi
     </td>
     <td align="center" width="50%">
       <a href="https://dashboardpack.com/theme-details/zenith-dashboard-laravel/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-laravel">
-        <img src="docs/screenshots/dashboardpack/zenith-laravel.png" alt="Zenith Dashboard Laravel — ultra-minimal Laravel admin with Inertia and React 19" width="100%">
+        <img src="docs/screenshots/dashboardpack/zenith-laravel.webp" alt="Zenith Dashboard Laravel — ultra-minimal Laravel admin with Inertia and React 19" width="100%">
       </a>
       <br>
       <a href="https://dashboardpack.com/theme-details/zenith-dashboard-laravel/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-laravel"><strong>Zenith Dashboard — Laravel</strong></a>
@@ -364,7 +364,7 @@ This package is free and MIT-licensed. When you need a **production Laravel admi
     </td>
     <td align="center" width="50%">
       <a href="https://dashboardpack.com/theme-details/admindek-dashboard-laravel/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-laravel">
-        <img src="docs/screenshots/dashboardpack/admindek-laravel.png" alt="Admindek Laravel — 80+ page Laravel admin with Fortify auth and Spatie RBAC" width="100%">
+        <img src="docs/screenshots/dashboardpack/admindek-laravel.webp" alt="Admindek Laravel — 80+ page Laravel admin with Fortify auth and Spatie RBAC" width="100%">
       </a>
       <br>
       <a href="https://dashboardpack.com/theme-details/admindek-dashboard-laravel/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-laravel"><strong>Admindek — Laravel</strong></a>
