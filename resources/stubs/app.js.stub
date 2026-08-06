@@ -17,9 +17,10 @@ import 'admin-lte'
 
 /**
  * Initialise an optional plugin only when its global is present.
- * Plugin libraries (ApexCharts, jsVectorMap, FullCalendar, Sortable) are
- * loaded lazily via the @pluginScripts directive as global <script> tags,
- * so we feature-detect before touching them.
+ * Plugin libraries (ApexCharts, jsVectorMap, FullCalendar, Sortable,
+ * Flatpickr, Tom Select, Tabulator, Quill) are loaded lazily via the
+ * @pluginScripts directive as global <script> tags, so we feature-detect
+ * before touching them.
  */
 function whenReady(fn) {
   if (document.readyState === 'loading') {
@@ -106,6 +107,82 @@ function initSortables() {
   })
 }
 
+// --- Flatpickr (date/time pickers) -----------------------------------------
+function initDatePickers() {
+  if (typeof window.flatpickr === 'undefined') return
+  document.querySelectorAll('[data-flatpickr]').forEach((el) => {
+    if (el.dataset.flatpickrReady) return
+    window.flatpickr(el, parseConfig(el, 'data-flatpickr-config'))
+    el.dataset.flatpickrReady = 'true'
+  })
+}
+
+// --- Tom Select (searchable selects) ---------------------------------------
+function initTomSelects() {
+  if (typeof window.TomSelect === 'undefined') return
+  document.querySelectorAll('[data-tom-select]').forEach((el) => {
+    if (el.dataset.tomSelectReady) return
+    try {
+      new window.TomSelect(el, parseConfig(el, 'data-tom-select-config'))
+      el.dataset.tomSelectReady = 'true'
+    } catch (e) {
+      console.warn('AdminLTE: Tom Select init failed', e)
+    }
+  })
+}
+
+// --- Tabulator (data tables) ------------------------------------------------
+function initDatatables() {
+  if (typeof window.Tabulator === 'undefined') return
+  document.querySelectorAll('[data-tabulator-config]').forEach((el) => {
+    if (el.dataset.tabulatorReady) return
+    try {
+      new window.Tabulator(el, parseConfig(el, 'data-tabulator-config'))
+      el.dataset.tabulatorReady = 'true'
+    } catch (e) {
+      console.warn('AdminLTE: Tabulator init failed (check the column/data config)', e)
+    }
+  })
+}
+
+// --- Quill (rich text editor) -----------------------------------------------
+// The <x-adminlte-editor> component renders an empty div plus a hidden input
+// that carries the value to the server. Quill owns the div; we mirror its HTML
+// back into the input on every change so a normal form POST submits it.
+function initEditors() {
+  if (typeof window.Quill === 'undefined') return
+  document.querySelectorAll('[data-quill]').forEach((el) => {
+    if (el.dataset.quillReady) return
+
+    const target = document.querySelector(el.getAttribute('data-quill-target'))
+    let quill
+    try {
+      quill = new window.Quill(el, parseConfig(el, 'data-quill-config'))
+    } catch (e) {
+      console.warn('AdminLTE: Quill init failed', e)
+      return
+    }
+
+    // Seed the editor with the current value (old input or the model's value).
+    if (target && target.value) {
+      quill.clipboard.dangerouslyPasteHTML(target.value)
+    }
+
+    if (target) {
+      const sync = () => {
+        // An empty Quill still reports '<p><br></p>'; store '' instead so
+        // `required` and `nullable` validation behave as expected.
+        target.value = quill.getText().trim() === '' ? '' : quill.root.innerHTML
+      }
+      quill.on('text-change', sync)
+      // Catch programmatic changes that don't emit text-change.
+      el.closest('form')?.addEventListener('submit', sync)
+    }
+
+    el.dataset.quillReady = 'true'
+  })
+}
+
 // --- Sidebar treeview a11y --------------------------------------------------
 // AdminLTE's Treeview toggles .menu-open on the <li>; mirror that state onto
 // the toggle link's aria-expanded so screen readers track open/closed submenus.
@@ -138,5 +215,9 @@ whenReady(() => {
   initVectorMaps()
   initCalendars()
   initSortables()
+  initDatePickers()
+  initTomSelects()
+  initDatatables()
+  initEditors()
   initTreeviewA11y()
 })

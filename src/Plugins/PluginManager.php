@@ -28,6 +28,10 @@ class PluginManager
         'jsvectormap' => ['css' => 'vendor/jsvectormap/jsvectormap.min.css', 'js' => 'vendor/jsvectormap/jsvectormap.min.js'],
         'fullcalendar' => ['css' => 'vendor/fullcalendar/index.global.min.css', 'js' => 'vendor/fullcalendar/index.global.min.js'],
         'sortablejs' => ['js' => 'vendor/sortablejs/sortablejs.min.js'],
+        'flatpickr' => ['css' => 'vendor/flatpickr/flatpickr.min.css', 'js' => 'vendor/flatpickr/flatpickr.min.js'],
+        'tom_select' => ['css' => 'vendor/tom-select/tom-select.bootstrap5.min.css', 'js' => 'vendor/tom-select/tom-select.complete.min.js'],
+        'tabulator' => ['css' => 'vendor/tabulator-tables/tabulator.min.css', 'js' => 'vendor/tabulator-tables/tabulator.min.js'],
+        'quill' => ['css' => 'vendor/quill/quill.snow.css', 'js' => 'vendor/quill/quill.min.js'],
     ];
 
     /**
