@@ -125,17 +125,40 @@ calls required:
 | `jsvectormap/dist/maps/world.js` | `jsvectormap/maps/world.js` |
 | `fullcalendar/index.global.min.js` | `fullcalendar/index.global.min.js` |
 | `sortablejs/Sortable.min.js` | `sortablejs/sortablejs.min.js` |
+| `flatpickr/dist/flatpickr.min.css` | `flatpickr/flatpickr.min.css` |
+| `flatpickr/dist/flatpickr.min.js` | `flatpickr/flatpickr.min.js` |
+| `tom-select/dist/css/tom-select.bootstrap5.min.css` | `tom-select/tom-select.bootstrap5.min.css` |
+| `tom-select/dist/js/tom-select.complete.min.js` | `tom-select/tom-select.complete.min.js` |
+| `tabulator-tables/dist/css/tabulator.min.css` | `tabulator-tables/tabulator.min.css` |
+| `tabulator-tables/dist/js/tabulator.min.js` | `tabulator-tables/tabulator.min.js` |
+| `quill/dist/quill.snow.css` | `quill/quill.snow.css` |
+| `quill/dist/quill.js` | `quill/quill.min.js` |
 | `admin-lte/dist/css/adminlte.rtl.min.css` | `adminlte/css/adminlte.rtl.min.css` |
 
-The last entry is the RTL stylesheet loaded by the master layout when
-`layout_rtl` is on. The remaining plugins referenced in config (Flatpickr, Tom
-Select, Tabulator, Quill) are bundled/imported through your Vite pipeline rather
-than copied here. They're disabled by default and not part of the installer's
-npm step — add them when you enable them:
+Quill 2 ships a single minified UMD build named `quill.js`, so it's renamed on
+copy to the `quill.min.js` path the config points at. The last entry is the RTL
+stylesheet loaded by the master layout when `layout_rtl` is on. The FullCalendar
+stylesheet ships inside this package (`resources/vendor/`) rather than npm, and
+is copied from there.
+
+### Adding an optional plugin after install
+
+Flatpickr, Tom Select, Tabulator and Quill are disabled by default and aren't
+part of the installer's npm step. Adding one takes **two** commands:
 
 ```bash
-npm install -D flatpickr@^4.6 tom-select@^2.6 tabulator-tables@^6.5 quill@^2.0
+npm install -D quill@^2.0          # 1. fetch the library
+php artisan adminlte:install --only=assets   # 2. copy it into public/vendor
 ```
+
+Missing sources are skipped silently, so `--only=assets` is safe to re-run at
+any time and picks up whatever you've installed since.
+
+Skipping step 2 is the classic failure: `@pluginScripts` emits
+`<script src="/vendor/quill/quill.min.js">`, the file isn't there, the browser
+404s, and `<x-adminlte-editor>` renders an empty box with nothing in the Laravel
+log to explain it. `php artisan adminlte:status` lists each optional plugin so
+you can see at a glance which ones are actually in place.
 
 ## The `app.js` initializers
 
@@ -151,6 +174,10 @@ initializer no-ops if its global is absent:
 | `initVectorMaps()` | `[data-jsvectormap]` | Requires an element `id`; reads `data-jsvectormap-config`. Warns if map data is missing. |
 | `initCalendars()` | `[data-fullcalendar]` | Reads `data-fullcalendar-config`; renders a FullCalendar. |
 | `initSortables()` | `[data-sortable]` and `[data-sortable-kanban]` | Generic lists read `data-sortable-options`; kanban lanes (`[data-sortable-group]`) share one group per board. |
+| `initDatePickers()` | `[data-flatpickr]` | Reads `data-flatpickr-config`; attaches a Flatpickr instance to the input. |
+| `initTomSelects()` | `[data-tom-select]` | Reads `data-tom-select-config`; upgrades the `<select>` to a Tom Select control. |
+| `initDatatables()` | `[data-tabulator-config]` | Builds a Tabulator table from the JSON config (columns, data, layout). |
+| `initEditors()` | `[data-quill]` | Reads `data-quill-config`, seeds the editor from the hidden input named by `data-quill-target`, and mirrors the editor's HTML back into that input on every change so a plain form POST submits it. An empty editor writes `''` rather than Quill's `<p><br></p>`, so `required` / `nullable` validation behaves. |
 | `initTreeviewA11y()` | sidebar treeview items | Mirrors AdminLTE's `.menu-open` class onto the toggle link's `aria-expanded`, so screen readers track submenu state. |
 
 Each initializer marks processed elements with a `data-*Ready` flag so they

@@ -7,6 +7,57 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-08-06
+
+### Fixed
+
+- **Flatpickr, Tom Select, Tabulator and Quill never worked.** All four
+  optional plugins were broken end to end, so `<x-adminlte-editor>`,
+  `<x-adminlte-input-flatpickr>`, `<x-adminlte-input-tom-select>` and
+  `<x-adminlte-datatable>` rendered inert markup no matter how the app was
+  set up. Two independent gaps, both fixed:
+  - `adminlte:install` never copied the four libraries out of `node_modules`,
+    even though `config('adminlte.plugins')` pointed at
+    `public/vendor/{quill,flatpickr,tom-select,tabulator-tables}/…`. Every
+    `@pluginScripts` tag they emitted 404'd. They're now in the installer's
+    copy map, and `InstallCommandTest` asserts that every configured plugin
+    asset has a matching copy source so this can't regress.
+  - The published `resources/js/adminlte.js` had no initializer for any of
+    them, so even a hand-copied library did nothing. It now ships
+    `initDatePickers()`, `initTomSelects()`, `initDatatables()` and
+    `initEditors()` alongside the existing four, each feature-detecting its
+    global and skipping elements it has already wired.
+
+  Quill in particular now seeds itself from the component's hidden input,
+  mirrors its HTML back on every change so a plain form POST submits the
+  content, and writes `''` instead of `<p><br></p>` when emptied so
+  `required` / `nullable` validation behaves.
+  ([#6](https://github.com/ColorlibHQ/adminlte-laravel/issues/6))
+- `adminlte:install` now copies vendor files on `--only=assets`, and after a
+  declined npm prompt or `--no-interaction-deps`. Previously the copy step
+  ran only on a full interactive install where the prompt was accepted, so
+  anyone managing npm themselves silently got an empty `public/vendor`.
+  Re-running `adminlte:install --only=assets` is now the documented way to
+  pick up a plugin installed after the initial setup.
+
+### Changed
+
+- `adminlte:status` groups its output into **Required**, **Optional** and
+  **Optional plugins**, and lists the four optional plugin libraries so a
+  half-finished install is visible. Opt-in resources (published views,
+  scaffolded sections) no longer render as a red ✗ that triggers a
+  "resources are missing" warning — they were never part of a default
+  install, and the warning sent people to re-run a command that wouldn't
+  have created them.
+- Bumped the frontend dependency versions advertised by `adminlte:install`
+  (and the matching README/docs) to the current latest: `apexcharts@^6.7`
+  (was `^5.16`) and `sass@^1.102`. `fullcalendar` stays at `^6.1`: v7 drops
+  the minified global bundle entirely (`index.global.min.js` is gone in
+  favour of an unminified `all/global.js`) and replaces the bundled CSS with
+  a `skeleton.css` + theme + palette model, which the calendar component
+  needs explicit work to support.
+- `laravel/pint` dev constraint raised to `^1.30`.
+
 ## [1.0.2] - 2026-07-09
 
 ### Fixed

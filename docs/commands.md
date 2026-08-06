@@ -80,14 +80,16 @@ If accepted, it runs:
 
 ```bash
 npm install -D admin-lte@^4.1 bootstrap@^5.3 @popperjs/core@^2.11 overlayscrollbars@^2.16 \
-  bootstrap-icons@^1.13 apexcharts@^5.16 jsvectormap@^1.7 fullcalendar@^6.1 \
-  sortablejs@^1.15 sass@^1.101
+  bootstrap-icons@^1.13 apexcharts@^6.7 jsvectormap@^1.7 fullcalendar@^6.1 \
+  sortablejs@^1.15 sass@^1.102
 ```
 
 Every dependency is pinned to the major version the package is built and
-tested against, so a fresh install can't pick up a breaking upstream major
-(`fullcalendar` is deliberately held below v7, which removes the bundled CSS
-and the Bootstrap 5 theme).
+tested against, so a fresh install can't pick up a breaking upstream major.
+`fullcalendar` is deliberately held below v7: that release drops the minified
+global bundle (`index.global.min.js`) in favour of an unminified
+`all/global.js`, and replaces the bundled CSS with a skeleton + theme + palette
+model, neither of which the calendar component supports yet.
 
 | Package | Role |
 |---------|------|
@@ -96,27 +98,37 @@ and the Bootstrap 5 theme).
 | `@popperjs/core@^2.11` | Tooltip/dropdown positioning (Bootstrap dependency) |
 | `overlayscrollbars@^2.16` | Custom sidebar scrollbars |
 | `bootstrap-icons@^1.13` | Icon font |
-| `apexcharts@^5.16` | Charts |
+| `apexcharts@^6.7` | Charts |
 | `jsvectormap@^1.7` | Vector maps |
 | `fullcalendar@^6.1` | Calendar section |
 | `sortablejs@^1.15` | Kanban drag-to-reorder |
-| `sass@^1.101` | SCSS compilation |
+| `sass@^1.102` | SCSS compilation |
 
 The optional plugins — disabled by default in `config/adminlte.php` — are not
 installed automatically. The command prints this hint after installing:
 
 ```bash
 npm install -D flatpickr@^4.6 tom-select@^2.6 tabulator-tables@^6.5 quill@^2.0
+php artisan adminlte:install --only=assets
 ```
 
-If the prompt is declined (or `--no-interaction-deps` is passed), the same
-commands are printed for you to run manually and the vendor copy step is skipped.
+**Both lines matter.** `npm install` fetches the library; the second command
+copies it into `public/vendor`, which is where `config('adminlte.plugins')`
+points. Skip it and the plugin's `<script>` 404s, so the component that uses it
+(for example `<x-adminlte-editor>`) renders an empty box with nothing in the PHP
+log to explain why. Run `php artisan adminlte:status` to see which optional
+plugins are in place.
+
+If the prompt is declined (or `--no-interaction-deps` is passed), the npm
+commands are printed for you to run manually. The vendor copy still runs, so
+re-running the installer after a manual `npm install` is all you need.
 
 ### Vendor file copying
 
-After a successful npm install, the command copies plugin files from
-`node_modules` into `public/vendor` (so they can be loaded directly by the layout
-and section views). Files that don't exist in `node_modules` are silently skipped.
+The command copies plugin files from `node_modules` into `public/vendor` (so
+they can be loaded directly by the layout and section views). Files that don't
+exist in `node_modules` are silently skipped, which is what makes
+`--only=assets` safe to re-run whenever you add a plugin.
 
 | Source (under `node_modules/`) | Destination (under `public/vendor/`) |
 |--------------------------------|---------------------------------------|
@@ -126,7 +138,19 @@ and section views). Files that don't exist in `node_modules` are silently skippe
 | `jsvectormap/dist/maps/world.js` | `jsvectormap/maps/world.js` |
 | `fullcalendar/index.global.min.js` | `fullcalendar/index.global.min.js` |
 | `sortablejs/Sortable.min.js` | `sortablejs/sortablejs.min.js` |
+| `flatpickr/dist/flatpickr.min.css` | `flatpickr/flatpickr.min.css` |
+| `flatpickr/dist/flatpickr.min.js` | `flatpickr/flatpickr.min.js` |
+| `tom-select/dist/css/tom-select.bootstrap5.min.css` | `tom-select/tom-select.bootstrap5.min.css` |
+| `tom-select/dist/js/tom-select.complete.min.js` | `tom-select/tom-select.complete.min.js` |
+| `tabulator-tables/dist/css/tabulator.min.css` | `tabulator-tables/tabulator.min.css` |
+| `tabulator-tables/dist/js/tabulator.min.js` | `tabulator-tables/tabulator.min.js` |
+| `quill/dist/quill.snow.css` | `quill/quill.snow.css` |
+| `quill/dist/quill.js` | `quill/quill.min.js` (Quill 2 ships one minified UMD build, renamed on copy) |
 | `admin-lte/dist/css/adminlte.rtl.min.css` | `adminlte/css/adminlte.rtl.min.css` (RTL stylesheet, used when `layout_rtl` is enabled) |
+
+The FullCalendar stylesheet (`fullcalendar/index.global.min.css`) ships inside
+this package rather than npm, and is copied from `resources/vendor/` alongside
+the rest.
 
 ### Next steps printed
 
@@ -171,14 +195,16 @@ adminlte:status
 
 ### What it checks
 
-Each row is shown with a green ✓ (present) or red ✗ (missing):
+Results are grouped, and each row shows a green ✓ (present) or a grey – (absent).
+Only the **Required** group being incomplete is a problem.
+
+**Required** — what `adminlte:install` sets up:
 
 | Check | Looks for |
 |-------|-----------|
 | Config | `config/adminlte.php` |
 | JS stub | `resources/js/adminlte.js` |
 | CSS stub | `resources/css/adminlte.css` |
-| Published views | `resources/views/vendor/adminlte/` (directory) |
 | `admin-lte` npm package | `node_modules/admin-lte/` |
 | `bootstrap` npm package | `node_modules/bootstrap/` |
 | RTL stylesheet | `public/vendor/adminlte/css/adminlte.rtl.min.css` |
@@ -186,10 +212,28 @@ Each row is shown with a green ✓ (present) or red ✗ (missing):
 | jsVectorMap vendor file | `public/vendor/jsvectormap/jsvectormap.min.js` |
 | FullCalendar vendor file | `public/vendor/fullcalendar/index.global.min.js` |
 | SortableJS vendor file | `public/vendor/sortablejs/sortablejs.min.js` |
-| Scaffolded sections | `resources/views/adminlte/` (directory) |
 
-If anything is missing, it prints a warning to run `php artisan adminlte:install`.
-If everything is present, it prints "AdminLTE 4 is fully installed."
+**Optional** — opt-in extras; absent is a normal, fully working install:
+
+| Check | Looks for |
+|-------|-----------|
+| Published views | `resources/views/vendor/adminlte/` (only after `--only=views`) |
+| Scaffolded sections | `resources/views/adminlte/` (only after `adminlte:scaffold`) |
+
+**Optional plugins** — installed only if you use the matching component:
+
+| Check | Looks for |
+|-------|-----------|
+| Flatpickr | `public/vendor/flatpickr/flatpickr.min.js` |
+| Tom Select | `public/vendor/tom-select/tom-select.complete.min.js` |
+| Tabulator | `public/vendor/tabulator-tables/tabulator.min.js` |
+| Quill | `public/vendor/quill/quill.min.js` |
+
+A missing **required** resource prints a warning to run
+`php artisan adminlte:install`; otherwise it prints "AdminLTE 4 is fully
+installed." A missing optional plugin prints the two commands that add it
+(`npm install -D …` then `adminlte:install --only=assets`) and is never
+treated as an error.
 
 ### Example
 

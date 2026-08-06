@@ -31,20 +31,23 @@ This will:
 - Offer to `npm install` the frontend dependencies, pinned to the major
   versions the package is tested against:
   `admin-lte@^4.1`, `bootstrap@^5.3`, `@popperjs/core@^2.11`,
-  `overlayscrollbars@^2.16`, `bootstrap-icons@^1.13`, `apexcharts@^5.16`,
-  `jsvectormap@^1.7`, `fullcalendar@^6.1`, `sortablejs@^1.15`, `sass@^1.101`.
+  `overlayscrollbars@^2.16`, `bootstrap-icons@^1.13`, `apexcharts@^6.7`,
+  `jsvectormap@^1.7`, `fullcalendar@^6.1`, `sortablejs@^1.15`, `sass@^1.102`.
 - Copy the plugin vendor files (ApexCharts, jsVectorMap, FullCalendar,
   SortableJS, plus the AdminLTE RTL stylesheet) into `public/vendor/`.
 
-The optional plugins (Flatpickr, Tom Select, Tabulator, Quill) are disabled
-by default and not installed — add them only if you enable them in
-`config/adminlte.php`:
+The optional plugins (Flatpickr, Tom Select, Tabulator, Quill) are disabled by
+default and not installed. Adding one takes two commands — install it, then
+re-run the asset step so its files are copied into `public/vendor/`:
 
 ```bash
 npm install -D flatpickr@^4.6 tom-select@^2.6 tabulator-tables@^6.5 quill@^2.0
+php artisan adminlte:install --only=assets
 ```
 
-See [plugins.md](plugins.md) for details.
+Without the second command the plugin's `<script>` tag 404s and the component
+that uses it silently does nothing. `php artisan adminlte:status` shows which
+optional plugins are in place. See [plugins.md](plugins.md) for details.
 
 See [commands.md](commands.md) for all installer options
 (`--only=config|views|assets|lang`, `--force`, `--no-interaction-deps`).
