@@ -19,21 +19,21 @@
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label>Sidebar Color</label>
-                            <x-adminlte-input-color name="sidebar_color" value="#343a40" />
+                            <x-adminlte-input-color name="sidebar_color" default="{{ config('adminlte.sidebar_color', '#343a40') }}" />
                         </div>
                         <div class="col-md-6 mb-3">
                             <label>Primary Color</label>
-                            <x-adminlte-input-color name="primary_color" value="#007bff" />
+                            <x-adminlte-input-color name="primary_color" default="{{ config('adminlte.primary_color', '#007bff') }}" />
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label>Navbar Color</label>
-                            <x-adminlte-input-color name="navbar_color" value="#ffffff" />
+                            <x-adminlte-input-color name="navbar_color" default="{{ config('adminlte.navbar_color', '#ffffff') }}" />
                         </div>
                         <div class="col-md-6 mb-3">
                             <label>Footer Color</label>
-                            <x-adminlte-input-color name="footer_color" value="#f8f9fa" />
+                            <x-adminlte-input-color name="footer_color" default="{{ config('adminlte.footer_color', '#f8f9fa') }}" />
                         </div>
                     </div>
                     <div class="row">
@@ -47,8 +47,8 @@
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Sidebar Theme</label>
                             <select id="tg-sidebar-theme" class="form-select">
-                                <option value="dark">Dark</option>
-                                <option value="light">Light</option>
+                                <option value="dark" @if(config('adminlte.sidebar_theme') == 'dark') selected @endif>Dark</option>
+                                <option value="light" @if(config('adminlte.sidebar_theme') == 'light') selected @endif>Light</option>
                             </select>
                         </div>
                     </div>
