@@ -45,6 +45,8 @@
         <link rel="stylesheet" href="{{ asset('vendor/adminlte/css/adminlte.rtl.min.css') }}">
     @endif
 
+    @include('adminlte::partials.theme-colors')
+
     @stack('css')
     @yield('css')
     @pluginStyles

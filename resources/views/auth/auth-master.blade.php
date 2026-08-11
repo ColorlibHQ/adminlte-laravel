@@ -11,6 +11,7 @@
     <title>{{ $title }}</title>
     {{-- Bootstrap Icons ship via the Vite bundle (imported in resources/css/adminlte.css) --}}
     @vite(['resources/css/adminlte.css', 'resources/js/adminlte.js'])
+    @include('adminlte::partials.theme-colors')
     @stack('css')
 </head>
 <body class="{{ $authType }}-page bg-body-secondary">

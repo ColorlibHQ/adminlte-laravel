@@ -22,6 +22,8 @@
 
     @vite(['resources/css/adminlte.css', 'resources/js/adminlte.js'])
 
+    @include('adminlte::partials.theme-colors')
+
     @stack('css')
     @yield('css')
 </head>

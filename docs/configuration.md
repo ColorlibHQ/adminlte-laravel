@@ -115,6 +115,43 @@ Body-level switches that map directly to AdminLTE 4 body classes. A value of
 
 ---
 
+## Theme Colors
+
+| Key | Default | Description |
+| --- | --- | --- |
+| `primary_color` | `null` | Brand color: `--bs-primary`, link colors, `.btn-primary` and `.btn-outline-primary`. |
+| `sidebar_color` | `null` | `.app-sidebar` background. |
+| `navbar_color` | `null` | `.app-header` background. |
+| `footer_color` | `null` | `.app-footer` background. |
+
+Each key is injected into the layout `<head>` as a block of CSS custom-property
+overrides, so you can recolor the chrome without compiling SCSS:
+
+```php
+'primary_color' => '#6610f2',
+'sidebar_color' => '#1f2937',
+```
+
+Values must be hex — `'#rgb'` or `'#rrggbb'`. Anything else (a named color,
+`rgb()`, a `var()` reference) is ignored and the stock AdminLTE color applies,
+because the block is emitted unescaped and only a strict hex pattern is safe to
+put there. Leave a key `null` to change nothing; when all four are `null` no
+`<style>` element is rendered at all.
+
+`primary_color` also recomputes the hover/active button shades using Bootstrap's
+own `shade-color()` weights, and flips button text between black and white the
+way Bootstrap's `color-contrast()` does — so a custom brand color behaves like a
+recompiled `$primary` rather than a flat color swap.
+
+For anything deeper than these four surfaces (spacing, component variables, the
+full palette), compile AdminLTE from SCSS instead — see the commented Option B
+block in the published `resources/css/adminlte.css`.
+
+> The bundled **[Theme Generator](https://laravel.adminlte.io/demo/theme-generator)**
+> demo page previews these live and writes the config snippet for you.
+
+---
+
 ## User Menu (Topbar Dropdown)
 
 | Key | Default | Description |
