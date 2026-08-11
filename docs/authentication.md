@@ -105,7 +105,7 @@ wired into Breeze/Fortify. To customize them, publish with
 | `adminlte::auth.register` | `auth/register.blade.php` |
 | `adminlte::auth.login-v2` | `auth/login-v2.blade.php` |
 | `adminlte::auth.register-v2` | `auth/register-v2.blade.php` |
-| `adminlte::auth.lockscreen` | `auth/lockscreen.blade.php` |
+| `adminlte::auth.lockscreen-v2` | `auth/lockscreen-v2.blade.php` |
 | `adminlte::auth.passwords.email` | `auth/passwords/email.blade.php` |
 | `adminlte::auth.passwords.reset` | `auth/passwords/reset.blade.php` |
 
