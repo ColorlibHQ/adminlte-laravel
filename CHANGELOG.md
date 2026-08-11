@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-08-11
+
 ### Added
 
 - **Theme colors are now real config keys.** `primary_color`, `sidebar_color`,
@@ -46,6 +48,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   **If you styled the old class names yourself, retarget those rules at
   `#adminlte-control-sidebar`.** In practice nothing rendered before, so this is
   unlikely to affect anyone.
+- Bumped the frontend dependency versions advertised by `adminlte:install`
+  (and the matching README/docs) to the current latest: `admin-lte@^4.3`
+  (was `^4.1`) and `apexcharts@^6.8` (was `^6.7`). Every other advertised
+  package was already at its current minor. `fullcalendar` stays at `^6.1` for
+  the reason recorded in `InstallCommand`: v7 drops the minified global bundle
+  this package copies and swaps the bundled CSS for a skeleton + theme + palette
+  model. Verified against the published tarballs that every vendor-copied source
+  path still exists at the versions these ranges now resolve to, and that the
+  `--bs-*` custom properties the theme colors override are unchanged between
+  admin-lte 4.1.0 and 4.3.1. Dev: `orchestra/testbench` `^11.2`,
+  `larastan/larastan` `^3.10`.
 
 ### Fixed
 
