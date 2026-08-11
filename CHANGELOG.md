@@ -7,6 +7,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Theme colors are now real config keys.** `primary_color`, `sidebar_color`,
+  `navbar_color` and `footer_color` repaint the chrome without compiling SCSS.
+  Each is injected into the layout `<head>` as a block of CSS custom-property
+  overrides by the new `ColorlibHQ\AdminLte\Support\ThemeColors`; all four
+  default to `null`, in which case nothing is emitted and the stock AdminLTE
+  palette applies untouched. `primary_color` also recomputes the hover/active
+  button shades with Bootstrap's `shade-color()` weights and picks button text
+  the way Bootstrap's `color-contrast()` does, so a custom brand color behaves
+  like a recompiled `$primary` instead of a flat swap. Values are validated
+  against a strict `#rgb`/`#rrggbb` pattern and anything else is dropped — the
+  block is rendered unescaped, so only hex is safe to put in it. Applies to the
+  main, auth and error layouts. See `docs/configuration.md`.
+
+### Fixed
+
+- **Every color picker on the Theme Generator demo rendered Bootstrap blue.**
+  The page passed `value="#343a40"` to `<x-adminlte-input-color>`, which has no
+  `value` prop — so the color fell through to `$attributes->merge()` and was
+  appended *after* the component's own `value`, and browsers keep the first of
+  two duplicate attributes. All four swatches showed `#0d6efd` regardless of
+  what the page asked for. They now use the documented `default` prop and are
+  seeded from config. Reported and originally fixed by
+  [@ruanpepe](https://github.com/ruanpepe) in
+  [#8](https://github.com/ColorlibHQ/adminlte-laravel/pull/8).
+- **The Theme Generator emitted a config snippet that did nothing.** Four of the
+  five keys it told you to paste were never read by the package, and `color_mode`
+  was not a config key at all. It now writes only keys that exist, previews every
+  change live on the page, seeds each control from the running config, and labels
+  the color-mode select as preview-only (the runtime mode comes from the topbar
+  toggle and the visitor's system preference).
+- Color inputs on the Theme Generator now use the component's `label` prop, so
+  each label is actually associated with its input instead of floating loose.
+
 ## [1.1.0] - 2026-08-06
 
 ### Fixed
