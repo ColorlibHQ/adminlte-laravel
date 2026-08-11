@@ -30,10 +30,10 @@
         "illuminate/view": "^13.0"
     },
     "require-dev": {
-        "orchestra/testbench": "^11.0",
+        "orchestra/testbench": "^11.2",
         "phpunit/phpunit": "^12.4 || ^13.0",
         "laravel/pint": "^1.30",
-        "larastan/larastan": "^3.0"
+        "larastan/larastan": "^3.10"
     },
     "autoload": {
         "psr-4": {

@@ -17,8 +17,8 @@ class InstallCommand extends Command
      * skeleton + theme + palette model, so the calendar component needs
      * explicit work before it can move.
      */
-    private const NPM_DEPENDENCIES = 'admin-lte@^4.1 bootstrap@^5.3 @popperjs/core@^2.11 '
-        .'overlayscrollbars@^2.16 bootstrap-icons@^1.13 apexcharts@^6.7 jsvectormap@^1.7 '
+    private const NPM_DEPENDENCIES = 'admin-lte@^4.3 bootstrap@^5.3 @popperjs/core@^2.11 '
+        .'overlayscrollbars@^2.16 bootstrap-icons@^1.13 apexcharts@^6.8 jsvectormap@^1.7 '
         .'fullcalendar@^6.1 sortablejs@^1.15 sass@^1.102';
 
     /**

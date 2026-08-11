@@ -30,8 +30,8 @@ This will:
   `resources/js/adminlte.js`.
 - Offer to `npm install` the frontend dependencies, pinned to the major
   versions the package is tested against:
-  `admin-lte@^4.1`, `bootstrap@^5.3`, `@popperjs/core@^2.11`,
-  `overlayscrollbars@^2.16`, `bootstrap-icons@^1.13`, `apexcharts@^6.7`,
+  `admin-lte@^4.3`, `bootstrap@^5.3`, `@popperjs/core@^2.11`,
+  `overlayscrollbars@^2.16`, `bootstrap-icons@^1.13`, `apexcharts@^6.8`,
   `jsvectormap@^1.7`, `fullcalendar@^6.1`, `sortablejs@^1.15`, `sass@^1.102`.
 - Copy the plugin vendor files (ApexCharts, jsVectorMap, FullCalendar,
   SortableJS, plus the AdminLTE RTL stylesheet) into `public/vendor/`.
