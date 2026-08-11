@@ -176,8 +176,8 @@ block in the published `resources/css/adminlte.css`.
 > **Security note:** `footer_left` / `footer_right` are rendered unescaped
 > (`{!! !!}`) so they can hold links and markup. Only put trusted, hardcoded
 > markup here — never user-supplied or database-driven content.
-| `control_sidebar` | `false` | Enable the right-hand control sidebar panel. |
-| `control_sidebar_theme` | `'dark'` | Theme for the control sidebar (`'dark'` or `'light'`). |
+| `control_sidebar` | `false` | Enable the right-hand settings panel (a Bootstrap Offcanvas) and its navbar toggle button. Fill it with `@section('control_sidebar')` — see [Layout](layout.md). |
+| `control_sidebar_theme` | `'dark'` | Theme for the settings panel (`'dark'` or `'light'`), applied as `data-bs-theme`. |
 
 ---
 

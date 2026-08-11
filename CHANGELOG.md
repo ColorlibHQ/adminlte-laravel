@@ -22,6 +22,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   block is rendered unescaped, so only hex is safe to put in it. Applies to the
   main, auth and error layouts. See `docs/configuration.md`.
 
+### Changed
+
+- **The control sidebar is now a Bootstrap Offcanvas, and actually works.** It
+  was rendering AdminLTE 3 markup: `.control-sidebar` / `.control-sidebar-dark`
+  / `.control-sidebar-content` plus `data-lte-toggle="control-sidebar"`. AdminLTE
+  4 dropped that component — the string does not appear anywhere in 4.1 or 4.3,
+  in the CSS, the JS or the SCSS source — so there were no styles, no toggle
+  handler, and no grid area for a right-hand panel. Setting
+  `control_sidebar => true` did not give you a panel that failed to open; it
+  injected an unstyled, permanently visible block into the layout grid after the
+  footer, and nothing in the package could open or close it.
+
+  It is now a Bootstrap Offcanvas (`#adminlte-control-sidebar`), which brings the
+  backdrop, Esc-to-close and focus trap for free and needs no custom CSS or JS —
+  Bootstrap is already imported by the published `resources/js/adminlte.js`.
+  Enabling `control_sidebar` also adds the gear toggle to the navbar that was
+  missing, so the panel can be opened at all. `control_sidebar_theme` now does
+  something too: it is applied as `data-bs-theme` on the panel. Fill the body
+  with `@section('control_sidebar')` or `@push('control_sidebar')`; the `$slot`
+  path still works for direct includes.
+
+  **If you styled the old class names yourself, retarget those rules at
+  `#adminlte-control-sidebar`.** In practice nothing rendered before, so this is
+  unlikely to affect anyone.
+
 ### Fixed
 
 - **Every color picker on the Theme Generator demo rendered Bootstrap blue.**

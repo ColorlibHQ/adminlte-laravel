@@ -60,6 +60,18 @@
                 @include('adminlte::partials.color-mode')
             @endif
 
+            {{-- Control sidebar toggle (partials/control-sidebar.blade.php) --}}
+            @if (config('adminlte.control_sidebar', false))
+                <li class="nav-item">
+                    <a class="nav-link" href="#" role="button"
+                       data-bs-toggle="offcanvas" data-bs-target="#adminlte-control-sidebar"
+                       aria-controls="adminlte-control-sidebar"
+                       aria-label="{{ __('Toggle settings panel') }}">
+                        <i class="bi bi-gear-fill" aria-hidden="true"></i>
+                    </a>
+                </li>
+            @endif
+
             {{-- User menu --}}
             @if (config('adminlte.usermenu_enabled', true))
                 @include('adminlte::partials.usermenu')

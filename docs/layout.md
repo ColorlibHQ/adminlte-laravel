@@ -184,10 +184,37 @@ Set `config('adminlte.layout_rtl', true)`. The master layout then sets
 
 ## Control sidebar
 
-`partials/control-sidebar.blade.php` renders a right-hand `.control-sidebar`
-only when `config('adminlte.control_sidebar', false)` is enabled. Its theme
-comes from `control_sidebar_theme` (default `dark`) and it exposes a `$slot` for
-custom content. Toggle it with `data-lte-toggle="control-sidebar"`.
+`partials/control-sidebar.blade.php` renders a right-hand settings panel, only
+when `config('adminlte.control_sidebar', false)` is enabled. Enabling it also
+adds a gear button to the navbar, which is what opens it. Its theme comes from
+`control_sidebar_theme` (default `dark`), applied as `data-bs-theme` on the
+panel.
+
+Fill it from any page:
+
+```blade
+@section('control_sidebar')
+    <h6>Layout</h6>
+    <x-adminlte-input-switch name="compact" label="Compact mode" />
+@stop
+```
+
+`@push('control_sidebar')` works too, and the partial still honours a `$slot` if
+you include it directly rather than letting the master layout do it.
+
+The panel is a Bootstrap [Offcanvas](https://getbootstrap.com/docs/5.3/components/offcanvas/),
+so it comes with a backdrop, Esc-to-close and a focus trap, and you can drive it
+from your own markup with `data-bs-toggle="offcanvas"
+data-bs-target="#adminlte-control-sidebar"` or from JS via
+`bootstrap.Offcanvas.getOrCreateInstance('#adminlte-control-sidebar')`.
+
+> **Changed in 1.2.0.** This used to render AdminLTE 3's `.control-sidebar`
+> markup and told you to toggle it with `data-lte-toggle="control-sidebar"`.
+> AdminLTE 4 dropped that component — it ships no CSS, no JS and no handler for
+> that attribute — so the panel rendered as an unstyled block that could never
+> be opened. If you styled the old `.control-sidebar` / `.control-sidebar-dark`
+> / `.control-sidebar-content` classes yourself, retarget those rules at
+> `#adminlte-control-sidebar`.
 
 ## Plugin asset directives
 
