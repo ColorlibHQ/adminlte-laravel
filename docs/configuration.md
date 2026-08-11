@@ -161,7 +161,7 @@ block in the published `resources/css/adminlte.css`.
 | `usermenu_header_class` | `'bg-primary'` | Background class for the user dropdown header. |
 | `usermenu_image` | `false` | Show the user's avatar in the dropdown. |
 | `usermenu_desc` | `false` | Show a description/subtitle under the user's name. |
-| `usermenu_profile_url` | `false` | URL for the dropdown's "Profile" link (false to hide). |
+| `usermenu_profile_url` | `false` | URL for the dropdown's "Profile" link (false to hide, true to 'admin/profile'). |
 
 ---
 
