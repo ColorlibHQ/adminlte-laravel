@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **`auth_logo` is wired up.** The config block has shipped since 1.0 but no
+  view ever read it, so enabling it did nothing. The auth pages now render the
+  configured image — honouring `class`, `width` and `height`, and omitting each
+  attribute when its config value is empty — above the text `logo`. With
+  `auth_logo.enabled` left at its `false` default the auth pages are unchanged.
 - **The user-menu config keys did nothing.** `usermenu_header`,
   `usermenu_header_class`, `usermenu_image` and `usermenu_desc` have shipped
   since 1.0 but the partial ignored all four and hardcoded the header, the
