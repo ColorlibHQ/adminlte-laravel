@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-08-13
+
+Three config blocks that have shipped since 1.0 — `auth_logo` and the six
+`usermenu_*` keys — were never read by any view, and the lockscreen rendered
+against class names AdminLTE 4 does not define. All of it now works.
+
+**Upgrading:** the `usermenu_*` keys default to `false`, so honouring them
+hides the user dropdown's coloured header, its avatar and its Profile button
+on apps that were relying on the hardcoded markup. Set `usermenu_header`,
+`usermenu_image` and `usermenu_desc` to `true` — and `usermenu_profile_url` to
+a path — to keep the previous appearance.
+
+### Added
+
+- `ColorlibHQ\AdminLte\Http\Middleware\DemoUserMenu`, applied to the bundled
+  demo route group. It turns the user-menu header, avatar and description on
+  for `demo/*` requests only, so the showcase keeps the full AdminLTE dropdown
+  while a fresh install still gets the plain one. See `docs/demo-pages.md`.
+
 ### Fixed
 
 - **`auth_logo` is wired up.** The config block has shipped since 1.0 but no
