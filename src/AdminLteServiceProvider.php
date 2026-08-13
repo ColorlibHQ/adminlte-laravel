@@ -6,6 +6,7 @@ use ColorlibHQ\AdminLte\Console\InstallCommand;
 use ColorlibHQ\AdminLte\Console\MakeAuthCommand;
 use ColorlibHQ\AdminLte\Console\ScaffoldCommand;
 use ColorlibHQ\AdminLte\Console\StatusCommand;
+use ColorlibHQ\AdminLte\Http\Middleware\DemoUserMenu;
 use ColorlibHQ\AdminLte\Plugins\PluginManager;
 use ColorlibHQ\AdminLte\Support\ActivityLogger;
 use ColorlibHQ\AdminLte\View\Components;
@@ -327,6 +328,10 @@ class AdminLteServiceProvider extends ServiceProvider
             'demo/errors/500' => 'errors.500',
             'demo/errors/maintenance' => 'errors.maintenance',
         ];
+
+        // DemoUserMenu shows off the full user dropdown (coloured header +
+        // avatar) on these pages without changing what a fresh install ships.
+        $middleware[] = DemoUserMenu::class;
 
         Route::middleware($middleware)->group(function () use ($pages) {
             foreach ($pages as $uri => $view) {

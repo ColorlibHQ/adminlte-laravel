@@ -15,8 +15,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   avatar and the "member since" line. They are now honoured. Note the defaults
   are all `false`, so the dropdown header is hidden unless you turn it on —
   set `usermenu_header` and `usermenu_image` to `true` to keep the previous
-  appearance. `usermenu_header_class` default corrected to `text-bg-primary`;
-  `bg-primary` alone sets no contrasting foreground color.
+  appearance. The bundled demo pages do exactly that for themselves via the new
+  `DemoUserMenu` middleware, so the showcase keeps the coloured header and the
+  90px avatar without changing what a fresh install ships.
+  `usermenu_header_class` default corrected to `text-bg-primary`; `bg-primary`
+  alone sets no contrasting foreground color.
 - **`usermenu_profile_url => false` now hides the "Profile" link** as the docs
   have always claimed. It previously fell back to `/admin/profile` — a path
   nothing in the package serves; the `profile` scaffold registers `/profile`.
