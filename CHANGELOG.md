@@ -14,6 +14,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   configured image — honouring `class`, `width` and `height`, and omitting each
   attribute when its config value is empty — above the text `logo`. With
   `auth_logo.enabled` left at its `false` default the auth pages are unchanged.
+- **The user-menu config keys did nothing.** `usermenu_header`,
+  `usermenu_header_class`, `usermenu_image` and `usermenu_desc` have shipped
+  since 1.0 but the partial ignored all four and hardcoded the header, the
+  avatar and the "member since" line. They are now honoured. Note the defaults
+  are all `false`, so the dropdown header is hidden unless you turn it on —
+  set `usermenu_header` and `usermenu_image` to `true` to keep the previous
+  appearance. The bundled demo pages do exactly that for themselves via the new
+  `DemoUserMenu` middleware, so the showcase keeps the coloured header and the
+  90px avatar without changing what a fresh install ships.
+  `usermenu_header_class` default corrected to `text-bg-primary`; `bg-primary`
+  alone sets no contrasting foreground color.
+- **`usermenu_profile_url => false` now hides the "Profile" link** as the docs
+  have always claimed. It previously fell back to `/admin/profile` — a path
+  nothing in the package serves; the `profile` scaffold registers `/profile`.
+  With the link hidden, "Sign out" fills the footer.
+- **The lockscreen rendered unstyled.** It extended the auth card layout, which
+  produced `.lockscreen-page` / `.lockscreen-box` — neither exists in AdminLTE
+  4. The page's real styles are all scoped under a `.lockscreen` body class, so
+  none of them applied. It is now a standalone layout carrying that class, and
+  posts to the `password.confirm` route (falling back to the bare path when
+  auth hasn't been scaffolded) instead of to `login`, which could never have
+  succeeded from a password-only form. Reported by
+  [@ruanpepe](https://github.com/ruanpepe).
 
 ## [1.2.0] - 2026-08-11
 

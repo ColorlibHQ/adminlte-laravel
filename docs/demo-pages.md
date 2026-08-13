@@ -16,6 +16,13 @@ components.
 - **Plain view routes.** Each URI maps to a Blade view via `Route::view(...)`,
   named `adminlte.{dotted-uri}` (e.g. `demo/widgets/cards` →
   route name `adminlte.demo.widgets.cards`).
+- **Rendered with the full user dropdown.** `DemoUserMenu` turns
+  `usermenu_header`, `usermenu_image` and `usermenu_desc` on for these routes
+  only, so the showcase keeps the coloured header block and the 90px avatar.
+  Those keys ship `false`, so a fresh install gets the plain dropdown until it
+  opts in — see [`configuration.md`](configuration.md). `usermenu_profile_url`
+  is left alone: nothing serves a profile page until
+  `adminlte:scaffold profile` runs.
 
 ```php
 if (! config('adminlte.demo', true)) {
@@ -23,6 +30,7 @@ if (! config('adminlte.demo', true)) {
 }
 
 $middleware = config('adminlte.demo_middleware', ['web', 'auth']);
+$middleware[] = DemoUserMenu::class;
 
 Route::middleware($middleware)->group(function () use ($pages) {
     foreach ($pages as $uri => $view) {
