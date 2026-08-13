@@ -105,11 +105,17 @@ wired into Breeze/Fortify. To customize them, publish with
 | `adminlte::auth.register` | `auth/register.blade.php` |
 | `adminlte::auth.login-v2` | `auth/login-v2.blade.php` |
 | `adminlte::auth.register-v2` | `auth/register-v2.blade.php` |
-| `adminlte::auth.lockscreen-v2` | `auth/lockscreen-v2.blade.php` |
+| `adminlte::auth.lockscreen` | `auth/lockscreen.blade.php` |
 | `adminlte::auth.passwords.email` | `auth/passwords/email.blade.php` |
 | `adminlte::auth.passwords.reset` | `auth/passwords/reset.blade.php` |
 
-(`auth/auth-master.blade.php` is the shared layout these views extend.)
+(`auth/auth-master.blade.php` is the shared layout these views extend. The
+lockscreen is the exception — AdminLTE styles it as a full-page `.lockscreen`
+layout rather than a centred auth card, so it stands alone.)
+
+The lockscreen posts to the `password.confirm` route registered by
+`adminlte:make-auth` (Breeze and Fortify register it too), which redirects to
+the intended URL on success.
 
 ---
 

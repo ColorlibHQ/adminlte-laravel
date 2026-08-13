@@ -80,6 +80,11 @@ return [
     |--------------------------------------------------------------------------
     | User menu (topbar dropdown)
     |--------------------------------------------------------------------------
+    |
+    | `usermenu_profile_url` is passed through `url()`, so set it to a path
+    | ('profile') or an absolute URL — not a route name. `false` hides the
+    | "Profile" button and lets "Sign out" fill the footer.
+    |
     */
 
     'usermenu_enabled' => true,

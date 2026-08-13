@@ -158,10 +158,15 @@ block in the published `resources/css/adminlte.css`.
 | --- | --- | --- |
 | `usermenu_enabled` | `true` | Show the user dropdown menu in the topbar. |
 | `usermenu_header` | `false` | Show a colored header block inside the user dropdown. |
-| `usermenu_header_class` | `'bg-primary'` | Background class for the user dropdown header. |
-| `usermenu_image` | `false` | Show the user's avatar in the dropdown. |
-| `usermenu_desc` | `false` | Show a description/subtitle under the user's name. |
-| `usermenu_profile_url` | `false` | URL for the dropdown's "Profile" link (false to hide, true to 'admin/profile'). |
+| `usermenu_header_class` | `'text-bg-primary'` | Background class for the user dropdown header. |
+| `usermenu_image` | `false` | Show the user's avatar in the dropdown header. |
+| `usermenu_desc` | `false` | Show the "member since" subtitle under the user's name. |
+| `usermenu_profile_url` | `false` | URL or path for the dropdown's "Profile" link. `false` hides the link. |
+
+`usermenu_profile_url` is passed through `url()`, so give it a path
+(`'profile'`) or an absolute URL — not a route name. The `profile` scaffold
+section registers its page at `/profile`, so `'profile'` is the value to use
+after `php artisan adminlte:scaffold profile`.
 
 ---
 
