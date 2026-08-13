@@ -163,10 +163,10 @@ block in the published `resources/css/adminlte.css`.
 | `usermenu_desc` | `false` | Show the "member since" subtitle under the user's name. |
 | `usermenu_profile_url` | `false` | URL or path for the dropdown's "Profile" link. `false` hides the link. |
 
-`usermenu_profile_url` is passed through `url()`, so give it a path
-(`'profile'`) or an absolute URL — not a route name. The `profile` scaffold
-section registers its page at `/profile`, so `'profile'` is the value to use
-after `php artisan adminlte:scaffold profile`.
+`usermenu_profile_url` is passed through `url()`, so give it a path or an
+absolute URL — not a route name. `adminlte:scaffold` registers its routes in a
+group prefixed `admin`, so after `php artisan adminlte:scaffold profile` the
+page lives at `/admin/profile` and `'admin/profile'` is the value to use.
 
 ---
 

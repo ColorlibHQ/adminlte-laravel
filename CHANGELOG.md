@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.1] - 2026-08-13
+
+### Fixed
+
+- Documentation: `usermenu_profile_url` was documented as taking `'profile'`
+  after scaffolding. `adminlte:scaffold` registers its routes in a group
+  prefixed `admin`, so the correct value is `'admin/profile'`. The 1.3.0 notes
+  also claimed nothing in the package served `/admin/profile`; that was wrong.
+  Hiding the link when the key is `false` — the actual behaviour change — is
+  unaffected and still matches what the docs have always said.
+
 ## [1.3.0] - 2026-08-13
 
 Three config blocks that have shipped since 1.0 — `auth_logo` and the six
@@ -45,9 +56,9 @@ a path — to keep the previous appearance.
   `usermenu_header_class` default corrected to `text-bg-primary`; `bg-primary`
   alone sets no contrasting foreground color.
 - **`usermenu_profile_url => false` now hides the "Profile" link** as the docs
-  have always claimed. It previously fell back to `/admin/profile` — a path
-  nothing in the package serves; the `profile` scaffold registers `/profile`.
-  With the link hidden, "Sign out" fills the footer.
+  have always claimed, instead of silently falling back to `/admin/profile`.
+  With the link hidden, "Sign out" fills the footer. To keep the link, set the
+  key to `'admin/profile'` — the path `adminlte:scaffold profile` creates.
 - **The lockscreen rendered unstyled.** It extended the auth card layout, which
   produced `.lockscreen-page` / `.lockscreen-box` — neither exists in AdminLTE
   4. The page's real styles are all scoped under a `.lockscreen` body class, so

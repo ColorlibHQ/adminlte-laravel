@@ -15,9 +15,9 @@ use Symfony\Component\HttpFoundation\Response;
  * so they turn those on for themselves. Demo requests only; the consuming
  * app's own pages keep whatever its config says.
  *
- * `usermenu_profile_url` is deliberately left alone: there is no profile page
- * to link to until the app runs `adminlte:scaffold profile`, and pointing the
- * showcase at a 404 is what this stopped doing.
+ * `usermenu_profile_url` is deliberately left alone: the profile page only
+ * exists once the app runs `adminlte:scaffold profile`, so the demo cannot
+ * assume a URL for it.
  */
 class DemoUserMenu
 {
