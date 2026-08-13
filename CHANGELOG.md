@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **`auth_logo` is wired up.** The config block has shipped since 1.0 but no
+  view ever read it, so enabling it did nothing. The auth pages now render the
+  configured image — honouring `class`, `width` and `height`, and omitting each
+  attribute when its config value is empty — above the text `logo`. With
+  `auth_logo.enabled` left at its `false` default the auth pages are unchanged.
+
 ## [1.2.0] - 2026-08-11
 
 ### Added
