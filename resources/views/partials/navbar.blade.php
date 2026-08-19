@@ -16,11 +16,14 @@
                     <i class="bi bi-grid-1x2 me-1" aria-hidden="true"></i> {{ __('adminlte.home') }}
                 </a>
             </li>
-            <li class="nav-item d-none d-md-block">
-                <a href="{{ config('adminlte.sidebar_docs_url', '#') }}" class="nav-link" target="_blank" rel="noopener">
-                    <i class="bi bi-book me-1" aria-hidden="true"></i> {{ __('adminlte.documentation') }}
-                </a>
-            </li>
+
+            @if (config('adminlte.sidebar_docs_url'))
+                <li class="nav-item d-none d-md-block">
+                    <a href="{{ config('adminlte.sidebar_docs_url') }}" class="nav-link" target="_blank" rel="noopener">
+                        <i class="bi bi-book me-1" aria-hidden="true"></i> {{ __('adminlte.documentation') }}
+                    </a>
+                </li>
+            @endif
 
             @foreach ($navLeft as $item)
                 <li class="nav-item d-none d-md-block">

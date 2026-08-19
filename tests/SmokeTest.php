@@ -128,4 +128,23 @@ class SmokeTest extends TestCase
         $html->assertSee('multiple', false);
         $html->assertSee('Documents');
     }
+
+    public function test_navbar_documentation_link_shown_when_sidebar_docs_url_enabled(): void
+    {
+        config()->set('adminlte.sidebar_docs_url', '/docs');
+
+        $html = $this->blade(view('adminlte::partials.navbar'));
+
+        $html->assertSee('Documentation');
+        $html->assertSee('/docs', false);
+    }
+
+    public function test_navbar_documentation_link_hidden_when_sidebar_docs_url_disabled(): void
+    {
+        config()->set('adminlte.sidebar_docs_url', false);
+
+        $html = $this->blade(view('adminlte::partials.navbar'));
+
+        $html->assertDontSee('/docs', false);
+    }
 }

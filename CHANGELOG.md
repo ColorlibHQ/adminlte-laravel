@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **Navbar documentation link now respects `sidebar_docs_url` config.** When
+  `sidebar_docs_url` is set to `false` to hide the documentation CTA in the
+  sidebar, the documentation link in the navbar is now also hidden, making
+  behaviour consistent across both locations.
+
 ## [1.3.1] - 2026-08-13
 
 ### Fixed
