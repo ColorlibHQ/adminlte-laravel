@@ -7,6 +7,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Bumped the AdminLTE version advertised by `adminlte:install` (and the matching
+  README/docs) to the current latest: `admin-lte@^4.8` (was `^4.3`). No other
+  advertised package moved. Verified against the published 4.8.1 tarball that
+  every path this package consumes still exists —
+  `admin-lte/dist/css/adminlte.css`, `admin-lte/dist/css/adminlte.rtl.min.css`
+  (vendor-copied by the installer) and `admin-lte/src/scss/adminlte` (the
+  Option B source build in the published CSS stub) — and that the `--bs-*`
+  custom properties the theme colors override are untouched.
+
+  What the core releases in that range bring to an app on this package:
+
+  - **4.4.0** — opt-in extended palette (`admin-lte/dist/css/adminlte-colors.css`,
+    14 colours plus sidebar/navbar skins) and a fix that lets `.sidebar-wrapper`
+    fill the sidebar. The package's `partials/sidebar.blade.php` uses that class,
+    so the fix applies with no change here.
+  - **4.5.0** — `admin-lte/dist/css/adminlte-colors-v3.css`, the 18 AdminLTE 3
+    colours exactly as they were, for apps ported from v3.
+  - **4.6.0** — `data-lte-primary="teal"` on `<html>` promotes any palette colour
+    to Bootstrap's `primary` (buttons, links, pagination, form focus rings).
+  - **4.7.0** — `data-lte-print="plain"` for pages meant to print as documents.
+  - **4.8.0** — `data-lte-contrast="aa"` for WCAG AA text on the v3 palette.
+  - **4.8.1** — pagination focus-ring fix.
+
+  Both palette stylesheets are opt-in and additive: add the one you want to
+  `resources/css/adminlte.css` next to the existing `admin-lte/dist/css/adminlte.css`
+  import. The `data-lte-*` attributes go on `<html>`, which this package renders in
+  `resources/views/master.blade.php` (and `auth/auth-master.blade.php`,
+  `layouts/errors-master.blade.php`). Nothing is enabled by default, so an
+  install that changes nothing looks exactly as it did.
+
 ### Fixed
 
 - **Navbar documentation link now respects `sidebar_docs_url` config.** When

@@ -79,7 +79,7 @@ When run without `--only` and without `--no-interaction-deps`, the command promp
 If accepted, it runs:
 
 ```bash
-npm install -D admin-lte@^4.3 bootstrap@^5.3 @popperjs/core@^2.11 overlayscrollbars@^2.16 \
+npm install -D admin-lte@^4.8 bootstrap@^5.3 @popperjs/core@^2.11 overlayscrollbars@^2.16 \
   bootstrap-icons@^1.13 apexcharts@^6.8 jsvectormap@^1.7 fullcalendar@^6.1 \
   sortablejs@^1.15 sass@^1.102
 ```
@@ -93,7 +93,7 @@ model, neither of which the calendar component supports yet.
 
 | Package | Role |
 |---------|------|
-| `admin-lte@^4.3` | AdminLTE 4 core CSS/JS |
+| `admin-lte@^4.8` | AdminLTE 4 core CSS/JS |
 | `bootstrap@^5.3` | Bootstrap 5.3 framework |
 | `@popperjs/core@^2.11` | Tooltip/dropdown positioning (Bootstrap dependency) |
 | `overlayscrollbars@^2.16` | Custom sidebar scrollbars |
