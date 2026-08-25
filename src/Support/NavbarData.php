@@ -69,10 +69,11 @@ class NavbarData
     public static function messages(int $limit = 5): array
     {
         $user = Auth::user();
-
+        $usersTableName = $user->getTable();
+        
         if ($user !== null && self::hasMessagesTable()) {
             $rows = DB::table('adminlte_messages as m')
-                ->join('users as u', 'u.id', '=', 'm.from_user_id')
+                ->join($usersTableName' as u', 'u.id', '=', 'm.from_user_id')
                 ->where('m.to_user_id', $user->getAuthIdentifier())
                 ->where('m.is_read', false)
                 ->orderByDesc('m.created_at')
