@@ -73,7 +73,7 @@ class NavbarData
         
         if ($user !== null && self::hasMessagesTable()) {
             $rows = DB::table('adminlte_messages as m')
-                ->join($usersTableName' as u', 'u.id', '=', 'm.from_user_id')
+                ->join($usersTableName.' as u', 'u.id', '=', 'm.from_user_id')
                 ->where('m.to_user_id', $user->getAuthIdentifier())
                 ->where('m.is_read', false)
                 ->orderByDesc('m.created_at')
