@@ -43,6 +43,11 @@ Each is copied to `app/Http/Controllers/Auth/`:
 
 Existing files are skipped (printed as `exists`) unless `--force` is used.
 
+`RegisterController` validates the new email against your users table by name.
+That name is resolved when the controller is published, not hardcoded — an app
+that calls the table `members` gets `unique:members,email`. See
+[Your users table](scaffolding.md#your-users-table).
+
 ### Routes registered
 
 The auth routes are appended to `routes/web.php` from the package's
