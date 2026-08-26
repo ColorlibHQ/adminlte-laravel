@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- The navbar message dropdown no longer assumes the user table is called
+  `users` with an `id` key. `NavbarData::messages()` now resolves the table from
+  the authenticated user (an Eloquent model answers for itself; the `database`
+  provider's `GenericUser` is read off `auth.providers.*.table`, falling back to
+  `users`) and joins on `getAuthIdentifierName()` instead of a hardcoded
+  `u.id`. Apps with a renamed users table or a custom auth model previously got
+  a "no such table: users" error on every authenticated page render.
+  Thanks [@ruanpepe](https://github.com/ruanpepe) for reporting and for the
+  original patch (#17).
+
 ## [1.4.0] - 2026-08-19
 
 ### Changed
