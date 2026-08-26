@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\Models\Message;
-use App\Models\User;
+use {{ users_model_classname }} as User;
 
 class MessagePolicy
 {
@@ -14,8 +14,8 @@ class MessagePolicy
 
     public function view(User $user, Message $message): bool
     {
-        return $message->from_user_id === $user->id
-            || $message->to_user_id === $user->id;
+        return $message->from_user_id === $user->{{ users_key }}
+            || $message->to_user_id === $user->{{ users_key }};
     }
 
     public function create(User $user): bool
@@ -25,13 +25,13 @@ class MessagePolicy
 
     public function update(User $user, Message $message): bool
     {
-        return $message->from_user_id === $user->id
-            || $message->to_user_id === $user->id;
+        return $message->from_user_id === $user->{{ users_key }}
+            || $message->to_user_id === $user->{{ users_key }};
     }
 
     public function delete(User $user, Message $message): bool
     {
-        return $message->from_user_id === $user->id
-            || $message->to_user_id === $user->id;
+        return $message->from_user_id === $user->{{ users_key }}
+            || $message->to_user_id === $user->{{ users_key }};
     }
 }

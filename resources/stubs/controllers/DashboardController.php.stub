@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\AdminLte;
 
 use App\Http\Controllers\Controller;
+use ColorlibHQ\AdminLte\Support\UserTable;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
@@ -16,6 +18,8 @@ class DashboardController extends Controller
      */
     public function index(): View
     {
+        $user = Auth::user();
+
         return view('adminlte.dashboard.index', [
             'stats' => [
                 'users' => $this->count('{{ users_table }}'),
@@ -80,11 +84,13 @@ class DashboardController extends Controller
             return [];
         }
 
+        $user = Auth::user();
+
         return DB::table('activity_log')
-            ->leftJoin('{{ users_table }}', '{{ users_table }}.id', '=', 'activity_log.user_id')
+            ->leftJoin('{{ users_table }} as u', 'u.{{ users_key }}', '=', 'activity_log.user_id')
             ->orderByDesc('activity_log.created_at')
             ->limit(8)
-            ->get(['activity_log.event', 'activity_log.description', 'activity_log.created_at', '{{ users_table }}.name as user_name'])
+            ->get(['activity_log.event', 'activity_log.description', 'activity_log.created_at', 'u.name as user_name'])
             ->all();
     }
 }

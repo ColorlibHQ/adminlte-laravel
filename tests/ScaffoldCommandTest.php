@@ -5,6 +5,7 @@ namespace ColorlibHQ\AdminLte\Tests;
 use ColorlibHQ\AdminLte\Console\ScaffoldCommand;
 use ColorlibHQ\AdminLte\Tests\Fixtures\Member;
 use Illuminate\Contracts\Console\Kernel;
+use Illuminate\Foundation\Auth\User;
 use ReflectionClass;
 
 class ScaffoldCommandTest extends TestCase
@@ -136,7 +137,7 @@ class ScaffoldCommandTest extends TestCase
 
         $migration = $this->publishedFile($base, 'database/migrations', 'create_adminlte_messages_table');
 
-        $this->assertStringContainsString("constrained('users')", $migration);
+        $this->assertStringContainsString("constrained('users', 'id')", $migration);
         $this->assertStringNotContainsString('{{', $migration);
     }
 
@@ -151,11 +152,38 @@ class ScaffoldCommandTest extends TestCase
 
         // The foreign keys are what break first: `migrate` fails outright when
         // the referenced table does not exist.
-        $this->assertStringContainsString("constrained('members')", $migration);
-        $this->assertStringNotContainsString("constrained('users')", $migration);
+        $this->assertStringContainsString("constrained('members', 'id')", $migration);
+        $this->assertStringNotContainsString("constrained('users', 'id')", $migration);
 
         $request = $this->publishedFile($base, 'app/Http/Requests/AdminLte', 'StoreMessageRequest');
         $this->assertStringContainsString('exists:members,id', $request);
+    }
+
+    public function test_published_stubs_name_a_renamed_users_key(): void
+    {
+        $userModel = new class extends User
+        {
+            protected $primaryKey = 'uuid';
+
+            protected $table = 'users';
+        };
+
+        config()->set('auth.providers.users', [
+            'driver' => 'eloquent',
+            'model' => get_class($userModel),
+        ]);
+
+        $base = $this->scaffoldInto('mailbox');
+
+        $migration = $this->publishedFile($base, 'database/migrations', 'create_adminlte_messages_table');
+
+        // The foreign key must reference the users table's actual primary key.
+        $this->assertStringContainsString("constrained('users', 'uuid')", $migration);
+        $this->assertStringNotContainsString("constrained('users', 'id')", $migration);
+
+        $request = $this->publishedFile($base, 'app/Http/Requests/AdminLte', 'StoreMessageRequest');
+        $this->assertStringContainsString('exists:users,uuid', $request);
+        $this->assertStringNotContainsString('exists:users,id', $request);
     }
 
     public function test_the_dashboard_controller_queries_the_renamed_users_table(): void
@@ -166,11 +194,32 @@ class ScaffoldCommandTest extends TestCase
         $base = $this->scaffoldInto('dashboard');
 
         $controller = $this->publishedFile($base, 'app/Http/Controllers/AdminLte', 'DashboardController');
-
-        $this->assertStringContainsString("leftJoin('members', 'members.id'", $controller);
+        $this->assertStringContainsString("leftJoin('members as u', 'u.id'", $controller);
         $this->assertStringContainsString("\$this->count('members')", $controller);
         // The stat array key feeds $stats['users'] in the view — it is not a table.
         $this->assertStringContainsString("'users' => \$this->count('members')", $controller);
+    }
+
+    public function test_the_dashboard_controller_queries_the_renamed_users_key(): void
+    {
+        $userModel = new class extends User
+        {
+            protected $primaryKey = 'uuid';
+
+            protected $table = 'users';
+        };
+
+        config()->set('auth.providers.users', [
+            'driver' => 'eloquent',
+            'model' => get_class($userModel),
+        ]);
+
+        $base = $this->scaffoldInto('dashboard');
+
+        $controller = $this->publishedFile($base, 'app/Http/Controllers/AdminLte', 'DashboardController');
+
+        $this->assertStringContainsString("leftJoin('users as u', 'u.uuid'", $controller);
+        $this->assertStringNotContainsString("leftJoin('users', 'users.id'", $controller);
     }
 
     /**

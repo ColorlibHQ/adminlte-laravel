@@ -3,5 +3,5 @@
 Broadcast::channel('conversation.{conversationId}', function ($user, $conversationId) {
     $conversation = \App\Models\Conversation::find($conversationId);
 
-    return $conversation !== null && $conversation->users->contains($user->id);
+    return $conversation !== null && $conversation->users->contains($user->{{ users_key }});
 });

@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
+use {{ users_model_classname }} as User;
 use App\Notifications\AdminLteDemoNotification;
 use Illuminate\Database\Seeder;
 

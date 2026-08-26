@@ -20,6 +20,8 @@ trait RendersStubs
     protected function stubReplacements(): array
     {
         return [
+            '{{ users_model_classname }}' => UserTable::modelClassname(),
+            '{{ users_key }}' => UserTable::keyName(),
             '{{ users_table }}' => UserTable::name(),
         ];
     }

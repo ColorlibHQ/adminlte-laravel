@@ -38,6 +38,40 @@ class UserTable
     }
 
     /**
+     * The name of the primary key backing the app's users.
+     *
+     * An authenticated Eloquent user answers for itself, which is the most
+     * accurate source and covers multi-model guards. Everything else falls back
+     * to the default guard's provider config: the `model` for Eloquent providers,
+     * otherwise the default `id` key used by database-backed users.
+     */
+    public static function keyName(?Authenticatable $user = null): string
+    {
+        if ($user instanceof Model) {
+            return $user->getKeyName();
+        }
+
+        return self::providerModel()?->getKeyName() ?? 'id';
+    }
+
+    /**
+     * Get the fully qualified class name of the model used by the application's users.
+     *
+     * An authenticated Eloquent user provides its own model class, which is the
+     * most accurate source and supports multiple user models and guards.
+     * When no user is available, the method falls back to the model configured
+     * by the default guard's provider.
+     */
+    public static function modelClassname(?Authenticatable $user = null): string
+    {
+        if ($user instanceof Model) {
+            return get_class($user);
+        }
+
+        return self::providerModel() ? get_class(self::providerModel()) : '\App\Models\User';
+    }
+
+    /**
      * The Eloquent model the default guard's provider is pointed at, if it names
      * one that actually resolves.
      */

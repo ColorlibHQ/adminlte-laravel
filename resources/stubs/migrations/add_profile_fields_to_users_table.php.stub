@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::table('{{ users_table }}', function (Blueprint $table) {
             if (! Schema::hasColumn('{{ users_table }}', 'avatar')) {
-                $table->string('avatar')->nullable()->after('email');
+                $table->string('avatar')->nullable();
             }
         });
     }
