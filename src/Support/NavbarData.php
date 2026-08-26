@@ -2,6 +2,8 @@
 
 namespace ColorlibHQ\AdminLte\Support;
 
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -72,7 +74,7 @@ class NavbarData
 
         if ($user !== null && self::hasMessagesTable()) {
             $rows = DB::table('adminlte_messages as m')
-                ->join('users as u', 'u.id', '=', 'm.from_user_id')
+                ->join(self::usersTable($user).' as u', 'u.'.$user->getAuthIdentifierName(), '=', 'm.from_user_id')
                 ->where('m.to_user_id', $user->getAuthIdentifier())
                 ->where('m.is_read', false)
                 ->orderByDesc('m.created_at')
@@ -108,6 +110,28 @@ class NavbarData
         }
 
         return count(self::demoMessages());
+    }
+
+    /**
+     * Resolve the table backing the authenticated user, so the message join keeps
+     * working when an app renames "users" or points its guard at a custom model.
+     *
+     * Eloquent users answer for themselves. Non-Eloquent ones cannot: the
+     * "database" provider hands back a GenericUser, which has no getTable(), so
+     * the guard's provider config is consulted before falling back to Laravel's
+     * default table name.
+     */
+    private static function usersTable(Authenticatable $user): string
+    {
+        if ($user instanceof Model) {
+            return $user->getTable();
+        }
+
+        $guard = config('auth.defaults.guard');
+        $provider = is_string($guard) ? config("auth.guards.{$guard}.provider") : null;
+        $table = is_string($provider) ? config("auth.providers.{$provider}.table") : null;
+
+        return is_string($table) && $table !== '' ? $table : 'users';
     }
 
     /**
