@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('adminlte_kanban_boards', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained('{{ users_table }}')->cascadeOnDelete();
             $table->string('name');
             $table->timestamps();
         });
@@ -36,7 +36,7 @@ return new class extends Migration
         Schema::create('adminlte_kanban_card_user', function (Blueprint $table) {
             $table->id();
             $table->foreignId('card_id')->constrained('adminlte_kanban_cards')->cascadeOnDelete();
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained('{{ users_table }}')->cascadeOnDelete();
             $table->unique(['card_id', 'user_id']);
         });
     }

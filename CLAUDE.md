@@ -136,6 +136,10 @@ $this->assertStringContainsString('card', $view);
 3. Add a feature test in `tests/ScaffoldCommandTest.php`
 4. Document in `docs/scaffolding.md` (docs are user-facing — served in-app at `/docs`)
 
+**Never hardcode `users` in a stub.** Apps rename it. Write `{{ users_table }}`
+and `RendersStubs` substitutes the resolved name (`Support\UserTable`) at publish
+time. `ScaffoldCommandTest::test_no_stub_hardcodes_the_users_table` enforces it.
+
 ## Code Style & Standards
 
 - **PHP:** PSR-12 via Pint; strict types and explicit return types

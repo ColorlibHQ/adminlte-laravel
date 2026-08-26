@@ -17,7 +17,7 @@ return new class extends Migration
         Schema::create('adminlte_conversation_user', function (Blueprint $table) {
             $table->id();
             $table->foreignId('conversation_id')->constrained('adminlte_conversations')->cascadeOnDelete();
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained('{{ users_table }}')->cascadeOnDelete();
             $table->timestamps();
             $table->unique(['conversation_id', 'user_id']);
         });
@@ -25,7 +25,7 @@ return new class extends Migration
         Schema::create('adminlte_chat_messages', function (Blueprint $table) {
             $table->id();
             $table->foreignId('conversation_id')->constrained('adminlte_conversations')->cascadeOnDelete();
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained('{{ users_table }}')->cascadeOnDelete();
             $table->text('body');
             $table->timestamps();
         });

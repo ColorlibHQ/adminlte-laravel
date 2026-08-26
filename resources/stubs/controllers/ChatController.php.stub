@@ -18,7 +18,7 @@ class ChatController extends Controller
     public function index(?Conversation $conversation = null): View
     {
         $conversations = Conversation::with(['users', 'latestMessage'])
-            ->whereHas('users', fn ($q) => $q->where('users.id', Auth::id()))
+            ->whereHas('users', fn ($q) => $q->where('{{ users_table }}.id', Auth::id()))
             ->get();
 
         $active = $conversation?->exists

@@ -3,6 +3,7 @@
 namespace ColorlibHQ\AdminLte\Tests;
 
 use ColorlibHQ\AdminLte\Console\MakeAuthCommand;
+use ColorlibHQ\AdminLte\Tests\Fixtures\Member;
 use Illuminate\Contracts\Console\Kernel;
 use ReflectionClass;
 
@@ -10,10 +11,62 @@ class MakeAuthCommandTest extends TestCase
 {
     private string $stubsPath;
 
+    private ?string $tempRoot = null;
+
     protected function setUp(): void
     {
         parent::setUp();
         $this->stubsPath = dirname(__DIR__).'/resources/stubs';
+    }
+
+    protected function tearDown(): void
+    {
+        if ($this->tempRoot !== null) {
+            $this->deleteTree($this->tempRoot);
+            $this->tempRoot = null;
+        }
+
+        parent::tearDown();
+    }
+
+    private function deleteTree(string $path): void
+    {
+        if (! is_dir($path)) {
+            return;
+        }
+
+        foreach (scandir($path) ?: [] as $entry) {
+            if ($entry === '.' || $entry === '..') {
+                continue;
+            }
+            $child = $path.'/'.$entry;
+            is_dir($child) ? $this->deleteTree($child) : unlink($child);
+        }
+
+        rmdir($path);
+    }
+
+    /**
+     * The registration rules validate uniqueness against the users table by
+     * name, so it has to be the app's real one.
+     */
+    public function test_the_register_controller_validates_against_the_real_users_table(): void
+    {
+        config()->set('auth.guards.web.provider', 'members');
+        config()->set('auth.providers.members', ['driver' => 'eloquent', 'model' => Member::class]);
+
+        $base = sys_get_temp_dir().'/adminlte-auth-'.bin2hex(random_bytes(6));
+        mkdir($base.'/routes', 0755, recursive: true);
+        file_put_contents($base.'/routes/web.php', "<?php\n");
+        $this->tempRoot = $base;
+        $this->app->setBasePath($base);
+
+        $this->artisan('adminlte:make-auth')->assertSuccessful()->run();
+
+        $controller = (string) file_get_contents($base.'/app/Http/Controllers/Auth/RegisterController.php');
+
+        $this->assertStringContainsString('unique:members,email', $controller);
+        $this->assertStringNotContainsString('{{', $controller);
     }
 
     public function test_make_auth_command_is_registered(): void

@@ -2,11 +2,14 @@
 
 namespace ColorlibHQ\AdminLte\Console;
 
+use ColorlibHQ\AdminLte\Console\Concerns\RendersStubs;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 
 class MakeAuthCommand extends Command
 {
+    use RendersStubs;
+
     protected $signature = 'adminlte:make-auth
                             {--type=plain : Auth type (plain, breeze, fortify)}
                             {--force : Overwrite existing files}';
@@ -187,7 +190,7 @@ class MakeAuthCommand extends Command
 
         $stubPath = __DIR__.'/../../resources/'.$stub;
         File::ensureDirectoryExists(dirname($path));
-        File::copy($stubPath, $path);
+        File::put($path, $this->renderStub($stubPath));
         $this->line("  <info>✓</info> {$path}");
     }
 }

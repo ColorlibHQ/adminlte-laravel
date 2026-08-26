@@ -35,7 +35,7 @@ class ProfileTest extends TestCase
             ])
             ->assertRedirect(route('adminlte.profile.show'));
 
-        $this->assertDatabaseHas('users', [
+        $this->assertDatabaseHas('{{ users_table }}', [
             'id' => $user->id,
             'name' => 'Updated Name',
             'email' => 'updated@example.com',
@@ -78,6 +78,6 @@ class ProfileTest extends TestCase
             ->delete(route('adminlte.profile.destroy'), ['password' => 'secret-password'])
             ->assertRedirect('/');
 
-        $this->assertDatabaseMissing('users', ['id' => $user->id]);
+        $this->assertDatabaseMissing('{{ users_table }}', ['id' => $user->id]);
     }
 }

@@ -87,6 +87,30 @@ menu and Policies tie into Gate.
 
 ---
 
+## Your users table
+
+Nothing published assumes your user table is called `users`. Every generated
+migration, validation rule, and query names the table the app actually uses,
+resolved at publish time from the default guard's provider — the `model` it
+points at for the `eloquent` driver, or the `table` key for `database`. Rename
+`users` to `members` and the mailbox migration is written out as:
+
+```php
+$table->foreignId('from_user_id')->constrained('members')->cascadeOnDelete();
+```
+
+The name is baked into the published file rather than looked up at run time, so
+what you read in `database/migrations/` is what runs. Change the table name
+afterwards and you edit the generated code, exactly as you would any other
+migration you own.
+
+The primary key is a separate matter: the scaffold uses `foreignId()`
+throughout, which presumes a `bigint` key column named `id`. A user model on a
+UUID or otherwise non-conventional key needs those foreign keys adjusted by
+hand after publishing.
+
+---
+
 ## Section manifest
 
 The following tables list exactly what each section publishes, per the manifest in
@@ -299,7 +323,8 @@ Routes:
 
 ## Database tables
 
-The five DB-backed sections create the following tables.
+The five DB-backed sections create the following tables. `users` below means
+whatever your users table is actually called — see [Your users table](#your-users-table).
 
 ### Mailbox — `adminlte_messages`
 

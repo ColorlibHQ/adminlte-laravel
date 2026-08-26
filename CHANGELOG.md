@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `ColorlibHQ\AdminLte\Support\UserTable` — resolves the table backing the app's
+  users (an authenticated Eloquent user answers for itself; otherwise the default
+  guard's provider config, `table` for the `database` driver or the `model` it
+  names for `eloquent`; `users` as the fallback). Package code and the console
+  commands both ask it rather than hardcoding the conventional name.
+- `ColorlibHQ\AdminLte\Console\Concerns\RendersStubs` — the placeholder
+  substitution `adminlte:scaffold` and `adminlte:make-auth` run over every stub
+  they publish. Stubs write `{{ users_table }}`; the resolved name is baked into
+  the published file, so generated migrations name their table outright instead
+  of consulting config at run time.
+
 ### Fixed
 
 - The navbar message dropdown no longer assumes the user table is called
@@ -18,6 +31,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   a "no such table: users" error on every authenticated page render.
   Thanks [@ruanpepe](https://github.com/ruanpepe) for reporting and for the
   original patch (#17).
+- `adminlte:scaffold` and `adminlte:make-auth` no longer publish code that
+  hardcodes the `users` table (#18). Seven migrations used
+  `constrained('users')`, so `php artisan migrate` failed outright on an app
+  that had renamed it; `DashboardController`, `ChatController`, the profile
+  migration, `StoreMessageRequest`, `UpdateProfileRequest`, the RBAC
+  `UserController`, `RegisterController`, and the published `ProfileTest` all
+  named the table or `users.id` in queries and validation rules. Every one now
+  goes through the placeholder. Output for an app on the conventional `users`
+  table is byte-for-byte what it was.
+
+  The primary key is deliberately untouched: the scaffold's `foreignId()`
+  columns presume a `bigint` `id`, so a user model on a UUID key still needs
+  those foreign keys adjusted by hand. This is now stated in
+  [`docs/scaffolding.md`](docs/scaffolding.md).
 
 ## [1.4.0] - 2026-08-19
 

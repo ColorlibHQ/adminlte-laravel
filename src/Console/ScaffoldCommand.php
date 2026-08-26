@@ -2,10 +2,13 @@
 
 namespace ColorlibHQ\AdminLte\Console;
 
+use ColorlibHQ\AdminLte\Console\Concerns\RendersStubs;
 use Illuminate\Console\Command;
 
 class ScaffoldCommand extends Command
 {
+    use RendersStubs;
+
     protected $signature = 'adminlte:scaffold
                             {section? : The section to scaffold (mailbox, chat, kanban, calendar, projects, file-manager, profile, settings, invoice, pricing, faq)}
                             {--all : Scaffold all sections}
@@ -702,12 +705,11 @@ class ScaffoldCommand extends Command
             return;
         }
 
-        $content = file_get_contents($stubPath);
         $dir = dirname($path);
         if (! is_dir($dir)) {
             mkdir($dir, 0755, recursive: true);
         }
-        file_put_contents($path, $content);
+        file_put_contents($path, $this->renderStub($stubPath));
         $this->line("  <info>✓</info> {$path}");
     }
 
@@ -727,7 +729,7 @@ class ScaffoldCommand extends Command
             if (file_exists($dest) && ! $force) {
                 continue;
             }
-            copy($file, $dest);
+            file_put_contents($dest, $this->renderStub($file));
             $this->line("  <info>✓</info> {$dest}");
         }
     }

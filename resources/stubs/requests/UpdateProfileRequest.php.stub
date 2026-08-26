@@ -23,7 +23,7 @@ class UpdateProfileRequest extends FormRequest
                 'required',
                 'email',
                 'max:255',
-                Rule::unique('users', 'email')->ignore($this->user()->getAuthIdentifier()),
+                Rule::unique('{{ users_table }}', 'email')->ignore($this->user()->getAuthIdentifier()),
             ],
         ];
     }

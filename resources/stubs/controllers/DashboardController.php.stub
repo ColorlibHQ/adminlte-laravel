@@ -18,7 +18,7 @@ class DashboardController extends Controller
     {
         return view('adminlte.dashboard.index', [
             'stats' => [
-                'users' => $this->count('users'),
+                'users' => $this->count('{{ users_table }}'),
                 'projects' => $this->count('adminlte_projects'),
                 'unread_messages' => $this->countWhere('adminlte_messages', 'is_read', false),
                 'events' => $this->upcomingEvents(),
@@ -81,10 +81,10 @@ class DashboardController extends Controller
         }
 
         return DB::table('activity_log')
-            ->leftJoin('users', 'users.id', '=', 'activity_log.user_id')
+            ->leftJoin('{{ users_table }}', '{{ users_table }}.id', '=', 'activity_log.user_id')
             ->orderByDesc('activity_log.created_at')
             ->limit(8)
-            ->get(['activity_log.event', 'activity_log.description', 'activity_log.created_at', 'users.name as user_name'])
+            ->get(['activity_log.event', 'activity_log.description', 'activity_log.created_at', '{{ users_table }}.name as user_name'])
             ->all();
     }
 }
