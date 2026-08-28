@@ -38,34 +38,61 @@ class ActiveFilter implements FilterInterface
 
         $patterns = $item['active'] ?? [];
 
-        // Auto-derive a pattern from the item's url or route when none given.
+        // Auto-derive a pattern from where the item points when none is given.
         if (empty($patterns)) {
-            $url = null;
+            $path = $this->pathOf($item);
 
-            if (isset($item['url']) && $item['url'] !== '#' && $item['url'] !== '/') {
-                $url = $item['url'];
-            }
-
-            if ($url === null && isset($item['route'])) {
-                if (is_array($item['route'])) {
-                    $url = route($item['route'][0], $item['route'][1] ?? [], false);
-                } else {
-                    $url = route($item['route'], [], false);
-                }
-            }
-
-            if ($url !== null) {
-                $patterns = [trim($url, '/'), trim($url, '/').'/*'];
-            }
-
-            if ($url === '/') {
+            if ($path === '/') {
                 $patterns = ['/'];
+            } elseif ($path !== null) {
+                $patterns = [$path, $path.'/*'];
             }
         }
 
         $item['active'] = $this->matchesAny((array) $patterns);
 
         return $item;
+    }
+
+    /**
+     * The item's target as a path relative to the app root, or null when there
+     * is nothing local to match against.
+     *
+     * This reads `href`, which HrefFilter has already resolved from `route` or
+     * `url` — deriving the pattern from `url` alone would leave every
+     * route-driven item permanently inactive, and resolving the route a second
+     * time here would just be the same lookup twice.
+     *
+     * @param  array<string, mixed>  $item
+     */
+    private function pathOf(array $item): ?string
+    {
+        // A placeholder link points nowhere and must never match.
+        if (($item['url'] ?? null) === '#') {
+            return null;
+        }
+
+        $href = $item['href'] ?? $item['url'] ?? null;
+
+        if (! is_string($href) || $href === '' || $href === '#') {
+            return null;
+        }
+
+        $root = rtrim((string) url('/'), '/');
+
+        if ($root !== '' && str_starts_with($href, $root)) {
+            // Strip the app root so sub-directory installs still compare against
+            // the same path Request::is() sees.
+            $href = substr($href, strlen($root));
+        } elseif (preg_match('#^(https?:)?//#', $href) || preg_match('#^[a-z][a-z0-9+.-]*:#i', $href)) {
+            // Somewhere else entirely (or mailto:/tel:) — never the current page.
+            return null;
+        }
+
+        $path = parse_url($href, PHP_URL_PATH);
+        $path = is_string($path) ? trim($path, '/') : '';
+
+        return $path === '' ? '/' : $path;
     }
 
     /**

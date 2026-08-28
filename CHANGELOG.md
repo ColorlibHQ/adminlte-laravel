@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Menu items defined with `route` are now highlighted as the current page
+  (#20). `ActiveFilter` only ever auto-derived its match pattern from `url`, so
+  a route-driven item never became active — and neither did its treeview
+  parent, which meant the submenu did not render expanded either. The scaffolded
+  sections all suggest route-based menu entries, so following the documented
+  path produced a sidebar that never highlighted anything.
+
+  The pattern now comes from the item's resolved `href`, which `HrefFilter`
+  has already derived from `route` or `url` one step earlier in the pipeline,
+  rather than from a second route lookup. Links to another host, `#`
+  placeholders, explicit `active` patterns and explicit booleans all behave as
+  before, and a `url` of `'/'` still matches only the site root.
+  Thanks [@ruanpepe](https://github.com/ruanpepe) for finding it and for the
+  original patch.
+
 ## [1.6.0] - 2026-08-28
 
 ### Added
