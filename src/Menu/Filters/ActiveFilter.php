@@ -38,11 +38,29 @@ class ActiveFilter implements FilterInterface
 
         $patterns = $item['active'] ?? [];
 
-        // Auto-derive a pattern from the item's url when none given.
-        if (empty($patterns) && isset($item['url']) && $item['url'] !== '#' && $item['url'] !== '/') {
-            $patterns = [trim($item['url'], '/'), trim($item['url'], '/').'/*'];
-        } elseif (empty($patterns) && (($item['url'] ?? null) === '/')) {
-            $patterns = ['/'];
+        // Auto-derive a pattern from the item's url or route when none given.
+        if (empty($patterns)) {
+            $url = null;
+
+            if (isset($item['url']) && $item['url'] !== '#' && $item['url'] !== '/') {
+                $url = $item['url'];
+            }
+
+            if ($url === null && isset($item['route'])) {
+                if (is_array($item['route'])) {
+                    $url = route($item['route'][0], $item['route'][1] ?? [], false);
+                } else {
+                    $url = route($item['route'], [], false);
+                }
+            }
+
+            if ($url !== null) {
+                $patterns = [trim($url, '/'), trim($url, '/') . '/*'];
+            }
+
+            if ($url === '/') {
+                $patterns = ['/'];
+            }
         }
 
         $item['active'] = $this->matchesAny((array) $patterns);
