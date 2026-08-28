@@ -12,7 +12,7 @@
             @csrf
 
             <x-adminlte-select name="to_user_id" label="{{ __('adminlte.to') }}">
-                @foreach (\App\Models\User::where('id', '!=', auth()->id())->get() as $user)
+                @foreach ({{ users_model_ref }}::where('id', '!=', auth()->id())->get() as $user)
                     <option value="{{ $user->id }}" @selected(old('to_user_id') == $user->id)>{{ $user->name }}</option>
                 @endforeach
             </x-adminlte-select>

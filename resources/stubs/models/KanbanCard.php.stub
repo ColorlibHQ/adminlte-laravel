@@ -22,6 +22,6 @@ class KanbanCard extends Model
 
     public function assignees(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'adminlte_kanban_card_user', 'card_id', 'user_id');
+        return $this->belongsToMany({{ users_model_ref }}::class, 'adminlte_kanban_card_user', 'card_id', 'user_id');
     }
 }

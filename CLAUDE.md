@@ -136,9 +136,14 @@ $this->assertStringContainsString('card', $view);
 3. Add a feature test in `tests/ScaffoldCommandTest.php`
 4. Document in `docs/scaffolding.md` (docs are user-facing — served in-app at `/docs`)
 
-**Never hardcode `users` in a stub.** Apps rename it. Write `{{ users_table }}`
-and `RendersStubs` substitutes the resolved name (`Support\UserTable`) at publish
-time. `ScaffoldCommandTest::test_no_stub_hardcodes_the_users_table` enforces it.
+**Never hardcode `users` or `App\Models\User` in a stub.** Apps rename the table
+and move the model. Write `{{ users_table }}`, `{{ users_model_import }}` (after
+`use`), or `{{ users_model_ref }}` (inline, before `::class`) and `RendersStubs`
+substitutes the resolved names (`Support\UserTable`) at publish time.
+`{{ users_model_ref }}` is namespace-aware — it emits a bare short name only when
+the stub already lives in the model's namespace, and fully qualifies it
+otherwise. `ScaffoldCommandTest::test_no_stub_hardcodes_the_users_table` enforces
+it; the primary key is deliberately *not* resolved (see `docs/scaffolding.md`).
 
 ## Code Style & Standards
 

@@ -43,7 +43,7 @@ class Activity extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo({{ users_model_ref }}::class);
     }
 
     public function subject(): MorphTo
