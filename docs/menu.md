@@ -157,13 +157,19 @@ submenus). Resolution order:
 - If `active` is already a boolean, it is respected as-is.
 - If `active` is a pattern (or list of patterns), the item is active when the
   current request matches any pattern via `Request::is()`.
-- If no `active` pattern is given, one is **auto-derived from `url`**: for a URL
-  `admin/users` it matches both `admin/users` and `admin/users/*`. A `url` of
-  `'/'` matches only the site root; `'#'` is never auto-matched.
+- If no `active` pattern is given, one is **auto-derived from wherever the item
+  points** — `route` and `url` alike, since both have already been resolved to
+  an `href` by the time this filter runs. For `admin/users` it matches both
+  `admin/users` and `admin/users/*`. A `url` of `'/'` matches only the site
+  root; `'#'` and links to another host are never auto-matched.
 - A submenu parent becomes active if **any child** is active (recursively).
 
 ```php
-// Explicit patterns:
+// Auto-derived, whether the item is defined by route or by url:
+['text' => 'Users', 'route' => 'adminlte.users.index'],
+['text' => 'Users', 'url' => 'admin/users'],
+
+// Explicit patterns, when the derived one is not what you want:
 ['text' => 'Users', 'url' => 'admin/users', 'active' => ['admin/users*', 'admin/people*']],
 ```
 
