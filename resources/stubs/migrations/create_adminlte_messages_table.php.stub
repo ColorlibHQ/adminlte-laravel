@@ -10,8 +10,8 @@ return new class extends Migration
     {
         Schema::create('adminlte_messages', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('from_user_id')->constrained('{{ users_table }}', '{{ users_key }}')->cascadeOnDelete();
-            $table->foreignId('to_user_id')->constrained('{{ users_table }}', '{{ users_key }}')->cascadeOnDelete();
+            $table->foreignId('from_user_id')->constrained('{{ users_table }}')->cascadeOnDelete();
+            $table->foreignId('to_user_id')->constrained('{{ users_table }}')->cascadeOnDelete();
             $table->string('subject');
             $table->text('body');
             $table->boolean('is_read')->default(false);

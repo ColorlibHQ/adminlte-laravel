@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\AdminLte;
 
 use App\Http\Controllers\Controller;
-use {{ users_model_classname }} as User;
+use {{ users_model_import }};
 use ColorlibHQ\AdminLte\Support\ActivityLogger;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;

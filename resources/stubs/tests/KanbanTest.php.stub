@@ -4,7 +4,7 @@ namespace Tests\Feature\AdminLte;
 
 use App\Models\KanbanBoard;
 use App\Models\KanbanLane;
-use {{ users_model_classname }} as User;
+use {{ users_model_import }};
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -31,7 +31,7 @@ class KanbanTest extends TestCase
     public function test_storing_a_card_returns_json_and_persists_it(): void
     {
         $user = User::factory()->create();
-        $board = KanbanBoard::factory()->create(['user_id' => $user->{{ users_key }}]);
+        $board = KanbanBoard::factory()->create(['user_id' => $user->id]);
         $lane = KanbanLane::factory()->create(['board_id' => $board->id]);
 
         $this->actingAs($user)

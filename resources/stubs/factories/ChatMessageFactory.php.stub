@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use App\Models\ChatMessage;
 use App\Models\Conversation;
-use {{ users_model_classname }} as User;
+use {{ users_model_import }};
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

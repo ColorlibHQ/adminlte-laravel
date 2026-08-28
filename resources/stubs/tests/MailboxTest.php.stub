@@ -3,7 +3,7 @@
 namespace Tests\Feature\AdminLte;
 
 use App\Models\Message;
-use {{ users_model_classname }} as User;
+use {{ users_model_import }};
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -31,15 +31,15 @@ class MailboxTest extends TestCase
 
         $this->actingAs($sender)
             ->post(route('adminlte.mailbox.store'), [
-                'to_user_id' => $recipient->{{ users_key }},
+                'to_user_id' => $recipient->id,
                 'subject' => 'Hello there',
                 'body' => 'This is the body of the message.',
             ])
             ->assertRedirect(route('adminlte.mailbox.index'));
 
         $this->assertDatabaseHas('adminlte_messages', [
-            'from_user_id' => $sender->{{ users_key }},
-            'to_user_id' => $recipient->{{ users_key }},
+            'from_user_id' => $sender->id,
+            'to_user_id' => $recipient->id,
             'subject' => 'Hello there',
         ]);
     }
@@ -47,7 +47,7 @@ class MailboxTest extends TestCase
     public function test_a_recipient_can_delete_a_message(): void
     {
         $user = User::factory()->create();
-        $message = Message::factory()->create(['to_user_id' => $user->{{ users_key }}]);
+        $message = Message::factory()->create(['to_user_id' => $user->id]);
 
         $this->actingAs($user)
             ->delete(route('adminlte.mailbox.destroy', $message))

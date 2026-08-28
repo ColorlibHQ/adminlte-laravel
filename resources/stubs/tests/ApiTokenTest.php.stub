@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\AdminLte;
 
-use {{ users_model_classname }} as User;
+use {{ users_model_import }};
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -38,7 +38,7 @@ class ApiTokenTest extends TestCase
             ->assertSessionHas('token_plain');
 
         $this->assertDatabaseHas('personal_access_tokens', [
-            'tokenable_id' => $user->{{ users_key }},
+            'tokenable_id' => $user->id,
             'name' => 'CI deploy',
         ]);
 

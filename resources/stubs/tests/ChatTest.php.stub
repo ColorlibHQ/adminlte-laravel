@@ -3,7 +3,7 @@
 namespace Tests\Feature\AdminLte;
 
 use App\Models\Conversation;
-use {{ users_model_classname }} as User;
+use {{ users_model_import }};
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -38,7 +38,7 @@ class ChatTest extends TestCase
 
         $this->assertDatabaseHas('adminlte_chat_messages', [
             'conversation_id' => $conversation->id,
-            'user_id' => $user->{{ users_key }},
+            'user_id' => $user->id,
             'body' => 'Hey, how is it going?',
         ]);
     }

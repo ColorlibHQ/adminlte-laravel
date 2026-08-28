@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\AdminLte;
 
-use {{ users_model_classname }} as User;
+use {{ users_model_import }};
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

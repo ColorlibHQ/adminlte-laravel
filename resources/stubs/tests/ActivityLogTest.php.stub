@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\AdminLte;
 
-use {{ users_model_classname }} as User;
+use {{ users_model_import }};
 use ColorlibHQ\AdminLte\Support\ActivityLogger;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -38,7 +38,7 @@ class ActivityLogTest extends TestCase
         ActivityLogger::log('test.event', 'Something happened', ['foo' => 'bar']);
 
         $this->assertDatabaseHas('activity_log', [
-            'user_id' => $user->{{ users_key }},
+            'user_id' => $user->id,
             'event' => 'test.event',
             'description' => 'Something happened',
         ]);

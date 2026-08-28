@@ -38,37 +38,26 @@ class UserTable
     }
 
     /**
-     * The name of the primary key backing the app's users.
+     * The Eloquent class backing the app's users, as a plain FQCN with no leading
+     * separator — `App\Models\User` unless the app says otherwise.
      *
-     * An authenticated Eloquent user answers for itself, which is the most
-     * accurate source and covers multi-model guards. Everything else falls back
-     * to the default guard's provider config: the `model` for Eloquent providers,
-     * otherwise the default `id` key used by database-backed users.
+     * Apps move this model (`App\User` on codebases upgraded from Laravel 6/7,
+     * or a domain namespace of their own), so scaffolded code has to name the
+     * real one rather than the conventional one.
      */
-    public static function keyName(?Authenticatable $user = null): string
+    public static function modelClass(?Authenticatable $user = null): string
     {
         if ($user instanceof Model) {
-            return $user->getKeyName();
+            return $user::class;
         }
 
-        return self::providerModel()?->getKeyName() ?? 'id';
-    }
+        $model = self::providerConfig('model');
 
-    /**
-     * Get the fully qualified class name of the model used by the application's users.
-     *
-     * An authenticated Eloquent user provides its own model class, which is the
-     * most accurate source and supports multiple user models and guards.
-     * When no user is available, the method falls back to the model configured
-     * by the default guard's provider.
-     */
-    public static function modelClassname(?Authenticatable $user = null): string
-    {
-        if ($user instanceof Model) {
-            return get_class($user);
+        if (is_string($model) && class_exists(ltrim($model, '\\'))) {
+            return ltrim($model, '\\');
         }
 
-        return self::providerModel() ? get_class(self::providerModel()) : '\App\Models\User';
+        return 'App\\Models\\User';
     }
 
     /**

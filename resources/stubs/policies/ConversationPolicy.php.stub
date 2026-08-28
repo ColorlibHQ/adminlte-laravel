@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\Models\Conversation;
-use {{ users_model_classname }} as User;
+use {{ users_model_import }};
 
 class ConversationPolicy
 {
@@ -14,7 +14,7 @@ class ConversationPolicy
 
     public function view(User $user, Conversation $conversation): bool
     {
-        return $conversation->users->contains($user->{{ users_key }});
+        return $conversation->users->contains($user->id);
     }
 
     public function create(User $user): bool
@@ -24,11 +24,11 @@ class ConversationPolicy
 
     public function update(User $user, Conversation $conversation): bool
     {
-        return $conversation->users->contains($user->{{ users_key }});
+        return $conversation->users->contains($user->id);
     }
 
     public function delete(User $user, Conversation $conversation): bool
     {
-        return $conversation->users->contains($user->{{ users_key }});
+        return $conversation->users->contains($user->id);
     }
 }

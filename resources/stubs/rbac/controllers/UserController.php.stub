@@ -4,7 +4,7 @@ namespace App\Http\Controllers\AdminLte;
 
 use App\Http\Controllers\Controller;
 use App\Models\Role;
-use {{ users_model_classname }} as User;
+use {{ users_model_import }};
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;

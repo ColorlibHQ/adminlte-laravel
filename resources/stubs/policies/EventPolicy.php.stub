@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\Models\Event;
-use {{ users_model_classname }} as User;
+use {{ users_model_import }};
 
 class EventPolicy
 {
@@ -14,7 +14,7 @@ class EventPolicy
 
     public function view(User $user, Event $event): bool
     {
-        return $event->user_id === $user->{{ users_key }};
+        return $event->user_id === $user->id;
     }
 
     public function create(User $user): bool
@@ -24,11 +24,11 @@ class EventPolicy
 
     public function update(User $user, Event $event): bool
     {
-        return $event->user_id === $user->{{ users_key }};
+        return $event->user_id === $user->id;
     }
 
     public function delete(User $user, Event $event): bool
     {
-        return $event->user_id === $user->{{ users_key }};
+        return $event->user_id === $user->id;
     }
 }

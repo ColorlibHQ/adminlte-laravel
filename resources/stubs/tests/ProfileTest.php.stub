@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\AdminLte;
 
-use {{ users_model_classname }} as User;
+use {{ users_model_import }};
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
@@ -36,7 +36,7 @@ class ProfileTest extends TestCase
             ->assertRedirect(route('adminlte.profile.show'));
 
         $this->assertDatabaseHas('{{ users_table }}', [
-            'id' => $user->{{ users_key }},
+            'id' => $user->id,
             'name' => 'Updated Name',
             'email' => 'updated@example.com',
         ]);
@@ -78,6 +78,6 @@ class ProfileTest extends TestCase
             ->delete(route('adminlte.profile.destroy'), ['password' => 'secret-password'])
             ->assertRedirect('/');
 
-        $this->assertDatabaseMissing('{{ users_table }}', ['{{ users_key }}' => $user->{{ users_key }}]);
+        $this->assertDatabaseMissing('{{ users_table }}', ['id' => $user->id]);
     }
 }

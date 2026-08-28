@@ -87,7 +87,7 @@ menu and Policies tie into Gate.
 
 ---
 
-## Your users table
+## Your user model and table
 
 Nothing published assumes your user table is called `users`. Every generated
 migration, validation rule, and query names the table the app actually uses,
@@ -104,10 +104,25 @@ what you read in `database/migrations/` is what runs. Change the table name
 afterwards and you edit the generated code, exactly as you would any other
 migration you own.
 
-The primary key is a separate matter: the scaffold uses `foreignId()`
-throughout, which presumes a `bigint` key column named `id`. A user model on a
-UUID or otherwise non-conventional key needs those foreign keys adjusted by
-hand after publishing.
+The same goes for the model class. `App\Models\User` is only the Laravel 8+
+convention — codebases upgraded from Laravel 6/7 keep `App\User`, and plenty of
+apps put it in a namespace of their own. Whatever the guard's provider points
+at is what the published code imports:
+
+```php
+use App\Domain\Accounts\Account as User;   // aliased, because the code says User
+```
+
+Files that live in `App\Models` alongside the scaffolded models fully qualify it
+instead of importing, so the name cannot be resolved against their own namespace
+by mistake.
+
+The primary key is a separate matter, and it is *not* resolved. The scaffold
+uses `foreignId()` throughout, which presumes a `bigint` key column named `id`.
+A user model on a UUID or otherwise non-conventional key needs those foreign
+keys adjusted by hand after publishing — pointing the constraint at a differently
+named key without also changing the column type would produce a migration the
+database rejects.
 
 ---
 
@@ -324,7 +339,7 @@ Routes:
 ## Database tables
 
 The five DB-backed sections create the following tables. `users` below means
-whatever your users table is actually called — see [Your users table](#your-users-table).
+whatever your users table is actually called — see [Your user model and table](#your-user-model-and-table).
 
 ### Mailbox — `adminlte_messages`
 

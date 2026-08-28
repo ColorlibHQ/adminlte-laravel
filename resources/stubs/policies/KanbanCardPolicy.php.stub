@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\Models\KanbanCard;
-use {{ users_model_classname }} as User;
+use {{ users_model_import }};
 
 class KanbanCardPolicy
 {
@@ -37,6 +37,6 @@ class KanbanCardPolicy
      */
     private function owns(User $user, KanbanCard $card): bool
     {
-        return $card->lane?->board?->user_id === $user->{{ users_key }};
+        return $card->lane?->board?->user_id === $user->id;
     }
 }

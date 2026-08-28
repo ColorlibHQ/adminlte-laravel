@@ -3,9 +3,9 @@
 namespace ColorlibHQ\AdminLte\Tests;
 
 use ColorlibHQ\AdminLte\Console\ScaffoldCommand;
+use ColorlibHQ\AdminLte\Tests\Fixtures\Account;
 use ColorlibHQ\AdminLte\Tests\Fixtures\Member;
 use Illuminate\Contracts\Console\Kernel;
-use Illuminate\Foundation\Auth\User;
 use ReflectionClass;
 
 class ScaffoldCommandTest extends TestCase
@@ -137,7 +137,7 @@ class ScaffoldCommandTest extends TestCase
 
         $migration = $this->publishedFile($base, 'database/migrations', 'create_adminlte_messages_table');
 
-        $this->assertStringContainsString("constrained('users', 'id')", $migration);
+        $this->assertStringContainsString("constrained('users')", $migration);
         $this->assertStringNotContainsString('{{', $migration);
     }
 
@@ -152,38 +152,11 @@ class ScaffoldCommandTest extends TestCase
 
         // The foreign keys are what break first: `migrate` fails outright when
         // the referenced table does not exist.
-        $this->assertStringContainsString("constrained('members', 'id')", $migration);
-        $this->assertStringNotContainsString("constrained('users', 'id')", $migration);
+        $this->assertStringContainsString("constrained('members')", $migration);
+        $this->assertStringNotContainsString("constrained('users')", $migration);
 
         $request = $this->publishedFile($base, 'app/Http/Requests/AdminLte', 'StoreMessageRequest');
         $this->assertStringContainsString('exists:members,id', $request);
-    }
-
-    public function test_published_stubs_name_a_renamed_users_key(): void
-    {
-        $userModel = new class extends User
-        {
-            protected $primaryKey = 'uuid';
-
-            protected $table = 'users';
-        };
-
-        config()->set('auth.providers.users', [
-            'driver' => 'eloquent',
-            'model' => get_class($userModel),
-        ]);
-
-        $base = $this->scaffoldInto('mailbox');
-
-        $migration = $this->publishedFile($base, 'database/migrations', 'create_adminlte_messages_table');
-
-        // The foreign key must reference the users table's actual primary key.
-        $this->assertStringContainsString("constrained('users', 'uuid')", $migration);
-        $this->assertStringNotContainsString("constrained('users', 'id')", $migration);
-
-        $request = $this->publishedFile($base, 'app/Http/Requests/AdminLte', 'StoreMessageRequest');
-        $this->assertStringContainsString('exists:users,uuid', $request);
-        $this->assertStringNotContainsString('exists:users,id', $request);
     }
 
     public function test_the_dashboard_controller_queries_the_renamed_users_table(): void
@@ -194,32 +167,76 @@ class ScaffoldCommandTest extends TestCase
         $base = $this->scaffoldInto('dashboard');
 
         $controller = $this->publishedFile($base, 'app/Http/Controllers/AdminLte', 'DashboardController');
-        $this->assertStringContainsString("leftJoin('members as u', 'u.id'", $controller);
+
+        $this->assertStringContainsString("leftJoin('members', 'members.id'", $controller);
         $this->assertStringContainsString("\$this->count('members')", $controller);
         // The stat array key feeds $stats['users'] in the view — it is not a table.
         $this->assertStringContainsString("'users' => \$this->count('members')", $controller);
     }
 
-    public function test_the_dashboard_controller_queries_the_renamed_users_key(): void
+    /**
+     * A default app keeps getting the conventional model, named the way it
+     * always was — imported where the file imports it, bare where the file sits
+     * in the model's own namespace.
+     */
+    public function test_published_stubs_name_the_conventional_user_model(): void
     {
-        $userModel = new class extends User
-        {
-            protected $primaryKey = 'uuid';
+        // Testbench points the guard at Illuminate's own User, so spell out the
+        // model a real Laravel app ships with.
+        config()->set('auth.providers.users', ['driver' => 'eloquent', 'model' => 'App\\Models\\User']);
 
-            protected $table = 'users';
-        };
+        $base = $this->scaffoldInto('chat');
 
-        config()->set('auth.providers.users', [
-            'driver' => 'eloquent',
-            'model' => get_class($userModel),
-        ]);
+        $policy = $this->publishedFile($base, 'app/Policies', 'ConversationPolicy');
+        $this->assertStringContainsString('use App\Models\User;', $policy);
 
-        $base = $this->scaffoldInto('dashboard');
+        $model = $this->publishedFile($base, 'app/Models', 'Conversation');
+        $this->assertStringContainsString('belongsToMany(User::class', $model);
+        $this->assertStringNotContainsString('{{', $model);
+    }
 
-        $controller = $this->publishedFile($base, 'app/Http/Controllers/AdminLte', 'DashboardController');
+    /**
+     * The regression PR #19 would have shipped: a model in App\Models that names
+     * the user class inline has to fully qualify it, or PHP resolves the name
+     * against its own namespace and the relation points at a class that does not
+     * exist. Asserting on the string is not enough — load the file and check the
+     * name PHP actually resolves.
+     */
+    public function test_a_published_model_resolves_the_user_class_it_names(): void
+    {
+        config()->set('auth.guards.web.provider', 'accounts');
+        config()->set('auth.providers.accounts', ['driver' => 'eloquent', 'model' => Account::class]);
 
-        $this->assertStringContainsString("leftJoin('users as u', 'u.uuid'", $controller);
-        $this->assertStringNotContainsString("leftJoin('users', 'users.id'", $controller);
+        $base = $this->scaffoldInto('chat');
+        $model = $this->publishedFile($base, 'app/Models', 'Conversation');
+
+        $this->assertStringContainsString('\\'.Account::class.'::class', $model);
+
+        // Resolve the reference the way PHP will, from inside the file's namespace.
+        preg_match('/belongsToMany\(([^,]+)::class/', $model, $m);
+        $named = ltrim(trim($m[1]), '\\');
+
+        $this->assertTrue(
+            class_exists($named),
+            "Published model names {$named}, which does not exist — it was resolved against its own namespace."
+        );
+        $this->assertSame(Account::class, $named);
+    }
+
+    /**
+     * A model whose short name is not `User` still has to arrive as `User` in the
+     * files that import it, because that is what their code says.
+     */
+    public function test_an_unconventionally_named_user_model_is_aliased_on_import(): void
+    {
+        config()->set('auth.guards.web.provider', 'accounts');
+        config()->set('auth.providers.accounts', ['driver' => 'eloquent', 'model' => Account::class]);
+
+        $base = $this->scaffoldInto('chat');
+        $policy = $this->publishedFile($base, 'app/Policies', 'ConversationPolicy');
+
+        $this->assertStringContainsString('use '.Account::class.' as User;', $policy);
+        $this->assertStringContainsString('function view(User $user', $policy);
     }
 
     /**
@@ -233,14 +250,14 @@ class ScaffoldCommandTest extends TestCase
         foreach ($this->stubFiles() as $file) {
             $contents = (string) file_get_contents($file);
 
-            foreach (["constrained('users')", "table('users'", 'unique:users,', 'exists:users,', "'users.id'", "Rule::unique('users'"] as $needle) {
+            foreach (["constrained('users')", "table('users'", 'unique:users,', 'exists:users,', "'users.id'", "Rule::unique('users'", 'App\\Models\\User'] as $needle) {
                 if (str_contains($contents, $needle)) {
                     $offenders[] = str_replace($this->stubsPath.'/', '', $file)." → {$needle}";
                 }
             }
         }
 
-        $this->assertSame([], $offenders, "Use the {{ users_table }} placeholder instead:\n".implode("\n", $offenders));
+        $this->assertSame([], $offenders, "Use the {{ users_table }} / {{ users_model_import }} / {{ users_model_ref }} placeholders instead:\n".implode("\n", $offenders));
     }
 
     /**

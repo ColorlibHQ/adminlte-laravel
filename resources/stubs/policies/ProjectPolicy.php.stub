@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\Models\Project;
-use {{ users_model_classname }} as User;
+use {{ users_model_import }};
 
 class ProjectPolicy
 {

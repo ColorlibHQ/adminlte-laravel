@@ -29,7 +29,7 @@ class Event extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo({{ users_model_classname }}::class, 'user_id', '{{ users_key }}');
+        return $this->belongsTo({{ users_model_ref }}::class, 'user_id');
     }
 
     /**

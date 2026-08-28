@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use App\Models\KanbanBoard;
 use App\Models\KanbanCard;
 use App\Models\KanbanLane;
-use {{ users_model_classname }} as User;
+use {{ users_model_import }};
 use Illuminate\Database\Seeder;
 
 class AdminLteKanbanSeeder extends Seeder
@@ -15,7 +15,7 @@ class AdminLteKanbanSeeder extends Seeder
         $user = User::first() ?? User::factory()->create();
 
         $board = KanbanBoard::create([
-            'user_id' => $user->{{ users_key }},
+            'user_id' => $user->id,
             'name' => 'Product Roadmap',
         ]);
 

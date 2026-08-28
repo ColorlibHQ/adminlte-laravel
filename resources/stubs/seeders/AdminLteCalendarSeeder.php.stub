@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Event;
-use {{ users_model_classname }} as User;
+use {{ users_model_import }};
 use Illuminate\Database\Seeder;
 
 class AdminLteCalendarSeeder extends Seeder
@@ -18,7 +18,7 @@ class AdminLteCalendarSeeder extends Seeder
             $start = now()->addDays(fake()->numberBetween(-10, 30))->setTime(fake()->numberBetween(8, 17), 0);
 
             Event::create([
-                'user_id' => $user->{{ users_key }},
+                'user_id' => $user->id,
                 'title' => fake()->randomElement([
                     'Team Meeting', 'Deployment', 'Client Call', 'Code Review',
                     'Sprint Planning', 'Design Workshop', 'Retrospective',
