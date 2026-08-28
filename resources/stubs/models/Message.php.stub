@@ -28,11 +28,11 @@ class Message extends Model
 
     public function sender(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'from_user_id');
+        return $this->belongsTo({{ users_model_ref }}::class, 'from_user_id');
     }
 
     public function recipient(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'to_user_id');
+        return $this->belongsTo({{ users_model_ref }}::class, 'to_user_id');
     }
 }

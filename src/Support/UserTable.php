@@ -38,6 +38,29 @@ class UserTable
     }
 
     /**
+     * The Eloquent class backing the app's users, as a plain FQCN with no leading
+     * separator — `App\Models\User` unless the app says otherwise.
+     *
+     * Apps move this model (`App\User` on codebases upgraded from Laravel 6/7,
+     * or a domain namespace of their own), so scaffolded code has to name the
+     * real one rather than the conventional one.
+     */
+    public static function modelClass(?Authenticatable $user = null): string
+    {
+        if ($user instanceof Model) {
+            return $user::class;
+        }
+
+        $model = self::providerConfig('model');
+
+        if (is_string($model) && class_exists(ltrim($model, '\\'))) {
+            return ltrim($model, '\\');
+        }
+
+        return 'App\\Models\\User';
+    }
+
+    /**
      * The Eloquent model the default guard's provider is pointed at, if it names
      * one that actually resolves.
      */

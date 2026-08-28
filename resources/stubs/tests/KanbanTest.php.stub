@@ -4,7 +4,7 @@ namespace Tests\Feature\AdminLte;
 
 use App\Models\KanbanBoard;
 use App\Models\KanbanLane;
-use App\Models\User;
+use {{ users_model_import }};
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

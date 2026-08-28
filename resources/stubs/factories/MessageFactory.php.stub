@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Message;
-use App\Models\User;
+use {{ users_model_import }};
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

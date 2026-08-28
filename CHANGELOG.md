@@ -7,6 +7,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `UserTable::modelClass()` — resolves the Eloquent class backing the app's
+  users from the default guard's provider, defaulting to `App\Models\User`.
+- `{{ users_model_import }}` and `{{ users_model_ref }}` stub placeholders. The
+  first renders what follows `use` (aliased `as User` when the model's short
+  name is something else); the second renders an inline reference and is
+  namespace-aware — a bare short name when the stub already sits in the model's
+  namespace, fully qualified with a leading separator anywhere else, so PHP
+  cannot resolve it against the stub's own namespace.
+
+### Fixed
+
+- `adminlte:scaffold` and `adminlte:make-auth` no longer publish code that
+  hardcodes `App\Models\User` (#19). That is only the Laravel 8+ convention:
+  codebases upgraded from Laravel 6/7 keep `App\User`, and apps are free to put
+  the model in a namespace of their own — 29 stubs named it outright, so every
+  scaffolded policy, factory, seeder, feature test, and model relation pointed
+  at a class those apps do not have. Thanks
+  [@ruanpepe](https://github.com/ruanpepe) for raising it and for the original
+  patch.
+
+  Output for an app on the conventional `App\Models\User` is byte-for-byte what
+  it was in 1.5.0.
+
+  The primary key remains deliberately unresolved. Pointing a foreign key at a
+  differently named key column without also changing the column type produces a
+  migration the database rejects — `foreignId()` emits `bigint unsigned`, so
+  `constrained('users', 'uuid')` yields a constraint MySQL and PostgreSQL both
+  refuse. A user model on a non-conventional key still needs its foreign keys
+  adjusted by hand; [`docs/scaffolding.md`](docs/scaffolding.md) says so.
+
 ## [1.5.0] - 2026-08-26
 
 ### Added
