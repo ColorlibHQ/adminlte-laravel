@@ -55,7 +55,7 @@ class ActiveFilter implements FilterInterface
             }
 
             if ($url !== null) {
-                $patterns = [trim($url, '/'), trim($url, '/') . '/*'];
+                $patterns = [trim($url, '/'), trim($url, '/').'/*'];
             }
 
             if ($url === '/') {
