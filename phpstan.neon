@@ -18,6 +18,13 @@ parameters:
                 - src/View/Components
                 - src/AdminLteServiceProvider.php
 
+        # Same cause: the demo routes are Route::view('…', 'adminlte::…').
+        -
+            identifier: argument.type
+            message: '#Parameter \#2 \$view of static method Illuminate\\Routing\\Router::view\(\) expects view-string, string given#'
+            paths:
+                - src/AdminLteServiceProvider.php
+
         # The provider opportunistically wires consuming-app classes
         # (App\Models\..., App\Policies\...) that only exist after
         # `adminlte:scaffold`. They can never exist while analysing the
