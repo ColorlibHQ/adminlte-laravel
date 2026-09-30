@@ -6,6 +6,7 @@ use {{ users_model_import }};
 use ColorlibHQ\AdminLte\Support\ActivityLogger;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Tests\TestCase;
 
 class ActivityLogTest extends TestCase
@@ -24,11 +25,22 @@ class ActivityLogTest extends TestCase
             ->assertRedirect(route('login'));
     }
 
-    public function test_an_authenticated_user_can_view_the_activity_log(): void
+    public function test_users_with_the_view_activity_ability_can_view_the_activity_log(): void
     {
+        Gate::define('view-activity', fn () => true);
+
         $this->actingAs(User::factory()->create())
             ->get(route('adminlte.activity.index'))
             ->assertOk();
+    }
+
+    public function test_users_without_the_view_activity_ability_are_refused(): void
+    {
+        Gate::define('view-activity', fn () => false);
+
+        $this->actingAs(User::factory()->create())
+            ->get(route('adminlte.activity.index'))
+            ->assertForbidden();
     }
 
     public function test_the_logger_never_stores_credentials(): void

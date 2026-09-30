@@ -21,6 +21,7 @@ class AdminLteRbacSeeder extends Seeder
             'manage-calendar' => 'Manage Calendar',
             'manage-settings' => 'Manage Settings',
             'view-reports' => 'View Reports',
+            'view-activity' => 'View Activity Log',
         ];
 
         foreach ($permissions as $name => $label) {

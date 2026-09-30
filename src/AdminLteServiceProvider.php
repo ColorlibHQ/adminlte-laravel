@@ -111,6 +111,7 @@ class AdminLteServiceProvider extends ServiceProvider
         $this->registerDocsRoutes();
         $this->registerAuthorization();
         $this->registerActivityLogging();
+        $this->registerActivityGate();
 
         // Guarded data migrations for the scaffolded tables (each no-ops when its
         // table is absent), so a plain `php artisan migrate` applies them.
@@ -154,6 +155,25 @@ class AdminLteServiceProvider extends ServiceProvider
                 ['email' => $event->credentials['email'] ?? null],
             );
         });
+    }
+
+    /**
+     * Default `view-activity` ability for the scaffolded activity log viewer,
+     * which shows every user's sign-ins, IP addresses and recorded changes.
+     *
+     * With RBAC scaffolded, the permission-aware Gate::before (registerAuthorization)
+     * already lets admins and holders of the `view-activity` permission through,
+     * so everyone else is refused here. Without RBAC there are no roles to tell
+     * users apart, so any signed-in user may view it (the previous behaviour).
+     * Define your own `view-activity` gate in the app to change either rule.
+     */
+    private function registerActivityGate(): void
+    {
+        if (Gate::has('view-activity')) {
+            return;
+        }
+
+        Gate::define('view-activity', fn ($user): bool => ! class_exists('App\Models\Permission'));
     }
 
     /**

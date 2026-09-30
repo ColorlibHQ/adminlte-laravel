@@ -23,6 +23,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `database/migrations` directory, so `php artisan migrate` picks it up; it only
   touches the table `adminlte:scaffold activity-log` creates and does nothing
   when that table is absent.
+- The activity log viewer requires the `view-activity` ability. The published
+  `ActivityController` calls `Gate::authorize('view-activity')`, and the package
+  defines a default gate: with RBAC, admins and roles holding the new
+  `view-activity` permission (seeded for `admin`); without RBAC, any signed-in
+  user, as before. Previously every signed-in user could read every other
+  user's sign-ins, IP addresses and changes. Apps that scaffolded the viewer
+  earlier should add the `Gate::authorize` line to their published controller
+  (see `docs/activity-log.md`) and re-run `AdminLteRbacSeeder` to create the
+  permission.
 
 ## [1.6.1] - 2026-08-28
 

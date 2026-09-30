@@ -73,9 +73,28 @@ ActivityLogger::log('order.refunded', 'Refunded order #1234', ['amount' => 4999]
 
 ### Securing the viewer
 
-The viewer is auth-only by default. Restrict it to admins by gating the route
-with `permission:view-activity` (see [`authorization.md`](authorization.md)) and
-gating its menu item with `'can' => 'view-activity'`.
+The viewer lists every user's sign-ins, IP addresses and recorded changes, so
+`ActivityController` calls `Gate::authorize('view-activity')`. The package
+defines a default `view-activity` gate:
+
+- **With RBAC** (`adminlte:scaffold rbac`): admins, and roles you give the
+  `view-activity` permission (seeded by `AdminLteRbacSeeder`, assigned to
+  `admin` only). Everyone else gets a 403.
+- **Without RBAC:** any signed-in user, because there are no roles to tell
+  users apart.
+
+To change either rule, define your own gate in your `AppServiceProvider` — it
+takes precedence:
+
+```php
+Gate::define('view-activity', fn (User $user) => $user->is_admin);
+```
+
+Gate the menu item with `'can' => 'view-activity'` so users who can't open the
+page don't see it. If you scaffolded the viewer with 1.6.1 or earlier, add the
+`Gate::authorize('view-activity');` line to your published
+`app/Http/Controllers/AdminLte/ActivityController.php` (or re-publish it with
+`--force`).
 
 ---
 

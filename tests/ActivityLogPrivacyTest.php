@@ -3,9 +3,11 @@
 namespace ColorlibHQ\AdminLte\Tests;
 
 use ColorlibHQ\AdminLte\Support\ActivityLogger;
+use Illuminate\Auth\GenericUser;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Schema;
 
 class ActivityLogPrivacyTest extends TestCase
@@ -204,5 +206,32 @@ class ActivityLogPrivacyTest extends TestCase
         $paths = $this->app['migrator']->paths();
 
         $this->assertContains(realpath(dirname(__DIR__).'/database/migrations'), array_map('realpath', $paths));
+    }
+
+    public function test_view_activity_is_open_to_signed_in_users_without_rbac(): void
+    {
+        $this->assertTrue(Gate::forUser(new GenericUser(['id' => 1]))->allows('view-activity'));
+        $this->assertFalse(Gate::allows('view-activity')); // guests
+    }
+
+    public function test_an_app_defined_view_activity_gate_wins(): void
+    {
+        Gate::define('view-activity', fn () => false);
+
+        $this->assertFalse(Gate::forUser(new GenericUser(['id' => 1]))->allows('view-activity'));
+    }
+
+    public function test_published_viewer_authorizes_and_rbac_seeds_the_permission(): void
+    {
+        $stubs = dirname(__DIR__).'/resources/stubs';
+
+        $this->assertStringContainsString(
+            "Gate::authorize('view-activity');",
+            (string) file_get_contents($stubs.'/controllers/ActivityController.php.stub'),
+        );
+        $this->assertStringContainsString(
+            "'view-activity' => 'View Activity Log'",
+            (string) file_get_contents($stubs.'/rbac/seeders/AdminLteRbacSeeder.php.stub'),
+        );
     }
 }

@@ -171,7 +171,7 @@ config already includes this **Administration** section.
 
 **Permissions:** `view-dashboard`, `view-reports`, `manage-users`, `manage-roles`,
 `manage-projects`, `manage-mailbox`, `manage-kanban`, `manage-calendar`,
-`manage-settings`.
+`manage-settings`, `view-activity` (the activity log viewer).
 
 **Roles:**
 
