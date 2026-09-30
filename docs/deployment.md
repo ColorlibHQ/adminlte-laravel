@@ -203,6 +203,16 @@ php artisan migrate --force
 php artisan config:cache && php artisan route:cache && php artisan view:cache
 ```
 
+`npm ci` only replays your lockfile. When a release changes the front-end
+dependencies (1.7.0 replaced the chart library with `chart.js@^4.5`), install
+the new package and refresh `public/vendor` before building:
+
+```bash
+npm install -D chart.js@^4.5
+php artisan adminlte:install --only=assets --no-interaction-deps
+npm run build
+```
+
 ## Checklist
 
 - [ ] `public/` is the web root

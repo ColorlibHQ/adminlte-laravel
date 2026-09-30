@@ -75,4 +75,30 @@ class PluginSystemTest extends TestCase
 
         $this->assertTrue($plugins->isEnabled('flatpickr'));
     }
+
+    public function test_chartjs_is_available_when_an_older_published_config_lacks_it(): void
+    {
+        // A config published before 1.7 has no `chartjs` entry. The chart
+        // component must still get Chart.js and the preset onto the page.
+        $plugins = new PluginManager([
+            'flatpickr' => ['enabled' => false, 'js' => 'vendor/flatpickr/flatpickr.min.js'],
+        ]);
+
+        $this->assertFalse($plugins->isEnabled('chartjs'));
+
+        $plugins->enable('chartjs');
+
+        $scripts = $plugins->renderScripts();
+        $this->assertStringContainsString('vendor/chartjs/chart.umd.min.js', $scripts);
+        $this->assertStringContainsString('vendor/adminlte/js/charts.js', $scripts);
+    }
+
+    public function test_package_config_uses_chartjs_for_charts(): void
+    {
+        $this->assertArrayHasKey('chartjs', config('adminlte.plugins'));
+        $this->assertSame(
+            ['vendor/chartjs/chart.umd.min.js', 'vendor/adminlte/js/charts.js'],
+            config('adminlte.plugins.chartjs.js')
+        );
+    }
 }

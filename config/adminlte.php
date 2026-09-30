@@ -447,9 +447,14 @@ return [
             'css' => 'vendor/quill/quill.snow.css',
             'js' => 'vendor/quill/quill.min.js',
         ],
-        'apexcharts' => [
+        'chartjs' => [
             'enabled' => false,
-            'js' => 'vendor/apexcharts/apexcharts.min.js',
+            // Chart.js (MIT), then the AdminLTE preset: theme, dark mode,
+            // <x-adminlte-chart> rendering and the AdminLteCharts helpers.
+            'js' => [
+                'vendor/chartjs/chart.umd.min.js',
+                'vendor/adminlte/js/charts.js',
+            ],
         ],
         'jsvectormap' => [
             'enabled' => false,

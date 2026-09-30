@@ -27,7 +27,7 @@ Public API:
 You can drive it directly from a view or service if needed:
 
 ```blade
-@php app(\ColorlibHQ\AdminLte\Plugins\PluginManager::class)->enable('apexcharts'); @endphp
+@php app(\ColorlibHQ\AdminLte\Plugins\PluginManager::class)->enable('chartjs'); @endphp
 ```
 
 ## Config shape (`css`/`js` as string or array)
@@ -36,9 +36,12 @@ Each plugin is defined under the `plugins` key:
 
 ```php
 'plugins' => [
-    'apexcharts' => [
+    'chartjs' => [
         'enabled' => false,
-        'js' => 'vendor/apexcharts/apexcharts.min.js',
+        'js' => [
+            'vendor/chartjs/chart.umd.min.js',
+            'vendor/adminlte/js/charts.js',
+        ],
     ],
     'jsvectormap' => [
         'enabled' => false,
@@ -56,8 +59,8 @@ Each plugin is defined under the `plugins` key:
 - `css` and `js` accept **either a single string or an array of strings**.
   `renderStyles()` / `renderScripts()` cast each to an array and emit one tag
   per file, in order. (Order matters — e.g. jsVectorMap loads the library first,
-  then the world-map data file.)
-- A plugin may omit `css` or `js` entirely (e.g. ApexCharts is JS-only).
+  then the world-map data file, and Chart.js loads before the AdminLTE preset.)
+- A plugin may omit `css` or `js` entirely (e.g. Chart.js is JS-only).
 
 All paths are passed through Laravel's `asset()` helper, so they resolve
 relative to `public/`.
@@ -88,7 +91,7 @@ calls required:
 | `<x-adminlte-input-tom-select>` | `tom_select` |
 | `<x-adminlte-datatable>` | `tabulator` |
 | `<x-adminlte-editor>` | `quill` |
-| `<x-adminlte-chart>` | `apexcharts` |
+| `<x-adminlte-chart>` | `chartjs` |
 | `<x-adminlte-vector-map>` | `jsvectormap` |
 | `<x-adminlte-calendar>` | `fullcalendar` |
 | `<x-adminlte-sortable>` | `sortablejs` |
@@ -102,7 +105,7 @@ calls required:
 | `tom_select` | `vendor/tom-select/tom-select.bootstrap5.min.css` | `vendor/tom-select/tom-select.complete.min.js` |
 | `tabulator` | `vendor/tabulator-tables/tabulator.min.css` | `vendor/tabulator-tables/tabulator.min.js` |
 | `quill` | `vendor/quill/quill.snow.css` | `vendor/quill/quill.min.js` |
-| `apexcharts` | — | `vendor/apexcharts/apexcharts.min.js` |
+| `chartjs` | — | `vendor/chartjs/chart.umd.min.js`, `vendor/adminlte/js/charts.js` |
 | `jsvectormap` | `vendor/jsvectormap/jsvectormap.min.css` | `vendor/jsvectormap/jsvectormap.min.js`, `vendor/jsvectormap/maps/world.js` |
 | `fullcalendar` | — | `vendor/fullcalendar/index.global.min.js` |
 | `sortablejs` | — | `vendor/sortablejs/sortablejs.min.js` |
@@ -119,7 +122,7 @@ calls required:
 
 | From `node_modules/...` | To `public/vendor/...` |
 | --- | --- |
-| `apexcharts/dist/apexcharts.min.js` | `apexcharts/apexcharts.min.js` |
+| `chart.js/dist/chart.umd.min.js` | `chartjs/chart.umd.min.js` |
 | `jsvectormap/dist/jsvectormap.min.css` | `jsvectormap/jsvectormap.min.css` |
 | `jsvectormap/dist/jsvectormap.min.js` | `jsvectormap/jsvectormap.min.js` |
 | `jsvectormap/dist/maps/world.js` | `jsvectormap/maps/world.js` |
@@ -162,6 +165,65 @@ you can see at a glance which ones are actually in place.
 
 ## The `app.js` initializers
 
+## Charts (Chart.js)
+
+Charts use [Chart.js](https://www.chartjs.org) 4 (MIT). The `chartjs` plugin loads
+two files: Chart.js itself and `vendor/adminlte/js/charts.js`, a small preset
+this package ships (copied by `adminlte:install` from `resources/vendor/`). The
+preset:
+
+- sets `Chart.defaults` from the page's CSS variables (`--bs-body-font-family`,
+  `--bs-secondary-color`, `--bs-border-color-translucent`, …): subtle
+  horizontal gridlines, no vertical grid, rounded bars, smooth lines, point-style
+  legends and Bootstrap-style tooltips;
+- re-themes every chart on the page when the colour mode changes (the navbar
+  light/dark/auto toggle sets `data-bs-theme`) or the text direction flips
+  (legends and tooltips follow RTL);
+- renders every `<x-adminlte-chart>` (`canvas[data-adminlte-chart]`, JSON in
+  `data-adminlte-chart-config`); one bad config logs a warning and leaves the
+  other charts alone;
+- resizes charts when a tab, modal, collapse or AdminLTE card is shown, so
+  charts in hidden panes are never blank.
+
+Series without their own colours take the theme palette (`--bs-primary`,
+`--bs-teal`, `--bs-warning`, `--bs-pink`, `--bs-purple`, …). A colour written as
+`'var(--bs-success)'` stays live: it is re-read on every update, so it follows
+dark mode and `primary_color`.
+
+For charts you write by hand, enable the plugin and use `window.AdminLteCharts`:
+
+```blade
+@php app(\ColorlibHQ\AdminLte\Plugins\PluginManager::class)->enable('chartjs'); @endphp
+
+<div id="revenue" style="height: 300px"></div>
+<div id="spark" style="width: 120px; height: 30px"></div>
+
+@push('js')
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    AdminLteCharts.create('#revenue', {
+      type: 'line',
+      data: {
+        labels: ['Jan', 'Feb', 'Mar'],
+        datasets: [{ label: 'Revenue', data: [12, 19, 15], borderColor: 'var(--bs-primary)', fill: 'origin' }],
+      },
+    })
+    AdminLteCharts.sparkline('#spark', [5, 9, 7, 12], { color: 'var(--bs-success)', tooltip: true })
+  })
+</script>
+@endpush
+```
+
+| Helper | Does |
+| --- | --- |
+| `create(elOrSelector, config)` | Renders a Chart.js config into a `<canvas>`, or into a container (a canvas is added; the container's height is the chart's height). Destroys a chart already on that canvas first. Returns the `Chart`. |
+| `sparkline(elOrSelector, data, opts)` | Axis-less line (`opts`: `color`, `fill`, `tooltip`, `min`, `max`, `type`). |
+| `color('var(--bs-primary)')` / `alpha(color, 0.3)` / `palette(i)` | Colour helpers. |
+| `refresh()` / `init(scope)` | Re-theme all charts; render charts added to the DOM later. |
+
+Because `Chart` is a global, `new Chart(canvas, config)` works too; those charts
+pick up the theme defaults and live re-theming for colours they don't set.
+
 The published entry point `resources/js/adminlte.js` (from `app.js.stub`) imports
 Bootstrap, OverlayScrollbars and `admin-lte`, then feature-detects the
 globally-loaded plugin libraries and wires them up on DOM-ready. Because the
@@ -170,7 +232,6 @@ initializer no-ops if its global is absent:
 
 | Initializer | Trigger attribute | Notes |
 | --- | --- | --- |
-| `initCharts()` | `[data-apexchart]` | Reads `data-apexchart-config` (JSON), renders an ApexCharts instance. Wrapped in try/catch so one bad config can't break other charts. |
 | `initVectorMaps()` | `[data-jsvectormap]` | Requires an element `id`; reads `data-jsvectormap-config`. Warns if map data is missing. |
 | `initCalendars()` | `[data-fullcalendar]` | Reads `data-fullcalendar-config`; renders a FullCalendar. |
 | `initSortables()` | `[data-sortable]` and `[data-sortable-kanban]` | Generic lists read `data-sortable-options`; kanban lanes (`[data-sortable-group]`) share one group per board. |

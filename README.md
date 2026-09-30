@@ -56,9 +56,9 @@ The same AdminLTE 4 dashboard, in the framework you know best — you're looking
 - **40 Blade components** (cards, widgets, forms, charts, calendars, kanban boards, modals)
   - Widget components: Card, Small Box, Info Box, Alert, Callout, Progress, Timeline, Ratings, Direct Chat, Toast, Tabs, Accordion, Breadcrumb, and more
   - Form components: Input, Select, Textarea, Switches, Color pickers, Flatpickr, Tom Select
-  - Tool components: Modals, Datatables, Rich editor, **Charts (ApexCharts)**, **Vector Map**, **Calendar**, **Kanban**, **Wizard**
+  - Tool components: Modals, Datatables, Rich editor, **Charts (Chart.js)**, **Vector Map**, **Calendar**, **Kanban**, **Wizard**
 - **Multi-language support** (i18n) with 9 **complete** locales: English, German, Spanish, French, Italian, Portuguese, Russian, Chinese, Japanese — every key translated in every locale, no English fallbacks
-- **Plugin system** for lazy-loading JS libraries (Flatpickr, Tom Select, Tabulator, Quill, **ApexCharts**, **jsVectorMap**, **FullCalendar**, **SortableJS**)
+- **Plugin system** for lazy-loading JS libraries (Flatpickr, Tom Select, Tabulator, Quill, **Chart.js**, **jsVectorMap**, **FullCalendar**, **SortableJS**)
 - **Scaffolding system** (`adminlte:scaffold`) with full DB backing for 18 sections: dashboard, mailbox, chat, kanban, calendar, projects, file-manager, profile, settings, invoice, pricing, faq, notifications, api, impersonation, activity-log, realtime, rbac — each DB-backed section also generates **factories, Form Requests, Policies, and feature tests**
 - **Authorization (RBAC)** — dependency-free roles & permissions, `HasRoles` trait, `role`/`permission` middleware, permission-aware Gate, and a Users/Roles management UI ([docs](docs/authorization.md))
 - **Auth scaffolding** (`adminlte:make-auth`) for plain/Breeze/Fortify integration, with **hardening**: login throttling, email verification, password confirmation
@@ -143,7 +143,7 @@ composer require colorlibhq/adminlte-laravel
 php artisan adminlte:install
 ```
 
-`adminlte:install` publishes `config/adminlte.php`, drops the Vite entry stubs into `resources/js/adminlte.js` and `resources/css/adminlte.css`, and offers to `npm install` the frontend dependencies, pinned to the tested major versions (`admin-lte@^4.8`, `bootstrap@^5.3`, `@popperjs/core@^2.11`, `overlayscrollbars@^2.16`, `bootstrap-icons@^1.13`, `apexcharts@^6.8`, `jsvectormap@^1.7`, `fullcalendar@^6.1`, `sortablejs@^1.15`, `sass@^1.102`). Optional plugins (Flatpickr, Tom Select, Tabulator, Quill) are listed separately — install them only if you enable them, then run `php artisan adminlte:install --only=assets` to copy their files into `public/vendor` ([docs](docs/plugins.md)).
+`adminlte:install` publishes `config/adminlte.php`, drops the Vite entry stubs into `resources/js/adminlte.js` and `resources/css/adminlte.css`, and offers to `npm install` the frontend dependencies, pinned to the tested major versions (`admin-lte@^4.8`, `bootstrap@^5.3`, `@popperjs/core@^2.11`, `overlayscrollbars@^2.16`, `bootstrap-icons@^1.13`, `chart.js@^4.5`, `jsvectormap@^1.7`, `fullcalendar@^6.1`, `sortablejs@^1.15`, `sass@^1.102`). Optional plugins (Flatpickr, Tom Select, Tabulator, Quill) are listed separately — install them only if you enable them, then run `php artisan adminlte:install --only=assets` to copy their files into `public/vendor` ([docs](docs/plugins.md)).
 
 Add the two entry files to your `vite.config.js`:
 
@@ -264,7 +264,7 @@ Supported keys: `header`, `text`, `route`, `url`, `icon`, `icon_color`, `label`,
 ### Tool Components
 | Component | Tag | Notes |
 |---|---|---|
-| Chart | `<x-adminlte-chart>` | ApexCharts (area, line, bar, donut, pie, sparkline) |
+| Chart | `<x-adminlte-chart>` | Chart.js (area, line, bar, donut, pie, radar, polar area, scatter, bubble, sparkline) |
 | Vector Map | `<x-adminlte-vector-map>` | jsVectorMap world/region maps |
 | Calendar | `<x-adminlte-calendar>` | FullCalendar 6 event calendar |
 | Kanban | `<x-adminlte-kanban>` | SortableJS drag-to-reorder board |
@@ -395,3 +395,5 @@ See [CHANGELOG.md](CHANGELOG.md) for the release history.
 ## License
 
 MIT © [Colorlib](https://colorlib.com). See [LICENSE](LICENSE).
+
+The charts are drawn with [Chart.js](https://www.chartjs.org) (MIT). Every front-end library the installer adds is MIT-licensed; the optional Tom Select (Apache-2.0) and Quill (BSD-3-Clause) plugins are permissive too. Upgrading from 1.6 or earlier? See the [1.7.0 changelog entry](CHANGELOG.md) to move off the previous chart library.

@@ -17,7 +17,7 @@ import 'admin-lte'
 
 /**
  * Initialise an optional plugin only when its global is present.
- * Plugin libraries (ApexCharts, jsVectorMap, FullCalendar, Sortable,
+ * Plugin libraries (Chart.js, jsVectorMap, FullCalendar, Sortable,
  * Flatpickr, Tom Select, Tabulator, Quill) are loaded lazily via the
  * @pluginScripts directive as global <script> tags, so we feature-detect
  * before touching them.
@@ -41,20 +41,11 @@ function parseConfig(el, attr) {
   }
 }
 
-// --- ApexCharts ------------------------------------------------------------
-function initCharts() {
-  if (typeof window.ApexCharts === 'undefined') return
-  document.querySelectorAll('[data-apexchart]').forEach((el) => {
-    if (el.dataset.apexchartReady) return
-    const config = parseConfig(el, 'data-apexchart-config')
-    try {
-      new window.ApexCharts(el, config).render()
-      el.dataset.apexchartReady = 'true'
-    } catch (e) {
-      console.warn('AdminLTE: ApexCharts init failed (check the chart config)', e)
-    }
-  })
-}
+// --- Charts ----------------------------------------------------------------
+// <x-adminlte-chart> is rendered by the Chart.js preset that the `chartjs`
+// plugin loads after Chart.js (public/vendor/adminlte/js/charts.js), which also
+// re-themes charts on colour-mode changes. For hand-written charts use
+// window.AdminLteCharts.create(el, config); see docs/plugins.md.
 
 // --- jsVectorMap -----------------------------------------------------------
 function initVectorMaps() {
@@ -211,7 +202,6 @@ whenReady(() => {
     })
   }
 
-  initCharts()
   initVectorMaps()
   initCalendars()
   initSortables()

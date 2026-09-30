@@ -80,7 +80,7 @@ If accepted, it runs:
 
 ```bash
 npm install -D admin-lte@^4.8 bootstrap@^5.3 @popperjs/core@^2.11 overlayscrollbars@^2.16 \
-  bootstrap-icons@^1.13 apexcharts@^6.8 jsvectormap@^1.7 fullcalendar@^6.1 \
+  bootstrap-icons@^1.13 chart.js@^4.5 jsvectormap@^1.7 fullcalendar@^6.1 \
   sortablejs@^1.15 sass@^1.102
 ```
 
@@ -98,7 +98,7 @@ model, neither of which the calendar component supports yet.
 | `@popperjs/core@^2.11` | Tooltip/dropdown positioning (Bootstrap dependency) |
 | `overlayscrollbars@^2.16` | Custom sidebar scrollbars |
 | `bootstrap-icons@^1.13` | Icon font |
-| `apexcharts@^6.8` | Charts |
+| `chart.js@^4.5` | Charts (MIT) |
 | `jsvectormap@^1.7` | Vector maps |
 | `fullcalendar@^6.1` | Calendar section |
 | `sortablejs@^1.15` | Kanban drag-to-reorder |
@@ -132,7 +132,7 @@ exist in `node_modules` are silently skipped, which is what makes
 
 | Source (under `node_modules/`) | Destination (under `public/vendor/`) |
 |--------------------------------|---------------------------------------|
-| `apexcharts/dist/apexcharts.min.js` | `apexcharts/apexcharts.min.js` |
+| `chart.js/dist/chart.umd.min.js` | `chartjs/chart.umd.min.js` |
 | `jsvectormap/dist/jsvectormap.min.css` | `jsvectormap/jsvectormap.min.css` |
 | `jsvectormap/dist/jsvectormap.min.js` | `jsvectormap/jsvectormap.min.js` |
 | `jsvectormap/dist/maps/world.js` | `jsvectormap/maps/world.js` |
@@ -208,7 +208,8 @@ Only the **Required** group being incomplete is a problem.
 | `admin-lte` npm package | `node_modules/admin-lte/` |
 | `bootstrap` npm package | `node_modules/bootstrap/` |
 | RTL stylesheet | `public/vendor/adminlte/css/adminlte.rtl.min.css` |
-| ApexCharts vendor file | `public/vendor/apexcharts/apexcharts.min.js` |
+| Chart.js vendor file | `public/vendor/chartjs/chart.umd.min.js` |
+| Chart.js preset | `public/vendor/adminlte/js/charts.js` |
 | jsVectorMap vendor file | `public/vendor/jsvectormap/jsvectormap.min.js` |
 | FullCalendar vendor file | `public/vendor/fullcalendar/index.global.min.js` |
 | SortableJS vendor file | `public/vendor/sortablejs/sortablejs.min.js` |

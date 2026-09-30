@@ -24,7 +24,8 @@ class PluginManager
      * @var array<string, array<string, mixed>>
      */
     protected array $defaults = [
-        'apexcharts' => ['js' => 'vendor/apexcharts/apexcharts.min.js'],
+        // Chart.js first, then the AdminLTE preset that themes and renders charts.
+        'chartjs' => ['js' => ['vendor/chartjs/chart.umd.min.js', 'vendor/adminlte/js/charts.js']],
         'jsvectormap' => ['css' => 'vendor/jsvectormap/jsvectormap.min.css', 'js' => 'vendor/jsvectormap/jsvectormap.min.js'],
         'fullcalendar' => ['css' => 'vendor/fullcalendar/index.global.min.css', 'js' => 'vendor/fullcalendar/index.global.min.js'],
         'sortablejs' => ['js' => 'vendor/sortablejs/sortablejs.min.js'],
@@ -35,10 +36,24 @@ class PluginManager
     ];
 
     /**
+     * Bundled plugins that are registered even when the app's config does not
+     * list them, because a component enables them. An app that published its
+     * config before 1.7 has no `chartjs` entry, and `<x-adminlte-chart>` would
+     * otherwise render a chart whose library is never loaded.
+     *
+     * @var array<int, string>
+     */
+    protected array $alwaysRegistered = ['chartjs'];
+
+    /**
      * @param  array<string, array<string, mixed>>  $config
      */
     public function __construct(array $config = [])
     {
+        foreach ($this->alwaysRegistered as $plugin) {
+            $config[$plugin] ??= ['enabled' => false];
+        }
+
         // Patch missing asset keys (css/js) from the bundled defaults without
         // overriding anything the app explicitly configured.
         foreach ($config as $plugin => $settings) {

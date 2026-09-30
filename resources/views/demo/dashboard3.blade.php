@@ -1,8 +1,8 @@
 @extends('adminlte::page')
 
 @php
-    // This demo page uses ApexCharts. Enable the plugin so its assets are injected.
-    app(\ColorlibHQ\AdminLte\Plugins\PluginManager::class)->enable('apexcharts');
+    // This demo page uses Chart.js. Enable the plugin so its assets are injected.
+    app(\ColorlibHQ\AdminLte\Plugins\PluginManager::class)->enable('chartjs');
 @endphp
 
 @section('title', 'Dashboard v3')
@@ -45,7 +45,7 @@
                     </div>
                     {{-- /.d-flex --}}
                     <div class="position-relative mb-4">
-                        <div id="visitors-chart"></div>
+                        <div id="visitors-chart" style="height: 200px"></div>
                     </div>
                     <div class="d-flex flex-row justify-content-end">
                         <span class="me-2">
@@ -188,7 +188,7 @@
                     </div>
                     {{-- /.d-flex --}}
                     <div class="position-relative mb-4">
-                        <div id="sales-chart"></div>
+                        <div id="sales-chart" style="height: 200px"></div>
                     </div>
                     <div class="d-flex flex-row justify-content-end">
                         <span class="me-2">
@@ -263,83 +263,66 @@
 @push('js')
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            if (typeof ApexCharts === 'undefined') {
+            const charts = window.AdminLteCharts;
+            if (!charts) {
                 return;
             }
 
-            // - VISITORS CHART -
-            const visitors_chart_options = {
-                series: [
-                    { name: 'High - 2023', data: [100, 120, 170, 167, 180, 177, 160] },
-                    { name: 'Low - 2023', data: [60, 80, 70, 67, 80, 77, 100] },
-                ],
-                chart: {
-                    height: 200,
-                    type: 'line',
-                    toolbar: { show: false },
-                },
-                colors: ['#0d6efd', '#adb5bd'],
-                stroke: { curve: 'smooth' },
-                grid: {
-                    borderColor: '#e7e7e7',
-                    row: {
-                        colors: ['#f3f3f3', 'transparent'],
-                        opacity: 0.5,
-                    },
-                },
-                legend: { show: false },
-                markers: { size: 1 },
-                xaxis: {
-                    categories: ['22th', '23th', '24th', '25th', '26th', '27th', '28th'],
+            // Shades every other band between the y-axis gridlines.
+            const zebra = {
+                id: 'zebra',
+                beforeDatasetsDraw(chart) {
+                    const { ctx, chartArea: area, scales: { y } } = chart;
+                    ctx.save();
+                    ctx.fillStyle = charts.color('var(--bs-tertiary-bg)');
+                    y.ticks.forEach((tick, i) => {
+                        if (i % 2 || i === y.ticks.length - 1) {
+                            return;
+                        }
+                        const bottom = y.getPixelForTick(i);
+                        const top = y.getPixelForTick(i + 1);
+                        ctx.fillRect(area.left, top, area.right - area.left, bottom - top);
+                    });
+                    ctx.restore();
                 },
             };
-            const visitors_chart_el = document.querySelector('#visitors-chart');
-            if (visitors_chart_el) {
-                new ApexCharts(visitors_chart_el, visitors_chart_options).render();
-            }
+
+            // - VISITORS CHART -
+            charts.create('#visitors-chart', {
+                type: 'line',
+                data: {
+                    labels: ['22th', '23th', '24th', '25th', '26th', '27th', '28th'],
+                    datasets: [
+                        { label: 'High - 2023', data: [100, 120, 170, 167, 180, 177, 160], borderColor: 'var(--bs-primary)', pointRadius: 2 },
+                        { label: 'Low - 2023', data: [60, 80, 70, 67, 80, 77, 100], borderColor: 'var(--bs-gray-500)', pointRadius: 2 },
+                    ],
+                },
+                options: {
+                    plugins: { legend: { display: false } },
+                },
+                plugins: [zebra],
+            });
 
             // - SALES CHART -
-            const sales_chart_options = {
-                series: [
-                    { name: 'Net Profit', data: [44, 55, 57, 56, 61, 58, 63, 60, 66] },
-                    { name: 'Revenue', data: [76, 85, 101, 98, 87, 105, 91, 114, 94] },
-                    { name: 'Free Cash Flow', data: [35, 41, 36, 26, 45, 48, 52, 53, 41] },
-                ],
-                chart: {
-                    type: 'bar',
-                    height: 200,
+            charts.create('#sales-chart', {
+                type: 'bar',
+                data: {
+                    labels: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+                    datasets: [
+                        { label: 'Net Profit', data: [44, 55, 57, 56, 61, 58, 63, 60, 66], backgroundColor: 'var(--bs-primary)' },
+                        { label: 'Revenue', data: [76, 85, 101, 98, 87, 105, 91, 114, 94], backgroundColor: 'var(--bs-teal)' },
+                        { label: 'Free Cash Flow', data: [35, 41, 36, 26, 45, 48, 52, 53, 41], backgroundColor: 'var(--bs-warning)' },
+                    ],
                 },
-                plotOptions: {
-                    bar: {
-                        horizontal: false,
-                        columnWidth: '55%',
-                        endingShape: 'rounded',
+                options: {
+                    categoryPercentage: 0.55,
+                    barPercentage: 0.85,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { callbacks: { label: (item) => `${item.dataset.label}: $ ${item.raw} thousands` } },
                     },
                 },
-                legend: { show: false },
-                colors: ['#0d6efd', '#20c997', '#ffc107'],
-                dataLabels: { enabled: false },
-                stroke: {
-                    show: true,
-                    width: 2,
-                    colors: ['transparent'],
-                },
-                xaxis: {
-                    categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
-                },
-                fill: { opacity: 1 },
-                tooltip: {
-                    y: {
-                        formatter: function (val) {
-                            return '$ ' + val + ' thousands';
-                        },
-                    },
-                },
-            };
-            const sales_chart_el = document.querySelector('#sales-chart');
-            if (sales_chart_el) {
-                new ApexCharts(sales_chart_el, sales_chart_options).render();
-            }
+            });
         });
     </script>
 @endpush

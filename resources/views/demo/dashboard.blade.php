@@ -3,7 +3,7 @@
 @php
     // This demo dashboard mirrors the AdminLTE 4 index.html. Enable the JS
     // libraries it needs so @pluginScripts injects them for this request.
-    app(\ColorlibHQ\AdminLte\Plugins\PluginManager::class)->enable('apexcharts')->enable('jsvectormap');
+    app(\ColorlibHQ\AdminLte\Plugins\PluginManager::class)->enable('chartjs')->enable('jsvectormap');
     $img = fn ($f) => asset('vendor/adminlte/img/'.$f);
 @endphp
 
@@ -82,7 +82,7 @@
                     <h3 class="card-title">Sales Value</h3>
                 </div>
                 <div class="card-body">
-                    <div id="revenue-chart"></div>
+                    <div id="revenue-chart" style="height: 300px"></div>
                 </div>
             </div>
         </div>
@@ -104,15 +104,15 @@
                 <div class="card-footer border-0">
                     <div class="row">
                         <div class="col-4 text-center">
-                            <div id="sparkline-1" class="text-dark"></div>
+                            <div id="sparkline-1" class="text-dark" style="height: 50px"></div>
                             <div class="text-white">Visitors</div>
                         </div>
                         <div class="col-4 text-center">
-                            <div id="sparkline-2" class="text-dark"></div>
+                            <div id="sparkline-2" class="text-dark" style="height: 50px"></div>
                             <div class="text-white">Online</div>
                         </div>
                         <div class="col-4 text-center">
-                            <div id="sparkline-3" class="text-dark"></div>
+                            <div id="sparkline-3" class="text-dark" style="height: 50px"></div>
                             <div class="text-white">Sales</div>
                         </div>
                     </div>
@@ -266,24 +266,28 @@
 @push('js')
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // ----- Sales area chart (verbatim from AdminLTE index.html) -----
-            if (typeof ApexCharts !== 'undefined' && document.querySelector('#revenue-chart')) {
-                new ApexCharts(document.querySelector('#revenue-chart'), {
-                    series: [
-                        { name: 'Digital Goods', data: [28, 48, 40, 19, 86, 27, 90] },
-                        { name: 'Electronics', data: [65, 59, 80, 81, 56, 55, 40] },
-                    ],
-                    chart: { height: 300, type: 'area', toolbar: { show: false } },
-                    legend: { show: false },
-                    colors: ['#0d6efd', '#20c997'],
-                    dataLabels: { enabled: false },
-                    stroke: { curve: 'smooth' },
-                    xaxis: {
-                        type: 'datetime',
-                        categories: ['2023-01-01', '2023-02-01', '2023-03-01', '2023-04-01', '2023-05-01', '2023-06-01', '2023-07-01'],
+            const charts = window.AdminLteCharts;
+            const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+
+            // ----- Sales area chart -----
+            if (charts) {
+                charts.create('#revenue-chart', {
+                    type: 'line',
+                    data: {
+                        labels: months.map((m) => m.slice(0, 3)),
+                        datasets: [
+                            { label: 'Digital Goods', data: [28, 48, 40, 19, 86, 27, 90], borderColor: 'var(--bs-primary)', fill: 'origin' },
+                            { label: 'Electronics', data: [65, 59, 80, 81, 56, 55, 40], borderColor: 'var(--bs-teal)', fill: 'origin' },
+                        ],
                     },
-                    tooltip: { x: { format: 'MMMM yyyy' } },
-                }).render();
+                    options: {
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: { callbacks: { title: (items) => months[items[0].dataIndex] + ' 2023' } },
+                        },
+                        scales: { y: { beginAtZero: true } },
+                    },
+                });
             }
 
             // ----- World map -----
@@ -292,20 +296,12 @@
             }
 
             // ----- Sparklines -----
-            const spark = (sel, data) => {
-                if (typeof ApexCharts === 'undefined' || !document.querySelector(sel)) return;
-                new ApexCharts(document.querySelector(sel), {
-                    series: [{ data }],
-                    chart: { type: 'area', height: 50, sparkline: { enabled: true } },
-                    stroke: { curve: 'straight' },
-                    fill: { opacity: 0.3 },
-                    yaxis: { min: 0 },
-                    colors: ['#DCE6EC'],
-                }).render();
-            };
-            spark('#sparkline-1', [1000, 1200, 920, 927, 931, 1027, 819, 930, 1021]);
-            spark('#sparkline-2', [515, 519, 520, 522, 652, 810, 370, 627, 319, 630, 921]);
-            spark('#sparkline-3', [15, 19, 20, 22, 33, 27, 31, 27, 19, 30, 21]);
+            if (charts) {
+                const spark = (sel, data) => charts.sparkline(sel, data, { color: '#DCE6EC', fill: true, tension: 0, min: 0 });
+                spark('#sparkline-1', [1000, 1200, 920, 927, 931, 1027, 819, 930, 1021]);
+                spark('#sparkline-2', [515, 519, 520, 522, 652, 810, 370, 627, 319, 630, 921]);
+                spark('#sparkline-3', [15, 19, 20, 22, 33, 27, 31, 27, 19, 30, 21]);
+            }
         });
     </script>
 @endpush

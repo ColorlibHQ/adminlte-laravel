@@ -11,7 +11,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Scaffolding system (`adminlte:scaffold`) for 18 DB-backed app sections
 - Dependency-free RBAC (roles, permissions, middleware, permission-aware Gate)
 - Auth scaffolding (`adminlte:make-auth`) for plain/Breeze/Fortify
-- Plugin system for lazy-loading JS libraries (Flatpickr, Tom Select, Tabulator, Quill, ApexCharts, jsVectorMap, FullCalendar, SortableJS)
+- Plugin system for lazy-loading JS libraries (Flatpickr, Tom Select, Tabulator, Quill, Chart.js, jsVectorMap, FullCalendar, SortableJS)
 - i18n with 9 locales (en, de, es, fr, it, ja, pt_BR, ru, zh), RTL support
 - Bundled demo pages and in-app docs (served at `/docs`)
 - Vite-first asset pipeline
@@ -76,7 +76,7 @@ The largest subsystem. `ScaffoldCommand` holds a declarative `$manifest` mapping
 
 ### Plugin System (`PluginManager`)
 
-- Lazy-loads optional JS/CSS libraries; config under `config('adminlte.plugins')` (flatpickr, tom_select, tabulator, quill, apexcharts, jsvectormap, fullcalendar, sortablejs)
+- Lazy-loads optional JS/CSS libraries; config under `config('adminlte.plugins')` (flatpickr, tom_select, tabulator, quill, chartjs, jsvectormap, fullcalendar, sortablejs)
 - Plugin-backed components call `app(PluginManager::class)->enable('plugin-name')` in their **constructor** — rendering the component is what triggers asset loading
 - `renderStyles()`/`renderScripts()` append a cache-busting `?v=<filemtime>` to asset URLs (skipped when the file isn't on disk, e.g. in tests)
 - Bundled default asset paths are patched into config entries that omit `css`/`js` keys

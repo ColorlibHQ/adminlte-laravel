@@ -901,22 +901,33 @@ A rich-text WYSIWYG editor backed by Quill. Enables the `quill` plugin automatic
 
 ---
 
-### Chart — `<x-adminlte-chart>` *(plugin: apexcharts)*
+### Chart — `<x-adminlte-chart>` *(plugin: chartjs)*
 
-A chart backed by ApexCharts. Enables the `apexcharts` plugin automatically.
+A chart rendered with Chart.js (MIT). Enables the `chartjs` plugin automatically;
+the plugin's preset themes the chart and re-themes it in dark mode
+([Charts](plugins.md#charts-chartjs)).
+
+Types: `area` (a filled line), `line`, `bar`, `pie`, `donut` / `doughnut`,
+`radar`, `polarArea`, `scatter`, `bubble`, and `sparkline` (an axis-less line).
 
 **Props**
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `type` | `string` | `'area'` | Chart type (`area`, `bar`, `line`, …) |
-| `series` | `array` | `[]` | Data series |
-| `categories` | `array` | `[]` | X-axis categories |
-| `options` | `array` | `[]` | Extra ApexCharts config options |
-| `id` | `?string` | auto | Chart element id |
+| `type` | `string` | `'area'` | Chart type (see above) |
+| `series` | `array` | `[]` | A list of series (`['name' => 'Sales', 'data' => […]]`, plus any Chart.js dataset keys such as `backgroundColor`, `borderDash`, `type` for mixed charts), or a flat list of numbers for pie/donut |
+| `categories` | `array` | `[]` | X-axis categories (slice labels for pie/donut) |
+| `options` | `array` | `[]` | Chart.js options (`plugins`, `scales`, `indexAxis`, …), deep-merged over the defaults |
+| `id` | `?string` | auto | The `<canvas>` id (`Chart.getChart(id)` returns the chart) |
 | `height` | `string` | `'300px'` | Chart height |
 
-*Helpers:* `chartConfig()` serializes the JS config.
+*Helpers:* `config()` returns the Chart.js config as an array; `chartConfig()` serializes it.
+
+Options written for the 1.x component keep working where Chart.js has an
+equivalent: `colors`, `labels`, `chart.stacked`, `chart.sparkline.enabled`,
+`plotOptions.bar.horizontal`, `legend.show`, `legend.position`, `stroke.curve`,
+`stroke.width`, `xaxis.categories` and `yaxis.min` / `yaxis.max` are translated.
+Other keys from that format (formatters, toolbar, data labels, …) are ignored.
 
 **Slots:** none.
 
@@ -926,6 +937,14 @@ A chart backed by ApexCharts. Enables the `apexcharts` plugin automatically.
 <x-adminlte-chart type="bar"
     :series="[['name' => 'Sales', 'data' => [30, 40, 35, 50]]]"
     :categories="['Q1', 'Q2', 'Q3', 'Q4']" height="320px" />
+
+<x-adminlte-chart type="donut" :series="[44, 55, 13]"
+    :categories="['Direct', 'Search', 'Social']" />
+
+<x-adminlte-chart type="line"
+    :series="[['name' => 'Visitors', 'data' => [120, 180, 150], 'borderColor' => 'var(--bs-success)']]"
+    :categories="['Mon', 'Tue', 'Wed']"
+    :options="['plugins' => ['legend' => ['position' => 'top']], 'scales' => ['y' => ['beginAtZero' => true]]]" />
 ```
 
 ---

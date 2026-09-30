@@ -31,10 +31,11 @@ This will:
 - Offer to `npm install` the frontend dependencies, pinned to the major
   versions the package is tested against:
   `admin-lte@^4.8`, `bootstrap@^5.3`, `@popperjs/core@^2.11`,
-  `overlayscrollbars@^2.16`, `bootstrap-icons@^1.13`, `apexcharts@^6.8`,
+  `overlayscrollbars@^2.16`, `bootstrap-icons@^1.13`, `chart.js@^4.5`,
   `jsvectormap@^1.7`, `fullcalendar@^6.1`, `sortablejs@^1.15`, `sass@^1.102`.
-- Copy the plugin vendor files (ApexCharts, jsVectorMap, FullCalendar,
-  SortableJS, plus the AdminLTE RTL stylesheet) into `public/vendor/`.
+- Copy the plugin vendor files (Chart.js and the AdminLTE chart preset,
+  jsVectorMap, FullCalendar, SortableJS, plus the AdminLTE RTL stylesheet) into
+  `public/vendor/`.
 
 The optional plugins (Flatpickr, Tom Select, Tabulator, Quill) are disabled by
 default and not installed. Adding one takes two commands — install it, then

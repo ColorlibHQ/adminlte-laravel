@@ -17,7 +17,7 @@ Official [AdminLTE 4](https://adminlte.io) integration for Laravel — Bootstrap
 - [**Layout**](layout.md) — `adminlte::page`, navbar, sidebar, footer, ⌘K search, color mode, RTL, preloader
 - [**Menu**](menu.md) — config-driven sidebar/navbar menu, treeview, badges, permissions, filters
 - [**Components**](components.md) — all 40 Blade components with props, slots, and examples
-- [**Plugins**](plugins.md) — lazy-loaded JS libraries (ApexCharts, jsVectorMap, FullCalendar, SortableJS, Flatpickr, Tom Select, Tabulator, Quill)
+- [**Plugins**](plugins.md) — lazy-loaded JS libraries (Chart.js, jsVectorMap, FullCalendar, SortableJS, Flatpickr, Tom Select, Tabulator, Quill)
 - [**Translations**](translations.md) — 9 locales and how key resolution works
 
 ## Application scaffolding

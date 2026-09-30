@@ -1,8 +1,8 @@
 @extends('adminlte::page')
 
 @php
-    // This demo page uses ApexCharts. Enable the plugin so its assets are injected.
-    app(\ColorlibHQ\AdminLte\Plugins\PluginManager::class)->enable('apexcharts');
+    // This demo page uses Chart.js. Enable the plugin so its assets are injected.
+    app(\ColorlibHQ\AdminLte\Plugins\PluginManager::class)->enable('chartjs');
     $img = fn ($f) => asset('vendor/adminlte/img/'.$f);
 @endphp
 
@@ -122,7 +122,7 @@
                             <p class="text-center">
                                 <strong>Sales: 1 Jan, 2023 - 30 Jul, 2023</strong>
                             </p>
-                            <div id="sales-chart"></div>
+                            <div id="sales-chart" style="height: 180px"></div>
                         </div>
                         {{-- /.col --}}
                         <div class="col-md-4">
@@ -489,7 +489,7 @@
                                     </td>
                                     <td>Call of Duty IV</td>
                                     <td><span class="badge text-bg-success"> Shipped </span></td>
-                                    <td><div id="table-sparkline-1"></div></td>
+                                    <td><div id="table-sparkline-1" style="width: 150px; height: 30px"></div></td>
                                 </tr>
                                 <tr>
                                     <td>
@@ -497,7 +497,7 @@
                                     </td>
                                     <td>Samsung Smart TV</td>
                                     <td><span class="badge text-bg-warning">Pending</span></td>
-                                    <td><div id="table-sparkline-2"></div></td>
+                                    <td><div id="table-sparkline-2" style="width: 150px; height: 30px"></div></td>
                                 </tr>
                                 <tr>
                                     <td>
@@ -505,7 +505,7 @@
                                     </td>
                                     <td>iPhone 6 Plus</td>
                                     <td><span class="badge text-bg-danger"> Delivered </span></td>
-                                    <td><div id="table-sparkline-3"></div></td>
+                                    <td><div id="table-sparkline-3" style="width: 150px; height: 30px"></div></td>
                                 </tr>
                                 <tr>
                                     <td>
@@ -513,7 +513,7 @@
                                     </td>
                                     <td>Samsung Smart TV</td>
                                     <td><span class="badge text-bg-info">Processing</span></td>
-                                    <td><div id="table-sparkline-4"></div></td>
+                                    <td><div id="table-sparkline-4" style="width: 150px; height: 30px"></div></td>
                                 </tr>
                                 <tr>
                                     <td>
@@ -521,7 +521,7 @@
                                     </td>
                                     <td>Samsung Smart TV</td>
                                     <td><span class="badge text-bg-warning">Pending</span></td>
-                                    <td><div id="table-sparkline-5"></div></td>
+                                    <td><div id="table-sparkline-5" style="width: 150px; height: 30px"></div></td>
                                 </tr>
                                 <tr>
                                     <td>
@@ -529,7 +529,7 @@
                                     </td>
                                     <td>iPhone 6 Plus</td>
                                     <td><span class="badge text-bg-danger"> Delivered </span></td>
-                                    <td><div id="table-sparkline-6"></div></td>
+                                    <td><div id="table-sparkline-6" style="width: 150px; height: 30px"></div></td>
                                 </tr>
                                 <tr>
                                     <td>
@@ -537,7 +537,7 @@
                                     </td>
                                     <td>Call of Duty IV</td>
                                     <td><span class="badge text-bg-success">Shipped</span></td>
-                                    <td><div id="table-sparkline-7"></div></td>
+                                    <td><div id="table-sparkline-7" style="width: 150px; height: 30px"></div></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -616,7 +616,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12">
-                            <div id="pie-chart"></div>
+                            <div id="pie-chart" style="height: 350px"></div>
                         </div>
                         {{-- /.col --}}
                     </div>
@@ -742,93 +742,66 @@
 @push('js')
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            if (typeof ApexCharts === 'undefined') {
+            const charts = window.AdminLteCharts;
+            if (!charts) {
                 return;
             }
 
             // - MONTHLY SALES CHART -
-            const sales_chart_options = {
-                series: [
-                    { name: 'Digital Goods', data: [28, 48, 40, 19, 86, 27, 90] },
-                    { name: 'Electronics', data: [65, 59, 80, 81, 56, 55, 40] },
-                ],
-                chart: {
-                    height: 180,
-                    type: 'area',
-                    toolbar: { show: false },
-                },
-                legend: { show: false },
-                colors: ['#0d6efd', '#20c997'],
-                dataLabels: { enabled: false },
-                stroke: { curve: 'smooth' },
-                xaxis: {
-                    type: 'datetime',
-                    categories: [
-                        '2023-01-01',
-                        '2023-02-01',
-                        '2023-03-01',
-                        '2023-04-01',
-                        '2023-05-01',
-                        '2023-06-01',
-                        '2023-07-01',
+            const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+            charts.create('#sales-chart', {
+                type: 'line',
+                data: {
+                    labels: months.map((m) => m.slice(0, 3)),
+                    datasets: [
+                        { label: 'Digital Goods', data: [28, 48, 40, 19, 86, 27, 90], borderColor: 'var(--bs-primary)', fill: 'origin' },
+                        { label: 'Electronics', data: [65, 59, 80, 81, 56, 55, 40], borderColor: 'var(--bs-teal)', fill: 'origin' },
                     ],
                 },
-                tooltip: { x: { format: 'MMMM yyyy' } },
-            };
-            const sales_chart_el = document.querySelector('#sales-chart');
-            if (sales_chart_el) {
-                new ApexCharts(sales_chart_el, sales_chart_options).render();
-            }
+                options: {
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { callbacks: { title: (items) => months[items[0].dataIndex] + ' 2023' } },
+                    },
+                    scales: { y: { beginAtZero: true } },
+                },
+            });
 
             // - SPARKLINE CHARTS -
-            function createSparklineChart(selector, data) {
-                const el = document.querySelector(selector);
-                if (!el) {
-                    return;
-                }
-                const options = {
-                    series: [{ data }],
-                    chart: {
-                        type: 'line',
-                        width: 150,
-                        height: 30,
-                        sparkline: { enabled: true },
-                    },
-                    colors: ['var(--bs-primary)'],
-                    stroke: { width: 2 },
-                    tooltip: {
-                        fixed: { enabled: false },
-                        x: { show: false },
-                        y: { title: { formatter() { return ''; } } },
-                        marker: { show: false },
-                    },
-                };
-                new ApexCharts(el, options).render();
-            }
-
-            createSparklineChart('#table-sparkline-1', [25, 66, 41, 89, 63, 25, 44, 12, 36, 9, 54]);
-            createSparklineChart('#table-sparkline-2', [12, 56, 21, 39, 73, 45, 64, 52, 36, 59, 44]);
-            createSparklineChart('#table-sparkline-3', [15, 46, 21, 59, 33, 15, 34, 42, 56, 19, 64]);
-            createSparklineChart('#table-sparkline-4', [30, 56, 31, 69, 43, 35, 24, 32, 46, 29, 64]);
-            createSparklineChart('#table-sparkline-5', [20, 76, 51, 79, 53, 35, 54, 22, 36, 49, 64]);
-            createSparklineChart('#table-sparkline-6', [5, 36, 11, 69, 23, 15, 14, 42, 26, 19, 44]);
-            createSparklineChart('#table-sparkline-7', [12, 56, 21, 39, 73, 45, 64, 52, 36, 59, 74]);
+            const sparkline = (selector, data) => charts.sparkline(selector, data, { color: 'var(--bs-primary)', tooltip: true });
+            sparkline('#table-sparkline-1', [25, 66, 41, 89, 63, 25, 44, 12, 36, 9, 54]);
+            sparkline('#table-sparkline-2', [12, 56, 21, 39, 73, 45, 64, 52, 36, 59, 44]);
+            sparkline('#table-sparkline-3', [15, 46, 21, 59, 33, 15, 34, 42, 56, 19, 64]);
+            sparkline('#table-sparkline-4', [30, 56, 31, 69, 43, 35, 24, 32, 46, 29, 64]);
+            sparkline('#table-sparkline-5', [20, 76, 51, 79, 53, 35, 54, 22, 36, 49, 64]);
+            sparkline('#table-sparkline-6', [5, 36, 11, 69, 23, 15, 14, 42, 26, 19, 44]);
+            sparkline('#table-sparkline-7', [12, 56, 21, 39, 73, 45, 64, 52, 36, 59, 74]);
 
             // - PIE CHART -
-            const pie_chart_options = {
-                series: [700, 500, 400, 600, 300, 100],
-                chart: {
-                    type: 'donut',
-                    height: 350,
+            charts.create('#pie-chart', {
+                type: 'doughnut',
+                data: {
+                    labels: ['Chrome', 'Edge', 'FireFox', 'Safari', 'Opera', 'IE'],
+                    datasets: [
+                        {
+                            label: 'Browser usage',
+                            data: [700, 500, 400, 600, 300, 100],
+                            backgroundColor: [
+                                'var(--bs-primary)',
+                                'var(--bs-teal)',
+                                'var(--bs-warning)',
+                                'var(--bs-pink)',
+                                'var(--bs-purple)',
+                                'var(--bs-gray-500)',
+                            ],
+                        },
+                    ],
                 },
-                labels: ['Chrome', 'Edge', 'FireFox', 'Safari', 'Opera', 'IE'],
-                dataLabels: { enabled: false },
-                colors: ['#0d6efd', '#20c997', '#ffc107', '#d63384', '#6f42c1', '#adb5bd'],
-            };
-            const pie_chart_el = document.querySelector('#pie-chart');
-            if (pie_chart_el) {
-                new ApexCharts(pie_chart_el, pie_chart_options).render();
-            }
+                options: {
+                    cutout: '65%',
+                    plugins: { legend: { position: 'right' } },
+                },
+            });
         });
     </script>
 @endpush

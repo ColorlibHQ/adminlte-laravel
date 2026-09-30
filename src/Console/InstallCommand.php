@@ -18,7 +18,7 @@ class InstallCommand extends Command
      * explicit work before it can move.
      */
     private const NPM_DEPENDENCIES = 'admin-lte@^4.8 bootstrap@^5.3 @popperjs/core@^2.11 '
-        .'overlayscrollbars@^2.16 bootstrap-icons@^1.13 apexcharts@^6.8 jsvectormap@^1.7 '
+        .'overlayscrollbars@^2.16 bootstrap-icons@^1.13 chart.js@^4.5 jsvectormap@^1.7 '
         .'fullcalendar@^6.1 sortablejs@^1.15 sass@^1.102';
 
     /**
@@ -44,7 +44,7 @@ class InstallCommand extends Command
      * @var array<string, string>
      */
     public const NODE_MODULE_VENDOR_FILES = [
-        'apexcharts/dist/apexcharts.min.js' => 'apexcharts/apexcharts.min.js',
+        'chart.js/dist/chart.umd.min.js' => 'chartjs/chart.umd.min.js',
         'jsvectormap/dist/jsvectormap.min.css' => 'jsvectormap/jsvectormap.min.css',
         'jsvectormap/dist/jsvectormap.min.js' => 'jsvectormap/jsvectormap.min.js',
         'jsvectormap/dist/maps/world.js' => 'jsvectormap/maps/world.js',
@@ -80,6 +80,9 @@ class InstallCommand extends Command
      */
     public const PACKAGE_VENDOR_FILES = [
         'fullcalendar/index.global.min.css' => 'fullcalendar/index.global.min.css',
+        // Chart.js preset: theme from CSS variables, live dark mode,
+        // <x-adminlte-chart> rendering (loaded by the 'chartjs' plugin).
+        'adminlte/js/charts.js' => 'adminlte/js/charts.js',
     ];
 
     protected $signature = 'adminlte:install

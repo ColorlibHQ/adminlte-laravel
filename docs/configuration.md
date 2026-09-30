@@ -233,13 +233,14 @@ Each plugin supports `enabled` (bool), `css` (string path, optional), and `js`
 | `tom_select` | `false` | `vendor/tom-select/tom-select.bootstrap5.min.css` | `vendor/tom-select/tom-select.complete.min.js` |
 | `tabulator` | `false` | `vendor/tabulator-tables/tabulator.min.css` | `vendor/tabulator-tables/tabulator.min.js` |
 | `quill` | `false` | `vendor/quill/quill.snow.css` | `vendor/quill/quill.min.js` |
-| `apexcharts` | `false` | — | `vendor/apexcharts/apexcharts.min.js` |
+| `chartjs` | `false` | — | `vendor/chartjs/chart.umd.min.js` + `vendor/adminlte/js/charts.js` |
 | `jsvectormap` | `false` | `vendor/jsvectormap/jsvectormap.min.css` | `vendor/jsvectormap/jsvectormap.min.js` + `vendor/jsvectormap/maps/world.js` |
 | `fullcalendar` | `false` | — | `vendor/fullcalendar/index.global.min.js` |
 | `sortablejs` | `false` | — | `vendor/sortablejs/sortablejs.min.js` |
 
 > `jsvectormap` lists two JS files: the library first, then the world-map data
-> (which registers the `'world'` map).
+> (which registers the `'world'` map). `chartjs` likewise loads Chart.js, then
+> the AdminLTE preset that themes and renders charts.
 
 ---
 

@@ -7,6 +7,82 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **Charts use Chart.js 4 (MIT) instead of ApexCharts.** From 5.2.0 ApexCharts
+  ships under its own proprietary licence rather than MIT, and `adminlte:install`
+  asked for `apexcharts@^6.8`, so every install pulled in a library whose terms
+  can require a commercial licence once the app is used by others. The
+  installer now adds `chart.js@^4.5`, and the package no longer references
+  ApexCharts anywhere.
+- The `apexcharts` plugin is replaced by `chartjs`, which loads
+  `vendor/chartjs/chart.umd.min.js` and a small preset the package ships,
+  `vendor/adminlte/js/charts.js`. The preset themes `Chart.defaults` from the
+  page's CSS variables, re-themes every chart when the light/dark/auto toggle
+  or the text direction changes, resizes charts shown in tabs, modals and
+  collapsed cards, and renders `<x-adminlte-chart>`. `adminlte:install` copies
+  both files. An app whose published `config/adminlte.php` predates this
+  release has no `chartjs` entry; the plugin is registered anyway, so charts
+  work without editing the config.
+- `<x-adminlte-chart>` renders a `<canvas>` (the `id` prop is now the canvas
+  id, so `Chart.getChart(id)` returns the chart). Its props are unchanged:
+  `type` accepts `area`, `line`, `bar`, `pie`, `donut`, `radar`, `polarArea`,
+  `scatter`, `bubble` and `sparkline`; `options` now takes Chart.js options.
+  Options written for the old component are translated where Chart.js has an
+  equivalent (`colors`, `labels`, `chart.stacked`, `chart.sparkline.enabled`,
+  `plotOptions.bar.horizontal`, `legend.show`/`position`, `stroke.curve`/`width`,
+  `xaxis.categories`, `yaxis.min`/`max`); the rest are dropped. The ApexCharts
+  toolbar (zoom, SVG/PNG download) is gone.
+- The Dashboard v1, v2 and v3 demo pages draw their charts with Chart.js: the
+  same area, line, bar, donut and sparkline charts, in theme colours that
+  follow dark mode (the old charts kept light-mode gridlines and labels).
+- The published `resources/js/adminlte.js` stub no longer contains a chart
+  initializer; the preset does that job.
+
+### Added
+
+- `window.AdminLteCharts` (`create`, `sparkline`, `color`, `alpha`, `palette`,
+  `refresh`, `init`) for charts written by hand, and
+  `Components\Tool\Chart::config()`, which returns the Chart.js config as an
+  array. See `docs/plugins.md`.
+
+### Fixed
+
+- `<x-adminlte-chart>` lost its `type` and `height` whenever `options` held a
+  `chart` key (for example `['chart' => ['stacked' => true]]` drew a line
+  chart), and pie/donut charts ignored `categories` and labelled their slices
+  `series-1`, `series-2`, and so on.
+
+### Upgrading from 1.6
+
+```bash
+composer update colorlibhq/adminlte-laravel
+npm uninstall apexcharts
+npm install -D chart.js@^4.5
+php artisan adminlte:install --only=assets --no-interaction-deps
+rm -rf public/vendor/apexcharts
+npm run build
+```
+
+- Files you published earlier are not updated by `composer update`. Until you
+  re-publish them they keep their ApexCharts code:
+  - Published views (`adminlte:install --only=views`, in
+    `resources/views/vendor/adminlte`): the demo dashboards keep calling
+    `new ApexCharts(...)`, and the old `components/tool/chart.blade.php`
+    renders an empty box because nothing initialises it any more. Re-publish
+    with `php artisan vendor:publish --tag=adminlte-views --force` (copy your
+    own edits first), or delete the files you did not change.
+  - `resources/js/adminlte.js`: its ApexCharts block does nothing once the
+    library is gone. Delete it, or re-publish with
+    `php artisan vendor:publish --tag=adminlte-assets --force` if you have not
+    customised the file.
+  - `config/adminlte.php`: remove the `apexcharts` entry under `plugins`. A
+    `chartjs` entry is optional; add one only to change its paths or load it on
+    every page.
+- Your own charts written against ApexCharts need porting to Chart.js;
+  `AdminLteCharts.create(el, config)` gives them the theme and dark-mode
+  handling.
+
 ## [1.6.2] - 2026-09-30
 
 ### Fixed
