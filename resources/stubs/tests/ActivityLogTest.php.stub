@@ -5,6 +5,7 @@ namespace Tests\Feature\AdminLte;
 use {{ users_model_import }};
 use ColorlibHQ\AdminLte\Support\ActivityLogger;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class ActivityLogTest extends TestCase
@@ -28,6 +29,21 @@ class ActivityLogTest extends TestCase
         $this->actingAs(User::factory()->create())
             ->get(route('adminlte.activity.index'))
             ->assertOk();
+    }
+
+    public function test_the_logger_never_stores_credentials(): void
+    {
+        $user = User::factory()->create();
+
+        ActivityLogger::log('updated', 'User updated', [
+            'name' => 'New name',
+            'password' => '$2y$12$not-a-real-hash',
+            'remember_token' => 'remember-me',
+        ], $user);
+
+        $properties = json_decode((string) DB::table('activity_log')->latest('id')->value('properties'), true);
+
+        $this->assertSame(['name' => 'New name'], $properties);
     }
 
     public function test_the_logger_records_an_activity_row(): void

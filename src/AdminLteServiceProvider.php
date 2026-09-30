@@ -111,6 +111,10 @@ class AdminLteServiceProvider extends ServiceProvider
         $this->registerDocsRoutes();
         $this->registerAuthorization();
         $this->registerActivityLogging();
+
+        // Guarded data migrations for the scaffolded tables (each no-ops when its
+        // table is absent), so a plain `php artisan migrate` applies them.
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
     }
 
     /**

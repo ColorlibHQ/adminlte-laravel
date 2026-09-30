@@ -12,9 +12,20 @@ use Illuminate\Support\Facades\Schema;
  * package's auth-event listeners (login / logout / failed login) and the
  * published LogsActivity model trait. No-ops gracefully when the table doesn't
  * exist, so it's always safe to call.
+ *
+ * Properties are passed through redact() before they are stored, so credentials
+ * and other secrets never reach the log — even when the published LogsActivity
+ * trait records every changed attribute of a model such as User.
  */
 class ActivityLogger
 {
+    /**
+     * Property keys matching this pattern are never stored (case-insensitive):
+     * passwords and their hashes, remember/API/access/refresh tokens, 2FA secrets
+     * and recovery codes, client secrets, API and private keys.
+     */
+    public const REDACTED_KEY_PATTERN = '/password|secret|token|api_?key|private_?key|recovery_?codes/i';
+
     private static ?bool $hasTable = null;
 
     /**
@@ -32,6 +43,7 @@ class ActivityLogger
         }
 
         $request = request();
+        $properties = self::redact($properties, $subject?->getHidden() ?? []);
 
         DB::table('activity_log')->insert([
             'user_id' => $causerId ?? Auth::id(),
@@ -44,6 +56,32 @@ class ActivityLogger
             'user_agent' => substr((string) $request->userAgent(), 0, 255),
             'created_at' => now(),
         ]);
+    }
+
+    /**
+     * Remove secrets from activity properties: keys matching REDACTED_KEY_PATTERN
+     * (at any depth), the subject model's $hidden attributes (top level) and any
+     * extra keys listed in config('adminlte.activity_log.redact').
+     *
+     * @param  array<array-key, mixed>  $properties
+     * @param  array<int, string>  $hiddenKeys
+     * @return array<array-key, mixed>
+     */
+    public static function redact(array $properties, array $hiddenKeys = []): array
+    {
+        $extra = array_filter((array) config('adminlte.activity_log.redact', []), 'is_string');
+        $drop = array_flip(array_merge($hiddenKeys, array_values($extra)));
+
+        $clean = [];
+        foreach ($properties as $key => $value) {
+            if (is_string($key) && (isset($drop[$key]) || preg_match(self::REDACTED_KEY_PATTERN, $key) === 1)) {
+                continue;
+            }
+
+            $clean[$key] = is_array($value) ? self::redact($value) : $value;
+        }
+
+        return $clean;
     }
 
     /**

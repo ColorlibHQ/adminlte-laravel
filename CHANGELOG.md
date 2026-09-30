@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- The activity log no longer stores secrets. The published `LogsActivity` trait
+  records every changed attribute of a model, so when it was added to `User`,
+  password hashes, remember tokens and 2FA secrets ended up in
+  `activity_log.properties`. `ActivityLogger` now drops the subject model's
+  `$hidden` attributes and any key matching `password`, `secret`, `token`,
+  `api_key`, `private_key` or `recovery_codes` before writing a row; list other
+  keys in the new `adminlte.activity_log.redact` config option. Because the
+  filtering lives in the package, apps that already published the trait are
+  covered after `composer update`.
+- A new package migration, `redact_secrets_in_adminlte_activity_log`, removes
+  such values from rows earlier versions stored. The package now registers its
+  `database/migrations` directory, so `php artisan migrate` picks it up; it only
+  touches the table `adminlte:scaffold activity-log` creates and does nothing
+  when that table is absent.
+
 ## [1.6.1] - 2026-08-28
 
 ### Fixed

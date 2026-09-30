@@ -146,6 +146,14 @@ return [
     'docs' => true,
     'docs_middleware' => ['web'],
 
+    // Activity log (`adminlte:scaffold activity-log`). ActivityLogger never stores
+    // property keys that look like credentials (password, *token*, *secret*,
+    // api_key, private_key, recovery_codes) or that are in the subject model's
+    // $hidden list. Add any other keys that must never be logged here.
+    'activity_log' => [
+        'redact' => [],
+    ],
+
     'sidebar_breakpoint' => 'lg',     // sidebar-expand-{breakpoint}
     'sidebar_mini' => true,           // .sidebar-mini
     'sidebar_collapse' => false,      // start collapsed

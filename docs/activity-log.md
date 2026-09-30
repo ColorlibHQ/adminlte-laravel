@@ -48,6 +48,21 @@ class Project extends Model
 
 Updates record the changed attributes in the row's `properties` JSON.
 
+### What is never logged
+
+`ActivityLogger` removes secrets from `properties` before writing a row, so adding
+the trait to `User` is safe:
+
+- the subject model's `$hidden` attributes (on `User`: `password`,
+  `remember_token`, `two_factor_secret`, `two_factor_recovery_codes`, ...);
+- any key matching `password`, `secret`, `token`, `api_key` / `apikey`,
+  `private_key` or `recovery_codes` (case-insensitive, at any nesting depth);
+- any extra keys you list in `config('adminlte.activity_log.redact')`.
+
+Upgrading from 1.6.1 or earlier: `php artisan migrate` runs the package's
+`redact_secrets_in_adminlte_activity_log` migration, which removes such values
+from rows that earlier versions already stored (other data in each row is kept).
+
 ### Logging your own events
 
 ```php

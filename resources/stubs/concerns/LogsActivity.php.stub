@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Add to any Eloquent model to automatically record create / update / delete
- * events into the activity_log table:
+ * events into the activity_log table. Updates record the changed attributes;
+ * ActivityLogger drops the model's $hidden attributes and credential-like keys
+ * (password, tokens, secrets, ...) before storing them:
  *
  *     class Project extends Model
  *     {
