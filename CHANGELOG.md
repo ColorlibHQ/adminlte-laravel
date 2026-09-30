@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.7.0] - 2026-10-01
+
 ### Changed
 
 - **Charts use Chart.js 4 (MIT) instead of ApexCharts.** From 5.2.0 ApexCharts
