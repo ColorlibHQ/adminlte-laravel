@@ -14,6 +14,7 @@ namespace ColorlibHQ\AdminLte\Support;
  * | --------------- | ---------------- | -------------------------------- |
  * | `primary_color` | Brand colour     | `--bs-primary*`, `--bs-link-*`,  |
  * |                 |                  | `.btn-primary`, `.btn-outline-…` |
+ * | `secondary_color` | Secondary colour | `--bs-secondary*`, buttons     |
  * | `sidebar_color` | `.app-sidebar`   | `--bs-secondary-bg*`             |
  * | `navbar_color`  | `.app-header`    | `--bs-body-bg*`                  |
  * | `footer_color`  | `.app-footer`    | `--bs-body-bg*`                  |
@@ -25,9 +26,9 @@ namespace ColorlibHQ\AdminLte\Support;
  * the selectors hardcoded below. Do not relax {@see self::HEX_PATTERN}
  * (to accept `rgb()`, `var()` or named colours) without escaping the value.
  *
- * Buttons need explicit treatment because Bootstrap compiles `.btn-primary`
- * from Sass literals rather than from `--bs-primary`, so hover/active shades
- * are recomputed here with Bootstrap's own `shade-color()` weights.
+ * Buttons need explicit treatment because Bootstrap compiles their variants
+ * from Sass literals, so hover/active shades are recomputed here with
+ * Bootstrap's own `shade-color()` weights.
  */
 class ThemeColors
 {
@@ -57,6 +58,7 @@ class ThemeColors
     {
         $blocks = array_filter([
             self::primaryBlocks(self::configured('primary_color')),
+            self::secondaryBlocks(self::configured('secondary_color')),
             self::surfaceBlock('.app-sidebar', '--bs-secondary-bg', self::configured('sidebar_color')),
             self::surfaceBlock('.app-header', '--bs-body-bg', self::configured('navbar_color')),
             self::surfaceBlock('.app-footer', '--bs-body-bg', self::configured('footer_color')),
@@ -132,11 +134,7 @@ class ThemeColors
             return null;
         }
 
-        $hoverBg = self::shade($color, self::SHADE_HOVER_BG);
         $hoverBorder = self::shade($color, self::SHADE_HOVER_BORDER);
-        $activeBg = self::shade($color, self::SHADE_ACTIVE_BG);
-        $activeBorder = self::shade($color, self::SHADE_ACTIVE_BORDER);
-        $foreground = self::contrastColor($color);
 
         return implode("\n", [
             self::rule(':root, [data-bs-theme="light"], [data-bs-theme="dark"]', [
@@ -147,7 +145,35 @@ class ThemeColors
                 '--bs-link-hover-color' => $hoverBorder,
                 '--bs-link-hover-color-rgb' => self::rgb($hoverBorder),
             ]),
-            self::rule('.btn-primary', [
+            self::buttonBlocks('primary', $color),
+        ]);
+    }
+
+    private static function secondaryBlocks(?string $color): ?string
+    {
+        if ($color === null) {
+            return null;
+        }
+
+        return implode("\n", [
+            self::rule(':root, [data-bs-theme="light"], [data-bs-theme="dark"]', [
+                '--bs-secondary' => $color,
+                '--bs-secondary-rgb' => self::rgb($color),
+            ]),
+            self::buttonBlocks('secondary', $color),
+        ]);
+    }
+
+    private static function buttonBlocks(string $variant, string $color): string
+    {
+        $hoverBg = self::shade($color, self::SHADE_HOVER_BG);
+        $hoverBorder = self::shade($color, self::SHADE_HOVER_BORDER);
+        $activeBg = self::shade($color, self::SHADE_ACTIVE_BG);
+        $activeBorder = self::shade($color, self::SHADE_ACTIVE_BORDER);
+        $foreground = self::contrastColor($color);
+
+        return implode("\n", [
+            self::rule(".btn-$variant", [
                 '--bs-btn-color' => $foreground,
                 '--bs-btn-bg' => $color,
                 '--bs-btn-border-color' => $color,
@@ -162,7 +188,7 @@ class ThemeColors
                 '--bs-btn-disabled-bg' => $color,
                 '--bs-btn-disabled-border-color' => $color,
             ]),
-            self::rule('.btn-outline-primary', [
+            self::rule(".btn-outline-$variant", [
                 '--bs-btn-color' => $color,
                 '--bs-btn-border-color' => $color,
                 '--bs-btn-hover-color' => $foreground,

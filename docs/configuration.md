@@ -120,6 +120,7 @@ Body-level switches that map directly to AdminLTE 4 body classes. A value of
 | Key | Default | Description |
 | --- | --- | --- |
 | `primary_color` | `null` | Brand color: `--bs-primary`, link colors, `.btn-primary` and `.btn-outline-primary`. |
+| `secondary_color` | `null` | Secondary color: `--bs-secondary`, `.btn-secondary` and `.btn-outline-secondary`. |
 | `sidebar_color` | `null` | `.app-sidebar` background. |
 | `navbar_color` | `null` | `.app-header` background. |
 | `footer_color` | `null` | `.app-footer` background. |
@@ -129,21 +130,24 @@ overrides, so you can recolor the chrome without compiling SCSS:
 
 ```php
 'primary_color' => '#6610f2',
+'secondary_color' => '#6c757d',
 'sidebar_color' => '#1f2937',
 ```
 
 Values must be hex — `'#rgb'` or `'#rrggbb'`. Anything else (a named color,
 `rgb()`, a `var()` reference) is ignored and the stock AdminLTE color applies,
 because the block is emitted unescaped and only a strict hex pattern is safe to
-put there. Leave a key `null` to change nothing; when all four are `null` no
+put there. Leave a key `null` to change nothing; when all five are `null` no
 `<style>` element is rendered at all.
 
-`primary_color` also recomputes the hover/active button shades using Bootstrap's
+`primary_color` and `secondary_color` also recompute hover/active button shades using Bootstrap's
 own `shade-color()` weights, and flips button text between black and white the
 way Bootstrap's `color-contrast()` does — so a custom brand color behaves like a
-recompiled `$primary` rather than a flat color swap.
+recompiled `$primary` or `$secondary` rather than a flat color swap. Only
+`primary_color` changes link colors. `secondary_color` does not change the
+separate `--bs-secondary-bg` or `--bs-secondary-color` surface variables.
 
-For anything deeper than these four surfaces (spacing, component variables, the
+For anything deeper than these theme colors (spacing, component variables, the
 full palette), compile AdminLTE from SCSS instead — see the commented Option B
 block in the published `resources/css/adminlte.css`.
 
