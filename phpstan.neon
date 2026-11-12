@@ -18,12 +18,13 @@ parameters:
                 - src/View/Components
                 - src/AdminLteServiceProvider.php
 
-        # Same cause: the demo routes are Route::view('…', 'adminlte::…').
+        # Some Laravel versions type Route::view() as view-string; package views
+        # are registered at runtime and cannot be resolved during analysis.
         -
             identifier: argument.type
             message: '#Parameter \#2 \$view of static method Illuminate\\Routing\\Router::view\(\) expects view-string, string given#'
-            paths:
-                - src/AdminLteServiceProvider.php
+            path: src/AdminLteServiceProvider.php
+            reportUnmatched: false
 
         # The provider opportunistically wires consuming-app classes
         # (App\Models\..., App\Policies\...) that only exist after

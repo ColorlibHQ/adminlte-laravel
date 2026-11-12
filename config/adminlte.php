@@ -170,11 +170,12 @@ return [
     | light page, matching the AdminLTE 4 demos). Set to 'light' for a light
     | sidebar.
     |
-    | The four *_color keys repaint the chrome without touching SCSS: each one
+    | The five *_color keys repaint the theme without touching SCSS: each one
     | is injected into the layout <head> as a CSS custom-property override
     | (see ColorlibHQ\AdminLte\Support\ThemeColors). Leave a key null to keep
     | the stock AdminLTE colour. `primary_color` also recolours links and the
-    | primary button variants. Values must be hex — '#rgb' or '#rrggbb';
+    | primary button variants; `secondary_color` recolours secondary button
+    | variants. Values must be hex — '#rgb' or '#rrggbb';
     | anything else is ignored. The /demo/theme-generator page previews these
     | live and writes the snippet for you.
     |
@@ -183,6 +184,7 @@ return [
     'sidebar_theme' => 'dark',  // 'dark' | 'light'
 
     'primary_color' => null,    // brand colour: links, .btn-primary, --bs-primary
+    'secondary_color' => null,  // secondary colour: .btn-secondary, --bs-secondary
     'sidebar_color' => null,    // .app-sidebar background
     'navbar_color' => null,     // .app-header background
     'footer_color' => null,     // .app-footer background

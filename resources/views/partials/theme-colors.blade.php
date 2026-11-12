@@ -1,5 +1,5 @@
-{{-- Config-driven colour overrides (primary_color, sidebar_color, navbar_color,
-     footer_color). Renders nothing unless at least one is set.
+{{-- Config-driven colour overrides (primary_color, secondary_color, sidebar_color,
+     navbar_color, footer_color). Renders nothing unless at least one is set.
 
      Emitted unescaped by design: ThemeColors validates every value against a
      strict hex pattern and drops anything else, so the string can only contain

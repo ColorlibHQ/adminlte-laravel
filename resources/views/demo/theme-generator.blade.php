@@ -10,6 +10,7 @@
     // key is unset (null) or holds something that isn't a hex colour.
     $colors = [
         'primary_color' => ThemeColors::normalize(config('adminlte.primary_color')) ?? '#0d6efd',
+        'secondary_color' => ThemeColors::normalize(config('adminlte.secondary_color')) ?? '#6c757d',
         'sidebar_color' => ThemeColors::normalize(config('adminlte.sidebar_color')) ?? '#343a40',
         'navbar_color' => ThemeColors::normalize(config('adminlte.navbar_color')) ?? '#ffffff',
         'footer_color' => ThemeColors::normalize(config('adminlte.footer_color')) ?? '#ffffff',
@@ -42,15 +43,21 @@
                                                     :default="$colors['primary_color']" />
                         </div>
                         <div class="col-md-6">
-                            <x-adminlte-input-color name="sidebar_color" label="Sidebar Color"
-                                                    :default="$colors['sidebar_color']" />
+                            <x-adminlte-input-color name="secondary_color" label="Secondary Color"
+                                                    :default="$colors['secondary_color']" />
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
+                            <x-adminlte-input-color name="sidebar_color" label="Sidebar Color"
+                                                    :default="$colors['sidebar_color']" />
+                        </div>
+                        <div class="col-md-6">
                             <x-adminlte-input-color name="navbar_color" label="Navbar Color"
                                                     :default="$colors['navbar_color']" />
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-6">
                             <x-adminlte-input-color name="footer_color" label="Footer Color"
                                                     :default="$colors['footer_color']" />
@@ -140,11 +147,43 @@
             return onWhite >= onBlack ? '#ffffff' : '#000000';
         }
 
+        function buttonCss(variant, color) {
+            const fg = contrast(color);
+            return `
+.btn-${variant} {
+    --bs-btn-color: ${fg};
+    --bs-btn-bg: ${color};
+    --bs-btn-border-color: ${color};
+    --bs-btn-hover-color: ${fg};
+    --bs-btn-hover-bg: ${shade(color, SHADE_HOVER_BG)};
+    --bs-btn-hover-border-color: ${shade(color, SHADE_HOVER_BORDER)};
+    --bs-btn-focus-shadow-rgb: ${rgb(color)};
+    --bs-btn-active-color: ${fg};
+    --bs-btn-active-bg: ${shade(color, SHADE_ACTIVE_BG)};
+    --bs-btn-active-border-color: ${shade(color, SHADE_ACTIVE_BORDER)};
+    --bs-btn-disabled-color: ${fg};
+    --bs-btn-disabled-bg: ${color};
+    --bs-btn-disabled-border-color: ${color};
+}
+.btn-outline-${variant} {
+    --bs-btn-color: ${color};
+    --bs-btn-border-color: ${color};
+    --bs-btn-hover-color: ${fg};
+    --bs-btn-hover-bg: ${color};
+    --bs-btn-hover-border-color: ${color};
+    --bs-btn-focus-shadow-rgb: ${rgb(color)};
+    --bs-btn-active-color: ${fg};
+    --bs-btn-active-bg: ${color};
+    --bs-btn-active-border-color: ${color};
+    --bs-btn-disabled-color: ${color};
+    --bs-btn-disabled-border-color: ${color};
+}`;
+        }
+
         function buildCss(colors) {
             const primary = colors.primary_color;
-            const hoverBg = shade(primary, SHADE_HOVER_BG);
+            const secondary = colors.secondary_color;
             const hoverBorder = shade(primary, SHADE_HOVER_BORDER);
-            const fg = contrast(primary);
 
             return `
 :root, [data-bs-theme="light"], [data-bs-theme="dark"] {
@@ -154,25 +193,11 @@
     --bs-link-color-rgb: ${rgb(primary)};
     --bs-link-hover-color: ${hoverBorder};
     --bs-link-hover-color-rgb: ${rgb(hoverBorder)};
+    --bs-secondary: ${secondary};
+    --bs-secondary-rgb: ${rgb(secondary)};
 }
-.btn-primary {
-    --bs-btn-color: ${fg};
-    --bs-btn-bg: ${primary};
-    --bs-btn-border-color: ${primary};
-    --bs-btn-hover-color: ${fg};
-    --bs-btn-hover-bg: ${hoverBg};
-    --bs-btn-hover-border-color: ${hoverBorder};
-    --bs-btn-active-color: ${fg};
-    --bs-btn-active-bg: ${shade(primary, SHADE_ACTIVE_BG)};
-    --bs-btn-active-border-color: ${shade(primary, SHADE_ACTIVE_BORDER)};
-}
-.btn-outline-primary {
-    --bs-btn-color: ${primary};
-    --bs-btn-border-color: ${primary};
-    --bs-btn-hover-color: ${fg};
-    --bs-btn-hover-bg: ${primary};
-    --bs-btn-hover-border-color: ${primary};
-}
+${buttonCss('primary', primary)}
+${buttonCss('secondary', secondary)}
 .app-sidebar {
     --bs-secondary-bg: ${colors.sidebar_color};
     --bs-secondary-bg-rgb: ${rgb(colors.sidebar_color)};
@@ -205,6 +230,7 @@
 `// config/adminlte.php
 'sidebar_theme'  => '${sidebarTheme.value}',
 'primary_color'  => '${colors.primary_color}',
+'secondary_color' => '${colors.secondary_color}',
 'sidebar_color'  => '${colors.sidebar_color}',
 'navbar_color'   => '${colors.navbar_color}',
 'footer_color'   => '${colors.footer_color}',`;
