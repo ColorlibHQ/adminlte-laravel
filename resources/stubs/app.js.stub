@@ -5,8 +5,12 @@
  * vite.config.js input array, then `npm run dev` / `npm run build`.
  */
 
-// Bootstrap (provides dropdowns, modals, tooltips, offcanvas, etc.)
-import 'bootstrap'
+// Bootstrap (provides dropdowns, modals, tooltips, offcanvas, etc.).
+// Exposed as window.bootstrap so inline page scripts can call
+// `new bootstrap.Tooltip(el)` / `bootstrap.Toast.getOrCreateInstance(el)`.
+import * as bootstrap from 'bootstrap'
+
+window.bootstrap = bootstrap
 
 // OverlayScrollbars — AdminLTE uses it for the sidebar scroller (optional)
 import { OverlayScrollbars } from 'overlayscrollbars'
