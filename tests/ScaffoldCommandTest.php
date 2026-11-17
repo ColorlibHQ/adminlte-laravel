@@ -141,6 +141,25 @@ class ScaffoldCommandTest extends TestCase
         $this->assertStringNotContainsString('{{', $migration);
     }
 
+    /**
+     * Migration filenames are timestamped, so a second run must recognise the
+     * migration from the first instead of stacking a duplicate that fails with
+     * "table already exists".
+     */
+    public function test_rerunning_scaffold_does_not_duplicate_migrations(): void
+    {
+        $base = $this->scaffoldInto('mailbox');
+
+        // Age the first run's file so a second run could not collide with it by
+        // landing on the same second.
+        $first = (glob("{$base}/database/migrations/*_create_adminlte_messages_table.php") ?: [])[0];
+        rename($first, "{$base}/database/migrations/2020_01_01_000000_create_adminlte_messages_table.php");
+
+        $this->scaffoldInto('mailbox', $base);
+
+        $this->assertCount(1, glob("{$base}/database/migrations/*_create_adminlte_messages_table.php") ?: []);
+    }
+
     public function test_published_stubs_name_a_renamed_users_table(): void
     {
         config()->set('auth.guards.web.provider', 'members');
@@ -280,13 +299,16 @@ class ScaffoldCommandTest extends TestCase
     /**
      * Run the command against a throwaway app root and hand back its path.
      */
-    private function scaffoldInto(string $section): string
+    private function scaffoldInto(string $section, ?string $base = null): string
     {
-        $base = sys_get_temp_dir().'/adminlte-scaffold-'.bin2hex(random_bytes(6));
-        mkdir($base.'/routes', 0755, recursive: true);
-        file_put_contents($base.'/routes/web.php', "<?php\n");
+        if ($base === null) {
+            $base = sys_get_temp_dir().'/adminlte-scaffold-'.bin2hex(random_bytes(6));
+            mkdir($base.'/routes', 0755, recursive: true);
+            file_put_contents($base.'/routes/web.php', "<?php\n");
 
-        $this->tempRoots[] = $base;
+            $this->tempRoots[] = $base;
+        }
+
         $this->app->setBasePath($base);
 
         $this->artisan('adminlte:scaffold', ['section' => $section])->assertSuccessful()->run();

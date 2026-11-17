@@ -266,10 +266,10 @@ class ScaffoldCommand extends Command
         $migrations = (array) ($spec['migrations'] ?? []);
         foreach (array_values($migrations) as $i => $migration) {
             // Stagger timestamps so migrations run in a deterministic order.
-            $timestamp = date('Y_m_d_His', time() + $i);
-            $this->publishFile(
+            $this->publishMigration(
                 "stubs/migrations/{$migration}.php.stub",
-                database_path("migrations/{$timestamp}_{$migration}.php"),
+                $migration,
+                time() + $i,
                 $force
             );
         }
@@ -457,11 +457,10 @@ class ScaffoldCommand extends Command
      */
     protected function scaffoldRbac(bool $force): void
     {
-        $timestamp = date('Y_m_d_His');
-
-        $this->publishFile(
+        $this->publishMigration(
             'stubs/rbac/migrations/create_adminlte_rbac_tables.php.stub',
-            database_path("migrations/{$timestamp}_create_adminlte_rbac_tables.php"),
+            'create_adminlte_rbac_tables',
+            time(),
             $force
         );
 
@@ -687,6 +686,29 @@ class ScaffoldCommand extends Command
         $this->line('  2. Run <fg=yellow>php artisan db:seed --class=AdminLte{Section}Seeder</> for demo data.');
         $this->line('  3. Add menu items in <fg=yellow>config/adminlte.php</> pointing to the new routes (prefixed <fg=yellow>adminlte.</>).');
         $this->line('  4. Visit <fg=yellow>/admin/{section}</> (requires authentication).');
+    }
+
+    /**
+     * Publish a migration stub, reusing the file from an earlier run.
+     *
+     * Migration filenames carry a timestamp, so the plain "does the target
+     * exist" check in publishFile() never matches on a second run and
+     * `adminlte:scaffold` would stack a duplicate migration that fails with
+     * "table already exists". Look the migration up by name instead.
+     */
+    protected function publishMigration(string $stub, string $name, int $time, bool $force): void
+    {
+        $existing = glob(database_path("migrations/*_{$name}.php")) ?: [];
+
+        if ($existing !== []) {
+            // Overwrite in place under --force so the migration keeps its
+            // original position in the ordering.
+            $this->publishFile($stub, $existing[0], $force);
+
+            return;
+        }
+
+        $this->publishFile($stub, database_path('migrations/'.date('Y_m_d_His', $time)."_{$name}.php"), $force);
     }
 
     protected function publishFile(string $stub, string $path, bool $force): void
