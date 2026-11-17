@@ -83,6 +83,14 @@ class InstallCommand extends Command
         // Chart.js preset: theme from CSS variables, live dark mode,
         // <x-adminlte-chart> rendering (loaded by the 'chartjs' plugin).
         'adminlte/js/charts.js' => 'adminlte/js/charts.js',
+        // Brand logo and demo avatars: the default config (logo_img, auth_logo,
+        // user menu, navbar dropdowns) points at vendor/adminlte/img/*.
+        'adminlte/img/AdminLTELogo.png' => 'adminlte/img/AdminLTELogo.png',
+        'adminlte/img/AdminLTEFullLogo.png' => 'adminlte/img/AdminLTEFullLogo.png',
+        'adminlte/img/user1-128x128.jpg' => 'adminlte/img/user1-128x128.jpg',
+        'adminlte/img/user2-160x160.jpg' => 'adminlte/img/user2-160x160.jpg',
+        'adminlte/img/user3-128x128.jpg' => 'adminlte/img/user3-128x128.jpg',
+        'adminlte/img/user8-128x128.jpg' => 'adminlte/img/user8-128x128.jpg',
     ];
 
     protected $signature = 'adminlte:install
