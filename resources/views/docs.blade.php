@@ -51,6 +51,9 @@
         .adminlte-docs h2 { padding-bottom: .3rem; border-bottom: 1px solid var(--bs-border-color); }
         .adminlte-docs p, .adminlte-docs ul, .adminlte-docs ol { margin-bottom: 1rem; }
         .adminlte-docs table { width: 100%; margin-bottom: 1rem; border-collapse: collapse; }
+        @media (max-width: 767.98px) {
+            .adminlte-docs table { display: block; overflow-x: auto; }
+        }
         .adminlte-docs th, .adminlte-docs td {
             padding: .5rem .75rem; border: 1px solid var(--bs-border-color); vertical-align: top; }
         .adminlte-docs thead th { background: var(--bs-tertiary-bg); }

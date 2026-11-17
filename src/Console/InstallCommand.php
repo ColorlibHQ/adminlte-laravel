@@ -17,15 +17,15 @@ class InstallCommand extends Command
      * skeleton + theme + palette model, so the calendar component needs
      * explicit work before it can move.
      */
-    private const NPM_DEPENDENCIES = 'admin-lte@^4.8 bootstrap@^5.3 @popperjs/core@^2.11 '
-        .'overlayscrollbars@^2.16 bootstrap-icons@^1.13 chart.js@^4.5 jsvectormap@^1.7 '
-        .'fullcalendar@^6.1 sortablejs@^1.15 sass@^1.102';
+    private const NPM_DEPENDENCIES = 'admin-lte@^4.10 bootstrap@^5.3.9 @popperjs/core@^2.11 '
+        .'overlayscrollbars@^2.17 bootstrap-icons@^1.13 chart.js@^4.6 jsvectormap@^1.7 '
+        .'fullcalendar@^6.1 sortablejs@^1.15 sass@^1.108';
 
     /**
      * Optional plugin libraries (disabled by default in config/adminlte.php).
      * Listed in install guidance so users enabling those plugins know what to add.
      */
-    private const NPM_OPTIONAL_DEPENDENCIES = 'flatpickr@^4.6 tom-select@^2.6 tabulator-tables@^6.5 quill@^2.0';
+    private const NPM_OPTIONAL_DEPENDENCIES = 'flatpickr@^4.6 tom-select@^2.7 tabulator-tables@^6.7 quill@^2.0';
 
     /**
      * Plugin files copied out of node_modules into public/vendor. Keys are
@@ -83,6 +83,14 @@ class InstallCommand extends Command
         // Chart.js preset: theme from CSS variables, live dark mode,
         // <x-adminlte-chart> rendering (loaded by the 'chartjs' plugin).
         'adminlte/js/charts.js' => 'adminlte/js/charts.js',
+        // Brand logo and demo avatars: the default config (logo_img, auth_logo,
+        // user menu, navbar dropdowns) points at vendor/adminlte/img/*.
+        'adminlte/img/AdminLTELogo.png' => 'adminlte/img/AdminLTELogo.png',
+        'adminlte/img/AdminLTEFullLogo.png' => 'adminlte/img/AdminLTEFullLogo.png',
+        'adminlte/img/user1-128x128.jpg' => 'adminlte/img/user1-128x128.jpg',
+        'adminlte/img/user2-160x160.jpg' => 'adminlte/img/user2-160x160.jpg',
+        'adminlte/img/user3-128x128.jpg' => 'adminlte/img/user3-128x128.jpg',
+        'adminlte/img/user8-128x128.jpg' => 'adminlte/img/user8-128x128.jpg',
     ];
 
     protected $signature = 'adminlte:install

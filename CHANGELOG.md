@@ -7,6 +7,46 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.7.1] - 2026-11-17
+
+### Changed
+
+- `adminlte:install` now asks for the AdminLTE 4.10 line and Bootstrap 5.3.9:
+  `admin-lte@^4.10`, `bootstrap@^5.3.9`, `overlayscrollbars@^2.17`,
+  `chart.js@^4.6` and `sass@^1.108`; the optional plugins ask for
+  `tom-select@^2.7` and `tabulator-tables@^6.7`. AdminLTE 4.9 and 4.10 stop the
+  app shell (header, sidebar, footer) from printing, add `data-lte-print`,
+  `data-lte-contrast` and `data-lte-primary`, and ship opt-in colour sheets and a
+  Select2 compatibility stylesheet, all available through the npm package.
+  FullCalendar stays on `^6.1`: version 7 drops the minified global bundle this
+  package copies.
+- Development dependencies are at their latest releases (Laravel 13.42,
+  Testbench 11.3, PHPUnit 13.4, Pint 1.32, Larastan 3.15). The suite passes on
+  PHP 8.3, 8.4 and 8.5.
+
+### Fixed
+
+- **Logo and avatars 404ed on a fresh install.** The default config points the
+  brand logo, auth logo, user menu and navbar dropdowns at
+  `vendor/adminlte/img/*`, but no command ever copied those images. They now
+  ship under `resources/vendor/adminlte/img` and `adminlte:install` copies them
+  into `public/vendor/adminlte/img` with the other vendor files; re-run
+  `php artisan adminlte:install --only=assets` on an existing app.
+- **`bootstrap is not defined` on the UI general demo page.** The Vite entry stub
+  did `import 'bootstrap'`, which does not create the global the inline demo
+  script uses. It now sets `window.bootstrap`. Apps that already published
+  `resources/js/adminlte.js` can swap that line for
+  `import * as bootstrap from 'bootstrap'; window.bootstrap = bootstrap`.
+- **Re-running `adminlte:scaffold` stacked duplicate migrations** (the file names
+  carry a timestamp, so the "already exists" check never matched), and the next
+  `migrate` failed with "table already exists". An existing migration is now
+  recognised by name.
+- The in-app docs no longer overflow on phones: wide Markdown tables scroll
+  inside the page.
+- FullCalendar day numbers and column headers are no longer underlined by
+  Bootstrap's link style (re-run `adminlte:install --only=assets` to pick up the
+  stylesheet).
+
 ## [1.7.0] - 2026-10-01
 
 ### Changed

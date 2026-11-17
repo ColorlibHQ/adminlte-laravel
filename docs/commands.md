@@ -79,9 +79,9 @@ When run without `--only` and without `--no-interaction-deps`, the command promp
 If accepted, it runs:
 
 ```bash
-npm install -D admin-lte@^4.8 bootstrap@^5.3 @popperjs/core@^2.11 overlayscrollbars@^2.16 \
-  bootstrap-icons@^1.13 chart.js@^4.5 jsvectormap@^1.7 fullcalendar@^6.1 \
-  sortablejs@^1.15 sass@^1.102
+npm install -D admin-lte@^4.10 bootstrap@^5.3.9 @popperjs/core@^2.11 overlayscrollbars@^2.17 \
+  bootstrap-icons@^1.13 chart.js@^4.6 jsvectormap@^1.7 fullcalendar@^6.1 \
+  sortablejs@^1.15 sass@^1.108
 ```
 
 Every dependency is pinned to the major version the package is built and
@@ -93,22 +93,22 @@ model, neither of which the calendar component supports yet.
 
 | Package | Role |
 |---------|------|
-| `admin-lte@^4.8` | AdminLTE 4 core CSS/JS |
-| `bootstrap@^5.3` | Bootstrap 5.3 framework |
+| `admin-lte@^4.10` | AdminLTE 4 core CSS/JS |
+| `bootstrap@^5.3.9` | Bootstrap 5.3 framework |
 | `@popperjs/core@^2.11` | Tooltip/dropdown positioning (Bootstrap dependency) |
-| `overlayscrollbars@^2.16` | Custom sidebar scrollbars |
+| `overlayscrollbars@^2.17` | Custom sidebar scrollbars |
 | `bootstrap-icons@^1.13` | Icon font |
-| `chart.js@^4.5` | Charts (MIT) |
+| `chart.js@^4.6` | Charts (MIT) |
 | `jsvectormap@^1.7` | Vector maps |
 | `fullcalendar@^6.1` | Calendar section |
 | `sortablejs@^1.15` | Kanban drag-to-reorder |
-| `sass@^1.102` | SCSS compilation |
+| `sass@^1.108` | SCSS compilation |
 
 The optional plugins — disabled by default in `config/adminlte.php` — are not
 installed automatically. The command prints this hint after installing:
 
 ```bash
-npm install -D flatpickr@^4.6 tom-select@^2.6 tabulator-tables@^6.5 quill@^2.0
+npm install -D flatpickr@^4.6 tom-select@^2.7 tabulator-tables@^6.7 quill@^2.0
 php artisan adminlte:install --only=assets
 ```
 
