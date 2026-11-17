@@ -265,3 +265,7 @@ a.fc-event, a.fc-event:hover { text-decoration: none; }
 .fc .fc-multimonth-compact .fc-multimonth-daygrid-table, .fc .fc-multimonth-compact .fc-multimonth-header-table { font-size: 0.9em; }
 .fc-media-screen .fc-multimonth-singlecol .fc-multimonth-header { position: sticky; }
 .fc-media-print .fc-multimonth { overflow: visible; }
+
+/* AdminLTE for Laravel: Bootstrap 5 underlines links; FullCalendar day numbers and headers are links. */
+.fc a{text-decoration:none}
+.fc a:hover{text-decoration:underline}
